@@ -1,4 +1,7 @@
 node_modules
+*.zip
+/scratch/
+/variants_list.txt
 
 # macOS
 .DS_Store
