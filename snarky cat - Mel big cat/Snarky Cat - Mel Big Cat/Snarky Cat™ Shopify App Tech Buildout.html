@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Snarky Cat™ Shopify App Tech Buildout</title>
+    <style>
+      html {
+        padding: 1em;
+        background: #fff;
+        color: #222;
+        font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+        font-size: 100%;
+        line-height: 1.5;
+      }
+
+      h1,
+      p,
+      ul,
+      ol,
+      div,
+      figure {
+        margin: 0;
+      }
+
+      h1 { font-size: 1.2em; }
+
+      ul {
+        list-style: disc;
+        padding-left: 1.3em;
+      }
+
+      ol {
+        padding-left: 1.3em;
+        list-style: decimal;
+      }
+
+      blockquote {
+        border-left: 3px solid #000;
+        margin: 0;
+        padding: 0 0 0 1em;
+      }
+
+      pre {
+        font-family: monaco, monospace;
+        font-size: 0.875em;
+        margin: 0;
+        padding: 1rem;
+        background: #eee;
+        border-radius: var(--radius-sm);
+        white-space: pre;
+        word-wrap: normal;
+        word-break: normal;
+        overflow-x: auto;
+      }
+
+      code { border-radius: var(--radius-sm); }
+
+      figure {
+        display: inline-block;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      figcaption { word-break: break-word; }
+
+      img {
+        display: block;
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 1px;
+        border: 1px solid #eee;
+      }
+
+      a {
+        color: #1b6ac9;
+        text-decoration: underline;
+      }
+
+      a:active { color: #064ac9; }
+
+      .wrapper {
+        max-width: 650px;
+        margin: 0 auto;
+      }
+
+      .title {
+        font-size: 2em;
+        margin: 0.5em 0 1em;
+        line-height: 1.3;
+      }
+
+      .attachment--image {
+        text-align: center;
+        color: #888;
+        font-size: 0.875em;
+      }
+
+      .attachment--file {
+        position: relative;
+        padding: 1.4em 1em 1.5em;
+        border: 1px solid #ddd;
+        border-bottom-width: 3px;
+        border-radius: var(--radius-md);
+        color: #222;
+      }
+
+      .attachment__label {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background: #ddd;
+        font-size: 10px;
+        padding: 2px 6px;
+        border-radius: var(--radius-md) 0 var(--radius-sm) 0;
+        color: #888;
+      }
+
+      .metadata { color: #888; }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <h1 class="title">Snarky Cat™ Shopify App Tech Buildout</h1>
+
+<div class="formatted_content">
+  <div><strong><br>What this app is<br></strong><br>This is a <strong>simple Shopify app</strong> that runs the Snarky Cat digital product system.<br><br>It does 5 things:</div><div><br></div><h1><ol><li> gives customers access after they buy </li><li> handles QR unlocks from physical orders </li><li> shows them what they own </li><li> lets them download assets </li><li> unlocks upgrades and future drops </li></ol></h1><div><br>That’s it.<br>The app is not the product.<br>The app is the engine behind the product.<br><br><strong>Main goal:</strong><br>Use the app to make Snarky Cat work as:</div><h1><ul><li> a standalone digital product</li><li> a bundle add-on for physical products </li><li> a repeat-purchase / retention tool through future drops </li></ul></h1><div><br><strong>What the app needs to do:</strong><br><strong>1) Customer side</strong><br>The customer should be able to:</div><h1><ul><li> buy a pack </li><li> unlock it fast </li><li> see what’s included </li><li> download the files </li><li> upgrade to a higher tier </li><li> get future drops if they qualify </li></ul></h1><div><br><strong>2) Admin side</strong><br>You should be able to:</div><h1><ul><li> manage packs </li><li> upload assets </li><li> manage QR campaigns </li><li> release drops </li><li> see who owns what </li><li> track basic performance </li></ul></h1><div><br><strong>The 3 main user flows</strong><br><br><strong>1) Standalone purchase flow</strong><br>Customer buys a digital pack from the store.<br>Flow:</div><h1><ul><li> customer visits product page </li><li> sees previews </li><li> buys Standard / Deluxe / Ultimate </li><li> app gives them access </li><li> customer lands on claim/download page </li><li> app shows their library </li><li> app offers an upgrade </li></ul></h1><div><br><strong>2) Physical bundle flow</strong><br>Customer buys a physical product and gets a QR code.<br>Flow:</div><h1><ul><li> customer scans QR code </li><li> app checks the offer </li><li> customer enters email or logs in </li><li> app unlocks free or discounted access </li><li> app offers upgrade to Deluxe or Ultimate </li></ul></h1><div><br><strong>3) Future drop flow</strong><br>Customer already owns a qualifying tier.<br>Flow:</div><h1><ul><li> new drop is released </li><li> app checks eligibility </li><li> customer gets access automatically </li><li> email/SMS brings them back </li><li> customer downloads the new assets </li></ul></h1><div><br><strong>MVP: what to build first:</strong><br>Build the smallest version that makes money.<br>Must-have features</div><h1><ul><li> claim page </li><li> digital library </li><li> tier-based access </li><li> QR unlock flow </li><li> upgrade prompt </li><li> simple onboarding instructions </li><li> admin panel for packs/assets/drops </li><li> automatic entitlement after purchase </li></ul></h1><div><br>Do not build yet</div><h1><ul><li> community features </li><li> gamification </li><li> AI features </li><li> advanced analytics </li><li> anything “cool” that doesn’t increase revenue </li></ul></h1><div>Let’s not build a spaceship to sell cat stickers.<br><br><strong>Shopify pieces to use:<br><br>1) Theme App Extension</strong><br>Use this for store pages.<br><br>Examples:</div><h1><ul><li> preview block </li><li> “what’s inside” section </li><li> animated sample gallery </li><li> upgrade banner </li><li> bundle explainer </li></ul></h1><div><br><strong>2) App Proxy</strong><br>Use this so pages feel native to the store.<br><br>Examples:</div><h1><ul><li>/apps/snarky-cat/claim</li><li>/apps/snarky-cat/library</li><li>/apps/snarky-cat/upgrade</li></ul></h1><div><br><strong>3) Webhooks</strong><br>Use these to trigger actions automatically.<br><br>Needed for:</div><h1><ul><li> order paid </li><li> refund </li><li> customer update </li><li> app uninstall </li></ul></h1><div><br><strong>4) Metafields / Metaobjects</strong><br>Use these to organize the content.<br><br>Suggested objects:</div><h1><ul><li> Pack </li><li> Asset </li><li> Drop </li><li> Tier </li><li> QR Campaign </li><li> Upgrade Offer </li></ul></h1><div><br><strong>5) Checkout / Post-Purchase Extension</strong><br>Useful later, not required on day one.<br><br>Use for:</div><h1><ul><li> post-purchase upsells </li><li> unlock reminder </li><li> order confirmation CTA </li></ul></h1><div><br><strong>6) Shopify Functions</strong><br>Optional later.<br><br>Use only if you need:</div><h1><ul><li> bundle validation </li><li> cart rules </li><li> tier-specific promo logic </li></ul></h1><div><br><strong>Simple architecture</strong><br><strong>Frontend</strong><br>Two parts:<br><strong>1) Storefront UI</strong><br>This is what the customer sees on the Shopify site:</div><h1><ul><li> previews </li><li> bundle messaging </li><li> upgrade banners </li><li> unlock entry points </li></ul></h1><div><br><strong>2) App UI</strong><br>This is where the app runs the main experience:</div><h1><ul><li> claim page </li><li> library page </li><li> admin dashboard </li></ul></h1><div><br><strong>Backend</strong><br>The backend handles the logic.<br><br>It should:</div><h1><ul><li> verify purchases </li><li> grant entitlements </li><li> manage tiers </li><li> process QR claims </li><li> control future drops </li><li> track basic analytics </li></ul></h1><div>Keep the backend boring and reliable.<br>Boring software makes money.<br><br><strong>Core data to track:</strong><br>You need these main data groups:<br><br><strong>1) Customers</strong></div><h1><ul><li> customer ID </li><li> email </li><li> owned tier </li><li> claim status </li><li> source </li></ul></h1><div><br><strong>2) Packs</strong></div><h1><ul><li> pack name </li><li> tier </li><li> price </li><li> included assets </li></ul></h1><div><br><strong>3) Assets</strong></div><h1><ul><li> asset ID </li><li> type </li><li> preview URL </li><li> download URL </li><li> pack assignment </li></ul></h1><div><br><strong>4) Entitlements</strong></div><h1><ul><li> customer </li><li> pack </li><li> date granted </li><li> source </li></ul></h1><div><br><strong>5) QR Campaigns</strong></div><h1><ul><li> QR code </li><li> offer type </li><li> usage count </li><li> redemption count </li></ul></h1><div><br><strong>6) Drops</strong></div><h1><ul><li> drop name </li><li> release date </li><li> eligible tiers </li></ul></h1><div><br><strong>7) Upgrades</strong></div><h1><ul><li> starting tier </li><li> target tier </li><li> offer value </li><li> conversion status </li></ul></h1><div><br><strong>Content delivery rules</strong><br>The app should clearly show:</div><h1><ul><li> what they bought </li><li> what files are included </li><li> how to use them </li><li> what they can unlock next </li></ul></h1><div><br>Asset types</div><h1><ul><li> GIFs </li><li> MP4s </li><li> PNG stickers </li><li> wallpapers </li><li> meme templates </li><li> printables </li><li> install guide PDF </li></ul></h1><div><br>Tier logic</div><h1><ul><li> Lite = small free set </li><li> Standard = main product </li><li> Deluxe = extra content + exclusives </li><li> Ultimate = future drops included </li></ul></h1><div><br>Rule:<br>The customer should be able to use it in 5 minutes or less.<br>If the process is annoying, conversion gets punched in the throat.<br><br><strong>QR unlock system</strong><br>This is one of the best leverage points.<br><br>What it does:<br>It connects physical product sales to digital product adoption.<br><br><strong>Flow</strong></div><h1><ul><li> QR code goes in the package </li><li> customer scans it </li><li> app identifies the campaign </li><li> app checks the offer </li><li> app unlocks the correct tier </li><li> app tracks the source </li></ul></h1><div><br><strong>Why it matters</strong><br>It helps with:</div><h1><ul><li> list growth </li><li> post-purchase engagement </li><li> upsells </li><li> repeat visits </li><li> future drop reactivation </li></ul></h1><div>That’s the flywheel.<br><br><strong>Admin dashboard</strong><br>Keep it simple.<br>Admin needs</div><h1><ul><li> create/edit packs </li><li> upload assets </li><li> assign assets to tiers </li><li> create QR campaigns </li><li> release drops </li><li> see claims </li><li> see upgrades </li><li> track conversions </li></ul></h1><div><br>Nice-to-have stuff comes later.<br><br><strong>Metrics to track</strong><br><strong>1) Revenue metrics</strong></div><h1><ul><li> conversion rate </li><li> upgrade rate </li><li> attach rate </li><li> AOV lift </li><li> revenue per customer </li></ul></h1><div><br><strong>2) Product metrics</strong></div><h1><ul><li> claim completion rate </li><li> download rate </li><li> time to first use </li><li> repeat visits </li><li> drop redemption </li></ul></h1><div><br><strong>3) Brand metrics</strong></div><h1><ul><li> email/SMS signups </li><li> UGC participation </li><li> returning buyers </li><li> GIF usage volume </li></ul></h1><div><br><strong>Build phases</strong><br><br><strong>Phase 1: Validate demand</strong><br>Before the real app build:</div><h1><ul><li> landing page </li><li> fake-door test </li><li> previews </li><li> waitlist </li><li> style vote </li><li> Lite pack </li></ul></h1><div><br><strong>Phase 2: Build MVP app</strong><br>Build:</div><h1><ul><li> entitlement system </li><li> claim page </li><li> library </li><li> QR unlock </li><li> tier logic </li><li> upgrade flow </li><li> admin manager </li></ul></h1><div><br><strong>Phase 3: Add retention engine</strong><br>Build:</div><h1><ul><li> future drops </li><li> automated access </li><li> post-purchase upsell </li><li> email/SMS triggers </li></ul></h1><div><br><strong>Phase 4: Decide if it becomes SaaS</strong><br>Only after internal success.<br><br>Possible future repositioning:</div><h1><ul><li> digital bonus unlock engine </li><li> QR bundle app </li><li> collectible drop system for ecommerce brands </li></ul></h1><div><br><strong>Final recommendation</strong><br>Build this as a custom Shopify app for your own store first.<br><br><br><strong>Best v1 build:</strong><br>entitlement + claim page + digital library + QR unlock + upgrade flow + drop support<br><br>That’s the smart version.<br> Lean. Useful. Monetizable.<br><br>Not overbuilt. Not bloated. Not a fancy pile of tech confetti.<br><br></div><div><strong>Real yet hard truths</strong></div><div>This only works if the customer instantly understands:</div><h1><ul><li> what they’re getting </li><li> why it’s useful </li><li> how to access it </li><li> how fast they can use it </li></ul></h1><div>If that part is fuzzy, the tech won’t save you.<br><br></div><div><strong>Actionable steps</strong></div><h1><ol><li> define the exact MVP tiers </li><li> list the first 10 assets in Standard </li><li> map the QR unlock flow </li><li> define entitlement rules by tier </li><li> build claim page + library first </li><li> add upgrades second </li><li> add future drops third </li></ol></h1><div><strong>Probability analysis</strong></div><div>Probability of success: 79%<br><br><strong>Market demand</strong></div><h1><ul><li>Does the audience want this? Yes, if it feels useful, funny, and easy to use. </li><li>Is the audience large enough? Yes for your current customer base. </li><li>Is the audience reachable? Yes through store traffic, inserts, email, SMS, and post-purchase flows. </li><li>Is the pain point real or imagined? Real enough, but this is identity/utility, not an urgent painkiller. </li><li>Demand strength: Moderate to strong inside your ecosystem. </li></ul></h1><div><br><strong>Key assumptions</strong></div><h1><ul><li> the character style lands </li><li> the previews convert </li><li> the onboarding is frictionless </li><li> the QR flow works </li><li> future drops stay interesting </li></ul></h1><div><br><strong>Constraints</strong></div><h1><ul><li> novelty can fade </li><li> digital value must feel obvious </li><li> friction kills conversion </li></ul></h1><div><br><strong>Bottlenecks</strong></div><h1><ul><li> preview quality </li><li> unclear offer </li><li> weak claim flow </li><li> weak upgrade timing </li><li> inconsistent drops </li></ul></h1><div><br><strong>Leverage points</strong></div><h1><ul><li> QR inserts </li><li> Lite pack </li><li> post-purchase upsell </li><li> repeat drops </li><li> owned channels </li></ul></h1><div><br><strong>Profit potential</strong></div><h1><ul><li>fast money: Standard + Deluxe </li><li>slow money: retention, AOV lift, brand asset expansion </li></ul></h1><div><br></div><div><strong>Final recommendation</strong><br>Build it lean and revenue-first.</div><div><br>ChatGPT Conversation: <a href="https://chatgpt.com/g/g-691cb78ed8c08191a056c9b501caa363-billionaire-brother-derek/c/69c14f0b-44a8-8331-a90e-963474e498f4">ChatGPT - Billionaire Brother -Derek</a></div>
+</div>
+
+    </div>
+  </body>
+</html>

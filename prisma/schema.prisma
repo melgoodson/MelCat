@@ -1,0 +1,210 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:dev.sqlite"
+}
+
+// ---------------------------------------------------------
+// SHOPIFY / ADMIN
+// ---------------------------------------------------------
+
+model Session {
+  id            String    @id
+  shop          String
+  state         String
+  isOnline      Boolean   @default(false)
+  scope         String?
+  expires       DateTime?
+  accessToken   String
+  userId        BigInt?
+  firstName     String?
+  lastName      String?
+  email         String?
+  accountOwner  Boolean   @default(false)
+  locale        String?
+  collaborator  Boolean?  @default(false)
+  emailVerified Boolean?  @default(false)
+  refreshToken        String?
+  refreshTokenExpires DateTime?
+}
+
+model WebhookEvent {
+  id          String   @id // Webhook ID from Shopify payload
+  topic       String
+  processedAt DateTime @default(now())
+  status      String   @default("success") // success, failed, skipped
+}
+
+model AdminAuditLog {
+  id         String      @id @default(cuid())
+  action     String      // e.g. "MANUAL_GRANT"
+  adminUser  String?     // Admin user context if available
+  customerId String?
+  customer   Customer?   @relation(fields: [customerId], references: [id])
+  details    String?     // JSON as string: { oldEmail: '...', newEmail: '...' }
+  createdAt  DateTime    @default(now())
+}
+
+// ---------------------------------------------------------
+// CUSTOMER IDENTITY & AUTH
+// ---------------------------------------------------------
+
+model Customer {
+  id                String             @id @default(cuid())
+  email             String             @unique
+  shopifyCustomerId String?
+  loginTokens       EmailLoginToken[]
+  sessions          CustomerSession[]
+  entitlements      Entitlement[]
+  redemptions       QRRedemption[]
+  auditLogs         AdminAuditLog[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+}
+
+model EmailLoginToken {
+  id         String   @id @default(cuid())
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id])
+  tokenHash  String   @unique
+  expiresAt  DateTime
+  used       Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}
+
+model CustomerSession {
+  id           String   @id @default(cuid())
+  customerId   String
+  customer     Customer @relation(fields: [customerId], references: [id])
+  sessionToken String   @unique // HttpOnly cookie value
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+}
+
+// ---------------------------------------------------------
+// CONTENT SYSTEM
+// ---------------------------------------------------------
+
+model Tier {
+  id        String   @id @default(cuid())
+  name      String   @unique // Lite, Standard, Deluxe, Ultimate
+  level     Int      @unique // 1, 2, 3, 4
+  packs     Pack[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Pack {
+  id           String                  @id @default(cuid())
+  name         String
+  tierId       String
+  tier         Tier                    @relation(fields: [tierId], references: [id])
+  isActive     Boolean                 @default(true) // Soft delete
+  packAssets   PackAsset[]
+  entitlements Entitlement[]
+  qrCampaigns  QRCampaign[]
+  mappings     ProductVariantPackMap[]
+  createdAt    DateTime                @default(now())
+  updatedAt    DateTime                @updatedAt
+}
+
+model DigitalAsset {
+  id           String       @id @default(cuid())
+  title        String
+  type         String       // e.g. "GIF", "MP4", "PDF"
+  fileKey      String       // R2 Object Key
+  thumbnailUrl String?
+  isActive     Boolean      @default(true) // Soft delete
+  packAssets   PackAsset[]
+  dropAssets   DropAsset[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+model PackAsset {
+  packId       String
+  pack         Pack         @relation(fields: [packId], references: [id])
+  assetId      String
+  digitalAsset DigitalAsset @relation(fields: [assetId], references: [id])
+  
+  @@id([packId, assetId])
+}
+
+model Drop {
+  id                String      @id @default(cuid())
+  title             String
+  releaseDate       DateTime
+  requiredTierLevel Int         // Dynamic rule: max(Entitlements.Tier.level) >= Drop.requiredTierLevel
+  isActive          Boolean     @default(true)
+  dropAssets        DropAsset[]
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+}
+
+model DropAsset {
+  dropId       String
+  drop         Drop         @relation(fields: [dropId], references: [id])
+  assetId      String
+  digitalAsset DigitalAsset @relation(fields: [assetId], references: [id])
+  
+  @@id([dropId, assetId])
+}
+
+// ---------------------------------------------------------
+// TRANSACTIONS & ACCESS
+// ---------------------------------------------------------
+
+model Entitlement {
+  id         String            @id @default(cuid())
+  customerId String
+  customer   Customer          @relation(fields: [customerId], references: [id])
+  packId     String
+  pack       Pack              @relation(fields: [packId], references: [id])
+  source     String            // e.g. PURCHASE, QR_CLAIM
+  revoked    Boolean           @default(false)
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+
+  @@index([customerId])
+  @@index([packId])
+}
+
+model ProductVariantPackMap {
+  id        String   @id @default(cuid())
+  variantId String   @unique // 1 Shopify variant maps to 1 App pack
+  productId String
+  packId    String
+  pack      Pack     @relation(fields: [packId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([variantId])
+}
+
+model QRCampaign {
+  id             String         @id @default(cuid())
+  campaignHash   String         @unique
+  packId         String
+  pack           Pack           @relation(fields: [packId], references: [id])
+  isActive       Boolean        @default(true)
+  maxRedemptions Int?
+  redemptions    QRRedemption[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
+
+model QRRedemption {
+  id         String     @id @default(cuid())
+  campaignId String
+  campaign   QRCampaign @relation(fields: [campaignId], references: [id])
+  customerId String
+  customer   Customer   @relation(fields: [customerId], references: [id])
+  ipAddress  String?
+  claimedAt  DateTime   @default(now())
+
+  // Fraud prevention: One claim per customer per campaign
+  @@unique([campaignId, customerId]) 
+}
