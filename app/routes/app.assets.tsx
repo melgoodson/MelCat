@@ -13,6 +13,7 @@ import {
   TextField,
   Select,
   Badge,
+  BlockStack,
   useIndexResourceState,
 } from "@shopify/polaris";
 import { authenticate } from "../shopify.server";
@@ -166,6 +167,24 @@ export default function DigitalAssetsPage() {
       primaryAction={{ content: "Upload File", onAction: toggleModal }}
     >
       <Layout>
+        <Layout.Section>
+          <Card padding="500">
+            <BlockStack gap="300">
+              <Text variant="headingLg" as="h2">What is the Assets Library?</Text>
+              <Text as="p">
+                This acts as your secure media vault. Every file here is securely hosted via Supabase and mapped to a specific Digital Pack.
+              </Text>
+              <Text as="p" fontWeight="bold">How to use it:</Text>
+              <Text as="p" tone="subdued">
+                Click "Upload File", securely upload your video, PDF, or image, and assign it to a Pack. Only customers who own that Pack will be able to unlock the file.
+              </Text>
+              <Text as="p" fontWeight="bold">Example:</Text>
+              <Text as="p" tone="subdued">
+                Upload a secure PDF called <code>cat_diet_plan.pdf</code> and assign it to the "Standard Tier Pack".
+              </Text>
+            </BlockStack>
+          </Card>
+        </Layout.Section>
         <Layout.Section>
           <Card padding="0">
             <IndexTable

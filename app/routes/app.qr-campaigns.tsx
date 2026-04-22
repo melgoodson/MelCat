@@ -175,6 +175,24 @@ export default function QRCampaignsPage() {
     >
       <Layout>
         <Layout.Section>
+          <Card padding="500">
+            <BlockStack gap="300">
+              <Text variant="headingLg" as="h2">What are QR Claims?</Text>
+              <Text as="p">
+                This is the ultimate bridge between physical deliveries and digital access! Give customers special bonuses by placing scannable QR tokens inside their physical boxes.
+              </Text>
+              <Text as="p" fontWeight="bold">How to use it:</Text>
+              <Text as="p" tone="subdued">
+                Click "Create Campaign", define an optional scan limit, and choose the Digital Pack it unlocks. The system generates unique claim links that you can turn into QR stickers. When a customer scans it, it verifies their email via a magic link and grants them the pack forever.
+              </Text>
+              <Text as="p" fontWeight="bold">Example:</Text>
+              <Text as="p" tone="subdued">
+                You create a "Secret Servant Trial" QR code included in your packaging. When scanned, it instantly grants them 30-day access to your "Servant (Standard) Pack".
+              </Text>
+            </BlockStack>
+          </Card>
+        </Layout.Section>
+        <Layout.Section>
           <Card padding="0">
             <IndexTable
               resourceName={resourceName}
@@ -198,29 +216,7 @@ export default function QRCampaignsPage() {
           </Card>
         </Layout.Section>
 
-        <Layout.Section variant="oneThird">
-          <Card>
-            <BlockStack gap="200">
-              <Text as="h2" variant="headingMd">
-                How QR Campaigns Work
-              </Text>
-              <Text as="p" variant="bodyMd">
-                Each campaign generates a unique hash code (e.g.{" "}
-                <strong>SMMR-QR-2026</strong>) that maps to a specific digital
-                Pack.
-              </Text>
-              <Text as="p" variant="bodyMd">
-                When a customer scans a QR code containing this hash, they are
-                prompted to enter their email. After verifying via magic link,
-                the Pack is automatically granted to their account.
-              </Text>
-              <Text as="p" variant="bodyMd">
-                You can set an optional redemption cap to limit scarcity-driven
-                campaigns.
-              </Text>
-            </BlockStack>
-          </Card>
-        </Layout.Section>
+
       </Layout>
 
       <Modal

@@ -14,6 +14,7 @@ import {
   Select,
   Badge,
   useIndexResourceState,
+  BlockStack
 } from "@shopify/polaris";
 import { authenticate } from "../shopify.server";
 import prisma from "../db.server";
@@ -133,6 +134,24 @@ export default function DropsPage() {
       primaryAction={{ content: "Schedule Drop", onAction: toggleModal }}
     >
       <Layout>
+        <Layout.Section>
+          <Card padding="500">
+            <BlockStack gap="300">
+              <Text variant="headingLg" as="h2">What are Content Drops?</Text>
+              <Text as="p">
+                Drops are time-released marketing events. A Drop keeps a Digital Pack completely hidden from your customers' vault until a specific date and time.
+              </Text>
+              <Text as="p" fontWeight="bold">How to use it:</Text>
+              <Text as="p" tone="subdued">
+                Give the drop a title, specify the minimum Tier Level required, and set the unlock date. Your eligible customers will see a countdown to the drop in their portal, building hype!
+              </Text>
+              <Text as="p" fontWeight="bold">Example:</Text>
+              <Text as="p" tone="subdued">
+                You schedule the "Holiday Exclusives" drop to automatically go live and unlock its contents on December 25th for everyone who owns Level 2 (Standard) or above.
+              </Text>
+            </BlockStack>
+          </Card>
+        </Layout.Section>
         <Layout.Section>
           <Card padding="0">
             <IndexTable

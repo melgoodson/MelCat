@@ -139,14 +139,19 @@ export default function CustomersPage() {
       <Layout>
         <Layout.Section>
           <BlockStack gap="400">
-            <Card>
-              <BlockStack gap="200">
-                <Text as="h2" variant="headingMd">
-                  Overview
+            <Card padding="500">
+              <BlockStack gap="300">
+                <Text variant="headingLg" as="h2">Customer Database View</Text>
+                <Text as="p">
+                  This acts as a comprehensive, master log of every user who has ever claimed a digital entitlement or purchased a mapped variant in your Shopify store. 
                 </Text>
-                <Text as="p" variant="bodyMd">
-                  <strong>{totalCustomers}</strong> total customers &bull;{" "}
-                  <strong>{totalEntitlements}</strong> active entitlements
+                <Text as="p" fontWeight="bold">How to use it:</Text>
+                <Text as="p" tone="subdued">
+                  Use this to audit a customer's specific access or see their highest unified Tier level. If a customer has dual accounts (e.g. bought with Apple Pay and Gmail), you can securely merge their profiles using the "Merge Profiles" action so that they don't lose their data!
+                </Text>
+                <Text as="p" fontWeight="bold">Store Overview:</Text>
+                <Text as="p" tone="subdued">
+                  <strong>{totalCustomers}</strong> total customers protecting <strong>{totalEntitlements}</strong> active entitlements.
                 </Text>
               </BlockStack>
             </Card>

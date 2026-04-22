@@ -13,6 +13,7 @@ import {
   TextField,
   Select,
   Badge,
+  BlockStack,
   useIndexResourceState
 } from "@shopify/polaris";
 import { authenticate } from "../shopify.server";
@@ -119,6 +120,24 @@ export default function PacksManager() {
         primaryAction={{content: 'Create Pack', onAction: toggleModal}}
     >
       <Layout>
+        <Layout.Section>
+          <Card padding="500">
+            <BlockStack gap="300">
+              <Text variant="headingLg" as="h2">What are Digital Packs?</Text>
+              <Text as="p">
+                Packs act as secure folders or bundles that contain your digital files. You assign a Pack to a specific access Tier (Lite, Standard, or Ultimate).
+              </Text>
+              <Text as="p" fontWeight="bold">How to use it:</Text>
+              <Text as="p" tone="subdued">
+                Click "Create Pack", give it a name, and choose the Tier it belongs to. Later, you'll upload your secure assets and attach them to these packs.
+              </Text>
+              <Text as="p" fontWeight="bold">Example:</Text>
+              <Text as="p" tone="subdued">
+                You might create a pack called "New Kitten Training Course" and assign it to the "Standard Tier".
+              </Text>
+            </BlockStack>
+          </Card>
+        </Layout.Section>
         <Layout.Section>
           <Card padding="0">
             <IndexTable

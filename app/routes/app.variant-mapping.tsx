@@ -159,14 +159,22 @@ export default function VariantMappingPage() {
       <Layout>
         <Layout.Section>
           <BlockStack gap="400">
-            <Banner tone="info">
-              <p>
-                Each Shopify product variant ID maps to exactly one digital Pack.
-                When a customer purchases that variant, the corresponding Pack is
-                automatically granted via the <strong>orders/paid</strong>{" "}
-                webhook.
-              </p>
-            </Banner>
+          <Card padding="500">
+            <BlockStack gap="300">
+              <Text variant="headingLg" as="h2">What are Order Rules?</Text>
+              <Text as="p">
+                This is the bridge between physical purchases and digital access! It links Shopify product variants directly to Digital Packs.
+              </Text>
+              <Text as="p" fontWeight="bold">How to use it:</Text>
+              <Text as="p" tone="subdued">
+                Enter a Shopify Product Variant ID and choose which Pack it automatically unlocks when a customer buys it.
+              </Text>
+              <Text as="p" fontWeight="bold">Example:</Text>
+              <Text as="p" tone="subdued">
+                When someone buys the "Snarky Cat Tower (Color: Black)" variant, the system automatically detects the purchase and grants them permanent access to the selected "Ultimate Pack".
+              </Text>
+            </BlockStack>
+          </Card>
             <Card padding="0">
               <IndexTable
                 resourceName={resourceName}
