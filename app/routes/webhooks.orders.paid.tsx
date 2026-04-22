@@ -1,7 +1,9 @@
 import type { ActionFunctionArgs } from "react-router";
 import { authenticate } from "../shopify.server";
 import { grantPurchaseEntitlements } from "../services/entitlement.server";
+import { sendMagicLink } from "../services/mail.server";
 import prisma from "../db.server";
+import crypto from "crypto";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const { payload, topic } = await authenticate.webhook(request);
@@ -22,6 +24,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const order = payload as any;
     const email = order.email || order.contact_email;
     const shopifyCustomerId = order.customer?.id?.toString();
+    const shopDomain = request.headers.get("X-Shopify-Shop-Domain") || "fhfwar-jc.myshopify.com";
 
     if (!email) {
       console.warn("[Webhook] orders/paid — no customer email, skipping.");
@@ -39,7 +42,21 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     }
 
     console.log(`[Webhook] orders/paid — granting entitlements for ${email}, variants: ${variantIds.join(", ")}`);
-    await grantPurchaseEntitlements(shopifyCustomerId || "", email, variantIds);
+    const { customer, granted } = await grantPurchaseEntitlements(shopifyCustomerId || "", email, variantIds);
+
+    if (granted) {
+      const token = crypto.randomBytes(32).toString('hex');
+      await prisma.emailLoginToken.create({
+        data: {
+          customerId: customer.id,
+          tokenHash: token,
+          expiresAt: new Date(Date.now() + 15 * 60 * 1000) // 15 mins
+        }
+      });
+      const callbackUrl = `https://${shopDomain}/apps/snarky/proxy/auth/callback?token=${token}`;
+      await sendMagicLink(email, token, callbackUrl);
+      console.log(`[Webhook] orders/paid — Magic link dispatched to ${email}`);
+    }
 
     // Log the webhook
     if (webhookId) {

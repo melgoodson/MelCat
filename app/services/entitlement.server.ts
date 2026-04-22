@@ -14,15 +14,28 @@ export async function grantPurchaseEntitlements(shopifyCustomerId: string, email
     where: { variantId: { in: variantIds } }
   });
 
-  for (const mapping of mappings) {
-    await prisma.entitlement.create({
-      data: {
-        customerId: customer.id,
-        packId: mapping.packId,
-        source: 'PURCHASE'
-      }
-    });
+  if (mappings.length === 0) {
+    return { customer, granted: false };
   }
+
+  for (const mapping of mappings) {
+    // Upsert to avoid uniquely crushing if they bought it before
+    const existing = await prisma.entitlement.findFirst({
+      where: { customerId: customer.id, packId: mapping.packId }
+    });
+    
+    if (!existing) {
+      await prisma.entitlement.create({
+        data: {
+          customerId: customer.id,
+          packId: mapping.packId,
+          source: 'PURCHASE'
+        }
+      });
+    }
+  }
+
+  return { customer, granted: true };
 }
 
 export async function getCustomerLibrary(customerId: string) {
