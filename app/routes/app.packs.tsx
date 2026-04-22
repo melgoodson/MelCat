@@ -22,9 +22,23 @@ import prisma from "../db.server";
 export async function loader({ request }: LoaderFunctionArgs) {
   await authenticate.admin(request);
   
-  const tiers = await prisma.tier.findMany({
+  let tiers = await prisma.tier.findMany({
     orderBy: { level: 'asc' }
   });
+
+  // Self-Healing auto-seed for isolated environments
+  if (tiers.length === 0) {
+    console.log("No tiers found! Auto-seeding database...");
+    await prisma.tier.createMany({
+      data: [
+        { name: 'Lite', level: 1 },
+        { name: 'Standard', level: 2 },
+        { name: 'Deluxe', level: 3 },
+        { name: 'Ultimate', level: 4 }
+      ]
+    });
+    tiers = await prisma.tier.findMany({ orderBy: { level: 'asc' } });
+  }
   
   const packs = await prisma.pack.findMany({
     include: { tier: true, _count: { select: { packAssets: true, qrCampaigns: true } } },
