@@ -1,4 +1,12 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
+import type { LinksFunction } from "react-router";
+import melcatStyles from "./styles/melcat.css?url";
+
+export const links: LinksFunction = () => [
+  { rel: "stylesheet", href: "https://cdn.shopify.com/static/fonts/inter/v4/styles.css" },
+  { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" },
+  { rel: "stylesheet", href: melcatStyles },
+];
 
 export default function App() {
   return (
@@ -7,12 +15,6 @@ export default function App() {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <link rel="preconnect" href="https://cdn.shopify.com/" />
-        <link
-          rel="stylesheet"
-          href="https://cdn.shopify.com/static/fonts/inter/v4/styles.css"
-        />
-        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet" />
-        <link rel="stylesheet" href="/app/styles/melcat.css" />
         <Meta />
         <Links />
       </head>
