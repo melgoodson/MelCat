@@ -71,3 +71,52 @@ h1, h2, h3 {
   font-family: 'Outfit', sans-serif;
   letter-spacing: -0.02em;
 }
+
+/* --- POLARIS GLOBAL THEME OVERRIDES --- */
+/* This forces all standard Shopify sub-pages to look like MelCat */
+:root {
+  --p-font-family-sans: 'Outfit', 'Inter', sans-serif !important;
+  --p-color-bg-surface-brand: #f28c28 !important;
+  --p-color-bg-surface-brand-hover: #e37322 !important;
+  --p-color-bg-surface-brand-active: #c25f1b !important;
+  --p-color-text-brand-on-bg-fill: #ffffff !important;
+  --p-border-radius-200: 12px !important;
+  --p-border-radius-300: 16px !important;
+}
+
+.Polaris-Page-Header__Title {
+  font-family: 'Outfit', sans-serif !important;
+  font-weight: 800 !important;
+  color: var(--mel-dark) !important;
+}
+
+.Polaris-Button--variantPrimary {
+  background: linear-gradient(135deg, var(--mel-orange), var(--mel-ginger)) !important;
+  border: none !important;
+  box-shadow: 0 4px 15px rgba(227, 115, 34, 0.4) !important;
+  transition: all 0.2s ease !important;
+}
+
+.Polaris-Button--variantPrimary:hover {
+  filter: brightness(1.1) !important;
+  transform: scale(1.02) !important;
+}
+
+.Polaris-Card {
+  border-radius: 20px !important;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.06) !important;
+  border: 1px solid rgba(242,140,40,0.2) !important;
+  background: #fff !important;
+}
+
+.Polaris-Badge--toneInfo, .Polaris-Badge--toneBase {
+  background-color: rgba(242,140,40,0.12) !important;
+  color: #c25f1b !important;
+  border-radius: 30px !important;
+  font-weight: 800 !important;
+}
+
+.Polaris-IndexTable {
+  border-radius: 20px !important;
+  overflow: hidden !important;
+}
