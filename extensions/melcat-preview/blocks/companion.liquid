@@ -1,0 +1,171 @@
+{% comment %} MelCat Storefront Companion - companion.liquid {% endcomment %}
+
+{% if block.settings.enabled %}
+
+  {% unless block.settings.show_on_mobile %}
+    <style>
+      @media (max-width: 768px) { .melcat-companion { display: none !important; } }
+    </style>
+  {% endunless %}
+
+  {{ 'sienvi-melcat.css' | asset_url | stylesheet_tag }}
+
+  <div
+    class="melcat-companion"
+    data-melcat-state="idle"
+    data-melcat-position="corner"
+    data-melcat-chat-open="false"
+    role="complementary"
+    aria-label="Big Mel companion"
+  >
+    <button class="melcat-dismiss" type="button" aria-label="Hide Big Mel companion">×</button>
+
+    <div class="melcat-bubble" role="status" aria-live="polite" hidden>
+      <p class="melcat-message"></p>
+      <div class="melcat-actions" hidden>
+        <a class="melcat-cta" href="#"></a>
+      </div>
+      <div class="melcat-care-menu" hidden>
+        <div class="melcat-care-buttons">
+          <button class="melcat-care-btn" data-action="feed" type="button">Feed</button>
+          <button class="melcat-care-btn" data-action="play" type="button">Play</button>
+          <button class="melcat-care-btn" data-action="pet" type="button">Pet</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="melcat-thinking" aria-hidden="true">
+      <span></span><span></span><span></span>
+    </div>
+
+    <div class="melcat-dock">
+      <section
+        id="sienvi-melcat-chat-panel"
+        hidden
+        tabindex="-1"
+        aria-label="Big Mel chat"
+        aria-hidden="true"
+      >
+        <div class="sienvi-melcat-chat-header">
+          <div class="sienvi-melcat-chat-title">
+            <strong>Big Mel</strong>
+            <span>Storefront judgment desk</span>
+          </div>
+          <button id="sienvi-melcat-chat-close" type="button" aria-label="Close Big Mel chat">Close</button>
+        </div>
+
+        <div id="sienvi-melcat-chat-messages" role="log" aria-live="polite" aria-relevant="additions text">
+          <p>Ask carefully. Big Mel has notes.</p>
+        </div>
+
+        <div id="sienvi-melcat-chat-upgrade" hidden>
+          <p>That's all the free judgment you get. Unlock full Big Mel to keep chatting.</p>
+          <a href="{{ block.settings.big_mel_unlock_url }}">Unlock full Big Mel</a>
+        </div>
+
+        <form id="sienvi-melcat-chat-form">
+          <label class="visually-hidden" for="sienvi-melcat-chat-input">Ask Big Mel a question</label>
+          <input
+            id="sienvi-melcat-chat-input"
+            name="message"
+            type="text"
+            maxlength="500"
+            autocomplete="off"
+            placeholder="Ask Big Mel about this page..."
+            required
+          >
+          <button type="submit">Send</button>
+        </form>
+      </section>
+
+      <div class="melcat-dock-controls">
+        <button class="melcat-character" type="button" aria-label="Ask Big Mel for a snarky comment">
+          <span class="melcat-tap-label" aria-hidden="true">tap me</span>
+          <div class="melcat-tamagotchi-screen">
+            <img
+              class="melcat-mascot"
+              src="{{ 'melcat-idle.webp' | file_url }}"
+              alt="Big Mel mascot"
+              loading="lazy"
+              draggable="false"
+              width="120"
+              height="160"
+            />
+            <div id="melcat-status-text">STATUS: OK</div>
+          </div>
+          <div class="melcat-tamagotchi-buttons">
+            <span></span><span></span><span></span>
+          </div>
+        </button>
+
+        <button
+          id="sienvi-melcat-chat"
+          type="button"
+          aria-expanded="false"
+          aria-controls="sienvi-melcat-chat-panel"
+        >
+          Ask Big Mel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/json" id="melcat-asset-urls">
+    {
+      "idle": "{{ 'melcat-idle.webp' | file_url }}",
+      "watching": "{{ 'melcat-judging.webp' | file_url }}",
+      "snark": "{{ 'melcat-smug.webp' | file_url }}",
+      "clicked": "{{ 'melcat-surprise.webp' | file_url }}",
+      "celebrate": "{{ 'melcat-celebrating.webp' | file_url }}",
+      "sleeping": "{{ 'melcat-sleeping.webp' | file_url }}",
+      "prowling": "{{ 'melcat-walking.webp' | file_url }}",
+      "thinking": "{{ 'melcat-thinking.webp' | file_url }}",
+      "playing": "{{ 'melcat-playing.webp' | file_url }}",
+      "eating": "{{ 'melcat-eating.webp' | file_url }}",
+      "angry": "{{ 'melcat-angry.webp' | file_url }}",
+      "purring": "{{ 'melcat-purring.webp' | file_url }}"
+    }
+  </script>
+
+  <script type="application/json" id="melcat-chat-config">
+    {
+      "shopDomain": {{ shop.permanent_domain | json }},
+      "chatEndpoint": "/apps/snarky/melcat/chat",
+      "apiEndpoint": "/api/melcat/chat",
+      "upgradeUrl": {{ block.settings.big_mel_unlock_url | json }},
+      "customerId": {{ customer.id | json }}
+    }
+  </script>
+
+  <script src="{{ 'sienvi-melcat.js' | asset_url }}" defer></script>
+
+{% endif %}
+
+{% schema %}
+{
+  "name": "MelCat Companion",
+  "target": "body",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enabled",
+      "label": "Enable Big Mel companion",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_mobile",
+      "label": "Show on mobile devices",
+      "default": false,
+      "info": "Disabled by default to protect mobile conversion rates."
+    },
+    {
+      "type": "text",
+      "id": "big_mel_unlock_url",
+      "label": "Big Mel unlock URL",
+      "default": "/collections/all",
+      "info": "Point this to your Big Mel upgrade product or any relevant page."
+    }
+  ]
+}
+{% endschema %}

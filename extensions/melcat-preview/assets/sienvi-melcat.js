@@ -72,7 +72,7 @@
     chatLoading:    false,
     chatCount:      0,
     chatSessionId:  '',
-    chatUpgradeUrl: '/products/big-mel-full-access',
+    chatUpgradeUrl: '/collections/all',
   };
 
   /* ── DOM refs ──────────────────────────────────────────── */
@@ -83,7 +83,7 @@
     endpoint: '/apps/snarky/melcat/chat',
     apiEndpoint: '/api/melcat/chat',
     customerId: '',
-    upgradeUrl: '/products/big-mel-full-access'
+    upgradeUrl: '/collections/all'
   };
 
   /* ── Message Pools ─────────────────────────────────────── */

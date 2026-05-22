@@ -2,7 +2,7 @@ import type { ActionFunctionArgs } from "react-router";
 
 const FREE_CHAT_LIMIT = 3;
 const MAX_MESSAGE_LENGTH = 500;
-const DEFAULT_UPGRADE_URL = "/products/big-mel-full-access";
+const DEFAULT_UPGRADE_URL = "/collections/all";
 const DEFAULT_GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
 
 type MelcatChatPayload = {
@@ -69,7 +69,7 @@ async function parseMelcatPayload(request: Request): Promise<MelcatChatPayload> 
       customerId: getString("customerId"),
       message: getString("message"),
       clientChatCount: Number(getString("clientChatCount") || "0"),
-      upgradeUrl: getString("upgradeUrl"),
+      upgradeUrl: getString("upgradeUrl") || DEFAULT_UPGRADE_URL,
       pageContext: parseJsonField<MelcatChatPayload["pageContext"]>("pageContext"),
       cartContext: parseJsonField<MelcatChatPayload["cartContext"]>("cartContext"),
     };
