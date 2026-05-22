@@ -3,7 +3,7 @@ import type { ActionFunctionArgs } from "react-router";
 const FREE_CHAT_LIMIT = 3;
 const MAX_MESSAGE_LENGTH = 500;
 const DEFAULT_UPGRADE_URL = "/products/big-mel-full-access";
-const DEFAULT_GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-1.5-flash";
+const DEFAULT_GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
 
 type MelcatChatPayload = {
   shopDomain?: string;
@@ -201,6 +201,7 @@ async function generateBigMelReply(payload: MelcatChatPayload & { message: strin
         temperature: 0.9,
         topP: 0.95,
         maxOutputTokens: 140,
+        thinkingConfig: { thinkingBudget: 0 },
       },
     }),
   });
