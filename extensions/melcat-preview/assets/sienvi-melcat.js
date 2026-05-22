@@ -686,7 +686,9 @@
       appendChatMessage('assistant', data.reply);
       if (data.upgradeUrl) S.chatUpgradeUrl = data.upgradeUrl;
       setEntitledSession(!!data.isEntitled);
-      if (!data.isEntitled) {
+      // Only count against the free limit when the server confirms AI responded.
+      // Fallback replies (aiSucceeded: false) don't consume a free chat.
+      if (!data.isEntitled && data.aiSucceeded !== false) {
         setChatCount(FREE_CHAT_LIMIT - Math.max(0, data.remainingChats || 0));
       }
       syncUpgradeState(!!data.upgradeRequired);

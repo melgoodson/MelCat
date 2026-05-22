@@ -275,19 +275,32 @@ export async function handleMelcatChatRequest({ request }: Pick<ActionFunctionAr
 
   try {
     let reply: string;
+    let aiSucceeded = false;
     try {
       reply = await generateBigMelReply({ ...payload, shopDomain, message });
+      aiSucceeded = true;
     } catch (providerError) {
-      console.error("[Big Mel Chat] Gemini provider failed, using fallback reply", providerError);
+      // Log the exact Gemini error so it's visible in Railway logs
+      const errMsg = providerError instanceof Error ? providerError.message : String(providerError);
+      console.error(`[Big Mel Chat] Gemini failed (key present: ${!!process.env.GEMINI_API_KEY}, model: ${process.env.GEMINI_MODEL || DEFAULT_GEMINI_MODEL}): ${errMsg}`);
       reply = buildFallbackReply({ ...payload, shopDomain, message });
     }
-    const usedChats = entitlement.isEntitled ? clientChatCount : Math.min(clientChatCount + 1, FREE_CHAT_LIMIT);
-    const remainingChats = entitlement.isEntitled ? FREE_CHAT_LIMIT : Math.max(0, FREE_CHAT_LIMIT - usedChats);
+
+    // Only count this chat against the free limit when AI actually responded.
+    // Fallback replies don't burn a free chat so users aren't penalised for
+    // transient Gemini outages.
+    const usedChats = (!entitlement.isEntitled && aiSucceeded)
+      ? Math.min(clientChatCount + 1, FREE_CHAT_LIMIT)
+      : clientChatCount;
+    const remainingChats = entitlement.isEntitled
+      ? FREE_CHAT_LIMIT
+      : Math.max(0, FREE_CHAT_LIMIT - usedChats);
 
     return json({
       reply,
       remainingChats,
       isEntitled: entitlement.isEntitled,
+      aiSucceeded,
       upgradeRequired: !entitlement.isEntitled && usedChats >= FREE_CHAT_LIMIT,
       upgradeUrl: payload.upgradeUrl || DEFAULT_UPGRADE_URL,
     });
