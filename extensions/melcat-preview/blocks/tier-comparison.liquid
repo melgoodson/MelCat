@@ -1,0 +1,56 @@
+<div class="melcat-tier-comparison" style="margin: 2rem 0;">
+  <h2 style="text-align: center; margin-bottom: 1.5rem; font-weight: 800;">Choose Your Digital Level</h2>
+  <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center;">
+    
+    <!-- Standard -->
+    <div style="flex: 1 1 250px; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1.5rem; text-align: center;">
+      <h3 style="margin: 0 0 0.5rem; font-size: 1.25rem;">{{ block.settings.tier_1_name }}</h3>
+      <ul style="list-style: none; padding: 0; margin: 1rem 0; text-align: left; font-size: 0.9rem;">
+        <li style="margin-bottom: 0.5rem;">✅ {{ block.settings.tier_1_feature_1 }}</li>
+        <li style="margin-bottom: 0.5rem;">✅ {{ block.settings.tier_1_feature_2 }}</li>
+      </ul>
+    </div>
+
+    <!-- Deluxe -->
+    <div style="flex: 1 1 250px; border: 2px solid #f28c28; border-radius: 12px; padding: 1.5rem; text-align: center; background: #fffcf8; position: relative;">
+      <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #f28c28; color: #fff; font-size: 0.75rem; font-weight: bold; padding: 4px 12px; border-radius: 12px;">MOST POPULAR</div>
+      <h3 style="margin: 0 0 0.5rem; font-size: 1.25rem; color: #e37322;">{{ block.settings.tier_2_name }}</h3>
+      <ul style="list-style: none; padding: 0; margin: 1rem 0; text-align: left; font-size: 0.9rem;">
+        <li style="margin-bottom: 0.5rem;">✅ {{ block.settings.tier_2_feature_1 }}</li>
+        <li style="margin-bottom: 0.5rem;">✅ {{ block.settings.tier_2_feature_2 }}</li>
+        <li style="margin-bottom: 0.5rem;">⭐ {{ block.settings.tier_2_feature_3 }}</li>
+      </ul>
+    </div>
+
+    <!-- Ultimate -->
+    <div style="flex: 1 1 250px; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1.5rem; text-align: center; background: #1a1a1a; color: #fff;">
+      <h3 style="margin: 0 0 0.5rem; font-size: 1.25rem;">{{ block.settings.tier_3_name }}</h3>
+      <ul style="list-style: none; padding: 0; margin: 1rem 0; text-align: left; font-size: 0.9rem;">
+        <li style="margin-bottom: 0.5rem;">✅ {{ block.settings.tier_3_feature_1 }}</li>
+        <li style="margin-bottom: 0.5rem;">✅ {{ block.settings.tier_3_feature_2 }}</li>
+        <li style="margin-bottom: 0.5rem;">🔥 {{ block.settings.tier_3_feature_3 }}</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Tier Comparison",
+  "target": "section",
+  "settings": [
+    { "type": "text", "id": "tier_1_name", "label": "Tier 1 Name", "default": "Standard Pack" },
+    { "type": "text", "id": "tier_1_feature_1", "label": "Tier 1 Feature 1", "default": "20 Reaction GIFs" },
+    { "type": "text", "id": "tier_1_feature_2", "label": "Tier 1 Feature 2", "default": "10 Stickers" },
+    { "type": "text", "id": "tier_2_name", "label": "Tier 2 Name", "default": "Deluxe Pack" },
+    { "type": "text", "id": "tier_2_feature_1", "label": "Tier 2 Feature 1", "default": "Everything in Standard" },
+    { "type": "text", "id": "tier_2_feature_2", "label": "Tier 2 Feature 2", "default": "Bonus Animations" },
+    { "type": "text", "id": "tier_2_feature_3", "label": "Tier 2 Feature 3", "default": "Exclusive Printables" },
+    { "type": "text", "id": "tier_3_name", "label": "Tier 3 Name", "default": "Ultimate Pack" },
+    { "type": "text", "id": "tier_3_feature_1", "label": "Tier 3 Feature 1", "default": "Everything in Deluxe" },
+    { "type": "text", "id": "tier_3_feature_2", "label": "Tier 3 Feature 2", "default": "Lifetime Access" },
+    { "type": "text", "id": "tier_3_feature_3", "label": "Tier 3 Feature 3", "default": "All Future Drops Free!" }
+  ]
+}
+{% endschema %}

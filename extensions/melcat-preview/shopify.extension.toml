@@ -1,0 +1,23 @@
+type = "theme"
+name = "MelCat Pack Preview"
+uid = "7a59f2fa-74a1-195c-2c5f-6f40c71b147bc3212a08"
+
+[[blocks]]
+  name = "MelCat Companion"
+  target = "body"
+  handle = "companion"
+
+[[blocks]]
+  name = "Pack Preview"
+  target = "section"
+  handle = "pack-preview"
+
+[[blocks]]
+  name = "Tier Comparison"
+  target = "section"
+  handle = "tier-comparison"
+
+[[blocks]]
+  name = "Bundle Explainer"
+  target = "section"
+  handle = "bundle-explainer"
