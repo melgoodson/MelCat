@@ -40,6 +40,7 @@ export default function App() {
           <s-link href="/app/qr-campaigns">QR Claims</s-link>
           <s-link href="/app/variant-mapping">Order Rules</s-link>
           <s-link href="/app/customers">Customers</s-link>
+          <s-link href="/app/ai">AI Features ✨</s-link>
         </s-app-nav>
         <Outlet />
       </AppProvider>

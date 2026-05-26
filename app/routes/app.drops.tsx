@@ -61,6 +61,13 @@ export async function action({ request }: ActionFunctionArgs) {
     return { success: true };
   }
 
+  if (intent === "notify") {
+    const dropId = formData.get("dropId") as string;
+    const { sendDropNotifications } = await import("../services/dropNotification.server");
+    const result = await sendDropNotifications(dropId);
+    return { success: true, notificationResult: result };
+  }
+
   return { error: "Unknown intent" };
 }
 
@@ -88,6 +95,11 @@ export default function DropsPage() {
 
   const handleDelete = useCallback(
     (id: string) => submit({ intent: "delete", dropId: id }, { method: "post" }),
+    [submit]
+  );
+
+  const handleNotify = useCallback(
+    (id: string) => submit({ intent: "notify", dropId: id }, { method: "post" }),
     [submit]
   );
 
@@ -119,9 +131,16 @@ export default function DropsPage() {
           </Badge>
         </IndexTable.Cell>
         <IndexTable.Cell>
-          <Button size="micro" tone="critical" onClick={() => handleDelete(drop.id)}>
-            Remove
-          </Button>
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+            {isReleased && (
+              <Button size="micro" onClick={() => handleNotify(drop.id)}>
+                Notify
+              </Button>
+            )}
+            <Button size="micro" tone="critical" onClick={() => handleDelete(drop.id)}>
+              Remove
+            </Button>
+          </div>
         </IndexTable.Cell>
       </IndexTable.Row>
     );

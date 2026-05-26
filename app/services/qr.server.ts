@@ -37,5 +37,13 @@ export async function claimQrCampaign(campaignHash: string, customerId: string) 
     })
   ]);
 
-  return { success: true, message: 'Successfully claimed pack!' };
+  const { safelyTrackCustomerEvent } = await import("./customerEvent.server");
+  await safelyTrackCustomerEvent({
+    customerId,
+    eventType: "claim_completed",
+    metadata: { campaignHash, packId: campaign.packId },
+    source: "qr"
+  });
+
+  return { success: true, message: 'Pack claimed successfully!' };
 }

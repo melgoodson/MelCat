@@ -28,17 +28,32 @@ export async function action({ request }: ActionFunctionArgs) {
 
     // Build callback URL with campaign context
     const url = new URL(request.url);
-    let callbackUrl = `${url.origin}/apps/snarky/proxy/auth/callback?token=${token}`;
+    let callbackUrl = `${url.origin}/apps/snarky/auth/callback?token=${token}`;
     if (campaignHash) {
       callbackUrl += `&c=${encodeURIComponent(campaignHash)}`;
     }
 
-    await sendMagicLink(email, token, callbackUrl);
+    try {
+      await sendMagicLink(email, token, callbackUrl);
+      
+      const customer = await prisma.customer.findUnique({ where: { email } });
+      if (customer) {
+        const { safelyTrackCustomerEvent } = await import("../services/customerEvent.server");
+        await safelyTrackCustomerEvent({
+          customerId: customer.id,
+          eventType: "magic_link_requested",
+          metadata: { campaignHash },
+          source: "claim"
+        });
+      }
 
-    return {
-      success: true,
-      message: "Check your email! We sent you a magic link to access your digital content.",
-    };
+      return {
+        success: true,
+        message: "Check your email! We sent you a magic link to access your digital content.",
+      };
+    } catch (err) {
+      throw err;
+    }
   } catch (err) {
     console.error("[Claim] Error:", err);
     return { error: "Something went wrong. Please try again." };

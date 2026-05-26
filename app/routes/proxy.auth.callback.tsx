@@ -22,9 +22,19 @@ export async function loader({ request }: LoaderFunctionArgs) {
     // 1. Validate token and get customer
     const customer = await consumeMagicLinkToken(token);
 
+    const { safelyTrackCustomerEvent } = await import("../services/customerEvent.server");
+    const sessionToken = crypto.randomBytes(32).toString('hex');
+
+    await safelyTrackCustomerEvent({
+      customerId: customer.id,
+      eventType: "magic_link_consumed",
+      metadata: { campaignHash },
+      source: "auth_callback",
+      sessionId: sessionToken
+    });
+
     // 2. Create a persistent session
     const session = await getCustomerSession(request);
-    const sessionToken = crypto.randomBytes(32).toString("hex");
 
     await prisma.customerSession.create({
       data: {
@@ -57,7 +67,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         claimMessage
           ? `${claimMessage} Redirecting to your library...`
           : "You're verified! Redirecting to your library...",
-        "/apps/snarky/proxy/library"
+        "/apps/snarky/library"
       ),
       {
         status: 200,

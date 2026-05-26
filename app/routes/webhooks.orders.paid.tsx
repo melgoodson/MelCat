@@ -18,6 +18,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       console.log(`[Webhook] Duplicate ${webhookId}, skipping.`);
       return new Response("Already processed", { status: 200 });
     }
+    await prisma.webhookEvent.create({
+      data: { id: webhookId, topic: "orders/paid", status: "pending" }
+    });
   }
 
   try {
@@ -41,8 +44,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       return new Response("No variants", { status: 200 });
     }
 
-    console.log(`[Webhook] orders/paid — granting entitlements for ${email}, variants: ${variantIds.join(", ")}`);
-    const { customer, granted } = await grantPurchaseEntitlements(shopifyCustomerId || "", email, variantIds);
+    console.log(`[Webhook] orders/paid — checking entitlements for ${email}, variants: ${variantIds.join(", ")}`);
+    const { customer, granted, grantedNew, alreadyOwned, mappings } = await grantPurchaseEntitlements(shopifyCustomerId || "", email, variantIds);
 
     if (granted) {
       const token = crypto.randomBytes(32).toString('hex');
@@ -53,15 +56,40 @@ export const action = async ({ request }: ActionFunctionArgs) => {
           expiresAt: new Date(Date.now() + 15 * 60 * 1000) // 15 mins
         }
       });
-      const callbackUrl = `https://${shopDomain}/apps/snarky/proxy/auth/callback?token=${token}`;
-      await sendMagicLink(email, token, callbackUrl);
-      console.log(`[Webhook] orders/paid — Magic link dispatched to ${email}`);
+      const callbackUrl = `https://${shopDomain}/apps/snarky/auth/callback?token=${token}`;
+      
+      if (grantedNew) {
+        await sendMagicLink(email, token, callbackUrl);
+        console.log(`[Webhook] orders/paid — New pack magic link dispatched to ${email}`);
+      } else if (alreadyOwned) {
+        const { sendLibraryAccessEmail } = await import("../services/mail.server");
+        await sendLibraryAccessEmail(email, token, callbackUrl);
+        console.log(`[Webhook] orders/paid — Library access link dispatched to ${email}`);
+      }
+      
+      const { safelyTrackCustomerEvent } = await import("../services/customerEvent.server");
+      // For each newly mapped variant, log an event
+      for (const map of mappings || []) {
+        await safelyTrackCustomerEvent({
+          customerId: customer.id,
+          eventType: "upgrade_purchased",
+          metadata: {
+            variantId: map.variantId,
+            packId: map.packId,
+            tierLevel: map.pack?.tier?.level,
+            orderId: order.id,
+            orderName: order.name,
+          },
+          source: "webhook"
+        });
+      }
     }
 
     // Log the webhook
     if (webhookId) {
-      await prisma.webhookEvent.create({
-        data: { id: webhookId, topic: "orders/paid", status: "success" }
+      await prisma.webhookEvent.update({
+        where: { id: webhookId },
+        data: { status: "success" }
       });
     }
 
@@ -70,8 +98,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     console.error("[Webhook] orders/paid error:", error);
 
     if (webhookId) {
-      await prisma.webhookEvent.create({
-        data: { id: webhookId, topic: "orders/paid", status: "failed" }
+      await prisma.webhookEvent.update({
+        where: { id: webhookId },
+        data: { status: "failed" }
       });
     }
 

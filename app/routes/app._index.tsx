@@ -1,20 +1,42 @@
 import type { LoaderFunctionArgs, HeadersFunction } from "react-router";
 import { useLoaderData } from "react-router";
-import { Link } from "@shopify/polaris";
+import { Link, IndexTable, Card, Text, Badge, BlockStack, Box } from "@shopify/polaris";
 import { authenticate } from "../shopify.server";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import prisma from "../db.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   await authenticate.admin(request);
-  const [totalPacks, totalCustomers, totalEntitlements, totalCampaigns] =
-    await Promise.all([
-      prisma.pack.count({ where: { isActive: true } }),
-      prisma.customer.count(),
-      prisma.entitlement.count({ where: { revoked: false } }),
-      prisma.qRCampaign.count({ where: { isActive: true } }),
-    ]);
-  return { totalPacks, totalCustomers, totalEntitlements, totalCampaigns };
+  const url = new URL(request.url);
+  const windowStr = url.searchParams.get("window") || "30d";
+
+  let fromDate: Date | undefined;
+  if (windowStr === "7d") fromDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+  if (windowStr === "30d") fromDate = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+
+  const dateRange = { from: fromDate, to: new Date() };
+
+  const { getDashboardMetrics } = await import("../services/metrics.server");
+
+  let metrics;
+  try {
+    metrics = await getDashboardMetrics(dateRange);
+  } catch (err) {
+    console.error("[Dashboard] Metrics query failed (tables may not exist yet):", err);
+    metrics = {
+      core: {
+        totalCustomers: 0, activeEntitlements: 0, totalQRRedemptions: 0,
+        libraryViews: 0, assetDownloads: 0, upgradeClicks: 0,
+        upgradePurchases: 0, dropNotifications: 0, dropDownloads: 0, eventCounts: {}
+      },
+      funnel: { claimToLibrary: "N/A", libraryToUpgradeClick: "N/A", clickToPurchase: "N/A", dropToDownload: "N/A" },
+      qr: [],
+      upgrade: [],
+      drop: []
+    };
+  }
+
+  return { metrics, windowStr };
 };
 
 const navLinks = [
@@ -34,14 +56,18 @@ const blueprint = [
 ];
 
 export default function Index() {
-  const { totalPacks, totalCustomers, totalEntitlements, totalCampaigns } =
-    useLoaderData<typeof loader>();
+  const { metrics, windowStr } = useLoaderData<typeof loader>();
+  const { core, funnel, qr, upgrade, drop } = metrics;
 
   const stats = [
-    { label: "Digital Packs",        value: totalPacks,         color: "#f28c28", bg: "rgba(242,140,40,0.12)",  emoji: "📦" },
-    { label: "Total Customers",      value: totalCustomers,     color: "#10b981", bg: "rgba(16,185,129,0.12)",  emoji: "👥" },
-    { label: "Active Entitlements",  value: totalEntitlements,  color: "#6366f1", bg: "rgba(99,102,241,0.12)",  emoji: "✅" },
-    { label: "QR Campaigns",         value: totalCampaigns,     color: "#f59e0b", bg: "rgba(245,158,11,0.12)",  emoji: "📱" },
+    { label: "Total Customers",      value: core.totalCustomers,     color: "#10b981", bg: "rgba(16,185,129,0.12)",  emoji: "👥" },
+    { label: "Active Entitlements",  value: core.activeEntitlements, color: "#6366f1", bg: "rgba(99,102,241,0.12)",  emoji: "✅" },
+    { label: "QR Redemptions",       value: core.totalQRRedemptions, color: "#f59e0b", bg: "rgba(245,158,11,0.12)",  emoji: "📱" },
+    { label: "Library Views",        value: core.libraryViews,       color: "#8b5cf6", bg: "rgba(139,92,246,0.12)",  emoji: "👀" },
+    { label: "Asset Downloads",      value: core.assetDownloads,     color: "#ec4899", bg: "rgba(236,72,153,0.12)",  emoji: "⬇️" },
+    { label: "Upgrade Clicks",       value: core.upgradeClicks,      color: "#f28c28", bg: "rgba(242,140,40,0.12)",  emoji: "✨" },
+    { label: "Upgrade Purchases",    value: core.upgradePurchases,   color: "#059669", bg: "rgba(5,150,105,0.12)",   emoji: "💳" },
+    { label: "Drop DLs",             value: core.dropDownloads,      color: "#e11d48", bg: "rgba(225,29,72,0.12)",   emoji: "🎁" },
   ];
 
   return (
@@ -71,8 +97,21 @@ export default function Index() {
               Big Mel's premium digital vault — manage packs, drops, and your community all in one place.
             </p>
           </div>
-          <div style={{ flexShrink:0, width:"140px", height:"140px", borderRadius:"50%", overflow:"hidden", border:"4px solid rgba(242,140,40,0.6)", boxShadow:"0 0 40px rgba(242,140,40,0.4)" }}>
-            <img src="/mascot.jpeg" alt="Big Mel" style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 15%" }} />
+          <div style={{ display:"flex", flexDirection:"column", alignItems:"flex-end", gap:"1rem" }}>
+            <div style={{ background: "#fff", padding: "0.25rem 0.5rem", borderRadius: "8px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
+              <select 
+                value={windowStr} 
+                onChange={(e) => window.location.search = `?window=${e.target.value}`}
+                style={{ border: "none", background: "transparent", fontSize: "0.9rem", fontWeight: 600, color: "#1f2937", outline: "none", cursor: "pointer", padding: "0.25rem" }}
+              >
+                <option value="7d">Last 7 Days</option>
+                <option value="30d">Last 30 Days</option>
+                <option value="all">All Time</option>
+              </select>
+            </div>
+            <div style={{ flexShrink:0, width:"140px", height:"140px", borderRadius:"50%", overflow:"hidden", border:"4px solid rgba(242,140,40,0.6)", boxShadow:"0 0 40px rgba(242,140,40,0.4)" }}>
+              <img src="/mascot.jpeg" alt="Big Mel" style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 15%" }} />
+            </div>
           </div>
         </div>
       </div>
@@ -91,10 +130,30 @@ export default function Index() {
           }}>
             <div style={{ position:"absolute", top:"-20px", right:"-20px", width:"90px", height:"90px", borderRadius:"50%", background:s.bg, pointerEvents:"none" }} />
             <div style={{ fontSize:"2rem", marginBottom:"0.75rem" }}>{s.emoji}</div>
-            <div style={{ fontSize:"3rem", fontWeight:900, color:s.color, lineHeight:1, marginBottom:"0.4rem" }}>{s.value}</div>
+            <div style={{ fontSize:"2.25rem", fontWeight:900, color:s.color, lineHeight:1, marginBottom:"0.4rem" }}>{s.value}</div>
             <div style={{ fontSize:"0.85rem", color:"#6b7280", fontWeight:600, letterSpacing:"0.02em" }}>{s.label}</div>
           </div>
         ))}
+      </div>
+
+      {/* ── FUNNELS ────────────────────────────────────────────── */}
+      <div style={{ padding:"0 2.5rem 1.5rem", display: "flex", gap: "1rem" }}>
+        <div style={{ flex: 1, background: "#1f2937", color: "#fff", padding: "1.25rem", borderRadius: "16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+           <span style={{ fontSize: "0.9rem", color: "#9ca3af" }}>QR Claim → Vault</span>
+           <span style={{ fontSize: "1.25rem", fontWeight: 800, color: "#10b981" }}>{funnel.claimToLibrary}</span>
+        </div>
+        <div style={{ flex: 1, background: "#1f2937", color: "#fff", padding: "1.25rem", borderRadius: "16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+           <span style={{ fontSize: "0.9rem", color: "#9ca3af" }}>Vault → Upgrade Click</span>
+           <span style={{ fontSize: "1.25rem", fontWeight: 800, color: "#f59e0b" }}>{funnel.libraryToUpgradeClick}</span>
+        </div>
+        <div style={{ flex: 1, background: "#1f2937", color: "#fff", padding: "1.25rem", borderRadius: "16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+           <span style={{ fontSize: "0.9rem", color: "#9ca3af" }}>Click → Purchase</span>
+           <span style={{ fontSize: "1.25rem", fontWeight: 800, color: "#f28c28" }}>{funnel.clickToPurchase}</span>
+        </div>
+        <div style={{ flex: 1, background: "#1f2937", color: "#fff", padding: "1.25rem", borderRadius: "16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+           <span style={{ fontSize: "0.9rem", color: "#9ca3af" }}>Drop Notif → Download</span>
+           <span style={{ fontSize: "1.25rem", fontWeight: 800, color: "#ec4899" }}>{funnel.dropToDownload}</span>
+        </div>
       </div>
 
       {/* ── COMMAND CENTER + BLUEPRINT ─────────────────────────── */}
@@ -179,6 +238,100 @@ export default function Index() {
             ))}
           </div>
         </div>
+
+      </div>
+
+      {/* ── METRICS TABLES ─────────────────────────────────────── */}
+      <div style={{ padding:"0 2.5rem 2.5rem", display:"grid", gridTemplateColumns:"1fr", gap:"1.5rem" }}>
+        
+        {/* QR Campaigns Table */}
+        <Card padding="0">
+          <Box padding="400">
+            <Text variant="headingMd" as="h2">QR Campaign Performance</Text>
+          </Box>
+          <IndexTable
+            resourceName={{ singular: 'campaign', plural: 'campaigns' }}
+            itemCount={qr.length}
+            headings={[
+              { title: 'Hash' },
+              { title: 'Pack' },
+              { title: 'Status' },
+              { title: 'Redemptions' },
+              { title: 'Unique Users' },
+              { title: 'Claims' },
+            ]}
+            selectable={false}
+          >
+            {qr.map(c => (
+              <IndexTable.Row id={c.campaignHash} key={c.campaignHash} position={0}>
+                <IndexTable.Cell><Text variant="bodyMd" fontWeight="bold" as="span">{c.campaignHash}</Text></IndexTable.Cell>
+                <IndexTable.Cell>{c.packName}</IndexTable.Cell>
+                <IndexTable.Cell><Badge tone={c.isActive ? "success" : "critical"}>{c.isActive ? "Active" : "Inactive"}</Badge></IndexTable.Cell>
+                <IndexTable.Cell>{c.redemptions}</IndexTable.Cell>
+                <IndexTable.Cell>{c.uniqueCustomers}</IndexTable.Cell>
+                <IndexTable.Cell>{c.claimCompleted}</IndexTable.Cell>
+              </IndexTable.Row>
+            ))}
+          </IndexTable>
+        </Card>
+
+        {/* Upgrade Performance Table */}
+        <Card padding="0">
+          <Box padding="400">
+            <Text variant="headingMd" as="h2">Upgrade Performance</Text>
+          </Box>
+          <IndexTable
+            resourceName={{ singular: 'tier', plural: 'tiers' }}
+            itemCount={upgrade.length}
+            headings={[
+              { title: 'Target Tier' },
+              { title: 'Clicks' },
+              { title: 'Purchases' },
+              { title: 'Conversion' },
+            ]}
+            selectable={false}
+          >
+            {upgrade.map(u => (
+              <IndexTable.Row id={u.tier} key={u.tier} position={0}>
+                <IndexTable.Cell><Text variant="bodyMd" fontWeight="bold" as="span">{u.tier}</Text></IndexTable.Cell>
+                <IndexTable.Cell>{u.clicks}</IndexTable.Cell>
+                <IndexTable.Cell>{u.purchases}</IndexTable.Cell>
+                <IndexTable.Cell><Badge tone="success">{u.conversion}</Badge></IndexTable.Cell>
+              </IndexTable.Row>
+            ))}
+          </IndexTable>
+        </Card>
+
+        {/* Drops Performance Table */}
+        <Card padding="0">
+          <Box padding="400">
+            <Text variant="headingMd" as="h2">Drop Performance</Text>
+          </Box>
+          <IndexTable
+            resourceName={{ singular: 'drop', plural: 'drops' }}
+            itemCount={drop.length}
+            headings={[
+              { title: 'Drop Title' },
+              { title: 'Required Tier' },
+              { title: 'Notifs Sent' },
+              { title: 'Notifs Failed' },
+              { title: 'Downloads' },
+              { title: 'Reactivation %' },
+            ]}
+            selectable={false}
+          >
+            {drop.map(d => (
+              <IndexTable.Row id={d.dropTitle} key={d.dropTitle} position={0}>
+                <IndexTable.Cell><Text variant="bodyMd" fontWeight="bold" as="span">{d.dropTitle}</Text></IndexTable.Cell>
+                <IndexTable.Cell>Level {d.requiredTier}</IndexTable.Cell>
+                <IndexTable.Cell>{d.notificationsSent}</IndexTable.Cell>
+                <IndexTable.Cell>{d.notificationsFailed > 0 ? <Badge tone="critical">{d.notificationsFailed}</Badge> : 0}</IndexTable.Cell>
+                <IndexTable.Cell>{d.dropDownloaded}</IndexTable.Cell>
+                <IndexTable.Cell><Badge tone="info">{d.reactivationRate}</Badge></IndexTable.Cell>
+              </IndexTable.Row>
+            ))}
+          </IndexTable>
+        </Card>
 
       </div>
     </div>

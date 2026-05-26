@@ -11,15 +11,18 @@ export async function grantPurchaseEntitlements(shopifyCustomerId: string, email
 
   // Find mapped packs
   const mappings = await prisma.productVariantPackMap.findMany({
-    where: { variantId: { in: variantIds } }
+    where: { variantId: { in: variantIds } },
+    include: { pack: { include: { tier: true } } }
   });
 
   if (mappings.length === 0) {
     return { customer, granted: false };
   }
 
+  let grantedNew = false;
+  let alreadyOwned = false;
+
   for (const mapping of mappings) {
-    // Upsert to avoid uniquely crushing if they bought it before
     const existing = await prisma.entitlement.findFirst({
       where: { customerId: customer.id, packId: mapping.packId }
     });
@@ -32,10 +35,13 @@ export async function grantPurchaseEntitlements(shopifyCustomerId: string, email
           source: 'PURCHASE'
         }
       });
+      grantedNew = true;
+    } else {
+      alreadyOwned = true;
     }
   }
 
-  return { customer, granted: true };
+  return { customer, granted: grantedNew || alreadyOwned, grantedNew, alreadyOwned, mappings };
 }
 
 export async function getCustomerLibrary(customerId: string) {
