@@ -1,3 +1,4 @@
+import "./services/env.server";
 import { PassThrough } from "stream";
 import { renderToPipeableStream } from "react-dom/server";
 import { ServerRouter } from "react-router";

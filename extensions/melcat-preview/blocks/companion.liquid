@@ -133,7 +133,8 @@
       "chatEndpoint": "/apps/snarky/melcat/chat",
       "apiEndpoint": "/api/melcat/chat",
       "upgradeUrl": {{ block.settings.big_mel_unlock_url | json }},
-      "customerId": {{ customer.id | json }}
+      "customerId": {{ customer.id | json }},
+      "customerEmail": {{ customer.email | json }}
     }
   </script>
 

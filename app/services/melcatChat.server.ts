@@ -1,16 +1,14 @@
-import type { ActionFunctionArgs } from "react-router";
+import { ENV } from "./env.server";
+import { supabase } from "./supabase.server";
 
-const FREE_CHAT_LIMIT = 3;
 const MAX_MESSAGE_LENGTH = 500;
-const DEFAULT_UPGRADE_URL = "/collections/all";
-const DEFAULT_GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
 
-type MelcatChatPayload = {
+export type MelcatChatPayload = {
   shopDomain?: string;
   sessionId?: string;
-  customerId?: string;
+  customerId?: string | null;
+  customerEmail?: string | null;
   message?: string;
-  clientChatCount?: number;
   pageContext?: {
     path?: string;
     pageType?: string;
@@ -20,20 +18,6 @@ type MelcatChatPayload = {
     itemCount?: number;
   };
   upgradeUrl?: string;
-};
-
-type GeminiResponse = {
-  candidates?: Array<{
-    content?: {
-      parts?: Array<{
-        text?: string;
-      }>;
-    };
-    finishReason?: string;
-  }>;
-  promptFeedback?: {
-    blockReason?: string;
-  };
 };
 
 async function parseMelcatPayload(request: Request): Promise<MelcatChatPayload> {
@@ -67,9 +51,9 @@ async function parseMelcatPayload(request: Request): Promise<MelcatChatPayload> 
       shopDomain: getString("shopDomain"),
       sessionId: getString("sessionId"),
       customerId: getString("customerId"),
+      customerEmail: getString("customerEmail"),
       message: getString("message"),
-      clientChatCount: Number(getString("clientChatCount") || "0"),
-      upgradeUrl: getString("upgradeUrl") || DEFAULT_UPGRADE_URL,
+      upgradeUrl: getString("upgradeUrl"),
       pageContext: parseJsonField<MelcatChatPayload["pageContext"]>("pageContext"),
       cartContext: parseJsonField<MelcatChatPayload["cartContext"]>("cartContext"),
     };
@@ -84,30 +68,94 @@ async function parseMelcatPayload(request: Request): Promise<MelcatChatPayload> 
   }
 }
 
+// ── Database Queries ────────────────────────────────────────
+
 export async function getBigMelEntitlement({
   shopDomain,
   customerId,
-  sessionId,
+  customerEmail,
 }: {
   shopDomain: string;
-  customerId?: string;
-  sessionId?: string;
+  customerId?: string | null;
+  customerEmail?: string | null;
 }) {
-  void shopDomain;
-  void customerId;
-  void sessionId;
-  return { isEntitled: false, plan: "free" as const };
+  if (!shopDomain) return { isEntitled: false };
+  if (!customerId && !customerEmail) return { isEntitled: false };
+
+  const conditions = [];
+  if (customerId) {
+    conditions.push(`customer_id.eq.${customerId}`);
+  }
+  if (customerEmail && customerEmail.trim()) {
+    conditions.push(`customer_email.ilike.${customerEmail.trim()}`);
+  }
+
+  if (conditions.length === 0) return { isEntitled: false };
+
+  const { data, error } = await supabase
+    .from("big_mel_entitlements")
+    .select("id")
+    .eq("shop_domain", shopDomain)
+    .eq("is_active", true)
+    .or(conditions.join(","));
+
+  if (error) {
+    console.error("[Entitlement Check] Supabase error:", error);
+    throw error; // Fail closed on errors
+  }
+
+  const isEntitled = data && data.length > 0;
+  return { isEntitled };
 }
 
-function json(data: unknown, init?: ResponseInit) {
-  return Response.json(data, init);
+export async function getChatUsage({
+  sessionId,
+  shopDomain,
+}: {
+  sessionId: string;
+  shopDomain: string;
+}) {
+  const { data, error } = await supabase
+    .from("big_mel_chat_usage")
+    .select("chat_count")
+    .eq("session_id", sessionId)
+    .eq("shop_domain", shopDomain)
+    .maybeSingle();
+
+  if (error) {
+    console.error("[Chat Usage] Get usage error:", error);
+    throw error; // Fail closed on errors
+  }
+
+  return data?.chat_count ?? 0;
 }
 
-function normalizeCount(value: unknown) {
-  const parsed = Number(value);
-  if (!Number.isFinite(parsed) || parsed < 0) return 0;
-  return Math.floor(parsed);
+export async function incrementChatUsage({
+  sessionId,
+  shopDomain,
+}: {
+  sessionId: string;
+  shopDomain: string;
+}) {
+  const currentCount = await getChatUsage({ sessionId, shopDomain });
+  const { error } = await supabase
+    .from("big_mel_chat_usage")
+    .upsert({
+      session_id: sessionId,
+      shop_domain: shopDomain,
+      chat_count: currentCount + 1,
+      updated_at: new Date().toISOString()
+    }, {
+      onConflict: "session_id,shop_domain"
+    });
+
+  if (error) {
+    console.error("[Chat Usage] Increment usage error:", error);
+    throw error; // Fail closed on errors
+  }
 }
+
+// ── AI Helper & Prompting ───────────────────────────────────
 
 function buildContextBlock(payload: MelcatChatPayload & { message: string }) {
   const pageType = payload.pageContext?.pageType || "store";
@@ -131,117 +179,69 @@ function sanitizeReply(text: string) {
   return text.replace(/\s+/g, " ").trim().slice(0, 600);
 }
 
-function buildFallbackReply(payload: MelcatChatPayload & { message: string }) {
-  const message = payload.message.toLowerCase();
-  const productTitle = payload.pageContext?.productTitle;
-  const pageType = payload.pageContext?.pageType || "store";
-  const itemCount = payload.cartContext?.itemCount || 0;
-
-  if (/(vet|veterinarian|medical|medicine|diagnose|diagnosis|sick|injury|poison)/.test(message)) {
-    return "I am a snarky cat mascot, not a veterinarian. For pet health advice, talk to a licensed vet.";
-  }
-
-  if (/(discount|coupon|promo|code|sale)/.test(message)) {
-    return "I do not invent discounts. If the store is running one, it will be on the page like proper gossip.";
-  }
-
-  if (/(shipping|delivery|refund|return)/.test(message)) {
-    return "I cannot promise shipping or refunds. Check the policy pages so nobody blames the cat for legal fiction.";
-  }
-
-  if (productTitle && /(buy|choose|worth|good|gift|pick)/.test(message)) {
-    return "If you're hovering on " + productTitle + ", that usually means it already has your attention. Big Mel says pick the one that feels a little unhinged but still giftable.";
-  }
-
-  if (pageType === "cart" || (itemCount > 0 && /(cart|checkout)/.test(message))) {
-    return "Your cart has " + itemCount + " item" + (itemCount === 1 ? "" : "s") + ". That is enough chaos. Finish the checkout before you start doubting your taste.";
-  }
-
-  if (pageType === "collection") {
-    return "Collections are where taste goes to fight instinct. Start with the one that made you pause instead of the one trying too hard.";
-  }
-
-  return "Start with the product that made you stop scrolling. Big Mel respects instinct more than overthinking.";
-}
-
-async function generateBigMelReply(payload: MelcatChatPayload & { message: string }) {
-  const apiKey = process.env.GEMINI_API_KEY;
+async function generateBigMelReplyOpenAI(payload: MelcatChatPayload & { message: string }) {
+  const apiKey = ENV.OPENAI_API_KEY;
   if (!apiKey) {
-    throw new Error("Missing GEMINI_API_KEY");
+    throw new Error("Missing OPENAI_API_KEY");
   }
 
-  const model = process.env.GEMINI_MODEL || DEFAULT_GEMINI_MODEL;
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-  const systemInstruction = [
-    "You are Big Mel, a snarky, dry, no-nonsense orange cat mascot for Snarky Pets (snarkypets.com).",
-    "Personality: Deadpan. Confident. Occasionally judgmental. Never enthusiastic. Think grumpy cat with opinions about shopping.",
-    "NEVER use markdown. No asterisks, no bold, no bullet points, no headers. Plain text only.",
-    "Do NOT start replies with greetings like 'Hey there!' or 'Hi!' — just answer directly.",
-    "Do NOT use words like 'furball', 'pawsome', 'purrfect', or any cat puns unless they are genuinely dry and funny.",
-    "Keep replies under 60 words. Short, sharp, useful.",
-    "Do not invent products, categories, discounts, shipping promises, or medical advice. Refuse briefly if asked.",
-    "Only recommend products from this exact catalog. Use the product name as-is. Do NOT paste URL paths in replies.",
-    "--- SNARKY PETS CATALOG ---",
-    "Chonky Cat Playground Set (Tunnel + Tent Combo) - $49.00",
-    "Sexy Liza's Pop Up Tent Cat Cube - $25.99",
-    "Timmy's Large Cat Scratch Box (flat pack) - $16.99",
-    "Snarky Pets Cat Tunnel - $28.99",
-    "Sexy Liza's Cat Scratch Box (small) - $17.99",
-    "Pet Roller (pet hair remover for furniture & clothing) - $11.99",
-    "--- END CATALOG ---",
-    "When recommending, just name the product and price. Let the shopper click through themselves.",
-  ].join(" ");
+  const url = "https://api.openai.com/v1/chat/completions";
+  const systemPrompt = [
+    "You are Big Mel, the snarky orange cat mascot for Snarky Pets.",
+    "You help shoppers choose products, understand the store, and unlock rewards.",
+    "You are funny and sarcastic, but never cruel.",
+    "You do not provide veterinary, medical, legal, or financial advice.",
+    "You do not invent discounts, shipping timelines, refund promises, or product claims.",
+    "When unsure, tell the shopper to check the product page or contact support.",
+    "Keep answers under 80 words."
+  ].join("\n");
+
+  const contextText = buildContextBlock(payload);
 
   const response = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "Authorization": `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      systemInstruction: {
-        parts: [{ text: systemInstruction }],
-      },
-      contents: [
-        {
-          role: "user",
-          parts: [{ text: buildContextBlock(payload) }],
-        },
+      model: "gpt-4o-mini",
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: contextText }
       ],
-      generationConfig: {
-        temperature: 0.9,
-        topP: 0.95,
-        maxOutputTokens: 140,
-        thinkingConfig: { thinkingBudget: 0 },
-      },
+      max_tokens: 150,
+      temperature: 0.8,
     }),
   });
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(`Gemini request failed: ${response.status} ${errorText}`);
+    throw new Error(`OpenAI request failed: ${response.status} ${errorText}`);
   }
 
-  const data = (await response.json()) as GeminiResponse;
-  const text = data.candidates?.[0]?.content?.parts?.map((part) => part.text || "").join(" ").trim();
-  const blocked = data.promptFeedback?.blockReason || data.candidates?.[0]?.finishReason === "SAFETY";
+  const data = await response.json();
+  const reply = data.choices?.[0]?.message?.content || "";
 
-  if (blocked || !text) {
-    throw new Error("Gemini returned no usable reply");
+  if (!reply) {
+    throw new Error("OpenAI returned no usable reply");
   }
 
-  return sanitizeReply(text);
+  return sanitizeReply(reply);
 }
 
-export async function handleMelcatChatRequest({ request }: Pick<ActionFunctionArgs, "request">) {
+// ── Main Request Handler ────────────────────────────────────
+
+export async function handleMelcatChatRequest({ request }: { request: Request }) {
   if (request.method.toUpperCase() !== "POST") {
-    return json({ error: "Method not allowed" }, { status: 405 });
+    return Response.json({ error: "Method not allowed" }, { status: 405 });
   }
 
   let payload: MelcatChatPayload;
   try {
     payload = await parseMelcatPayload(request);
-  } catch {
-    return json({ error: "Invalid JSON body" }, { status: 400 });
+  } catch (err) {
+    return Response.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
   const shopDomain = (
@@ -251,72 +251,72 @@ export async function handleMelcatChatRequest({ request }: Pick<ActionFunctionAr
   ).trim();
   const message = (payload.message || "").trim();
   const sessionId = (payload.sessionId || "").trim();
-  const clientChatCount = normalizeCount(payload.clientChatCount);
 
   if (!shopDomain) {
-    return json({ error: "shopDomain is required" }, { status: 400 });
+    return Response.json({ error: "shopDomain is required" }, { status: 400 });
   }
 
   if (!message) {
-    return json({ error: "message is required" }, { status: 400 });
+    return Response.json({ error: "message is required" }, { status: 400 });
+  }
+
+  if (!sessionId) {
+    return Response.json({ error: "sessionId is required" }, { status: 400 });
   }
 
   if (message.length > MAX_MESSAGE_LENGTH) {
-    return json({ error: "message must be under 500 characters" }, { status: 400 });
-  }
-
-  const entitlement = await getBigMelEntitlement({
-    shopDomain,
-    customerId: payload.customerId,
-    sessionId,
-  });
-
-  if (!entitlement.isEntitled && clientChatCount >= FREE_CHAT_LIMIT) {
-    return json(
-      {
-        reply: "",
-        remainingChats: 0,
-        isEntitled: false,
-        upgradeRequired: true,
-        upgradeUrl: payload.upgradeUrl || DEFAULT_UPGRADE_URL,
-      },
-      { status: 403 },
-    );
+    return Response.json({ error: `message must be under ${MAX_MESSAGE_LENGTH} characters` }, { status: 400 });
   }
 
   try {
-    let reply: string;
-    let aiSucceeded = false;
-    try {
-      reply = await generateBigMelReply({ ...payload, shopDomain, message });
-      aiSucceeded = true;
-    } catch (providerError) {
-      // Log the exact Gemini error so it's visible in Railway logs
-      const errMsg = providerError instanceof Error ? providerError.message : String(providerError);
-      console.error(`[Big Mel Chat] Gemini failed (key present: ${!!process.env.GEMINI_API_KEY}, model: ${process.env.GEMINI_MODEL || DEFAULT_GEMINI_MODEL}): ${errMsg}`);
-      reply = buildFallbackReply({ ...payload, shopDomain, message });
+    // 1. Check entitlement
+    const { isEntitled } = await getBigMelEntitlement({
+      shopDomain,
+      customerId: payload.customerId,
+      customerEmail: payload.customerEmail,
+    });
+
+    // 2. Check usage count
+    const chatUsage = await getChatUsage({ sessionId, shopDomain });
+
+    if (!isEntitled && chatUsage >= ENV.BIG_MEL_FREE_CHAT_LIMIT) {
+      return Response.json(
+        {
+          reply: "Upgrade required. Free chat limit reached.",
+          remainingChats: 0,
+          isEntitled: false,
+          upgradeRequired: true,
+          upgradeUrl: ENV.BIG_MEL_UPGRADE_URL,
+        },
+        { status: 403 }
+      );
     }
 
-    // Only count this chat against the free limit when AI actually responded.
-    // Fallback replies don't burn a free chat so users aren't penalised for
-    // transient Gemini outages.
-    const usedChats = (!entitlement.isEntitled && aiSucceeded)
-      ? Math.min(clientChatCount + 1, FREE_CHAT_LIMIT)
-      : clientChatCount;
-    const remainingChats = entitlement.isEntitled
-      ? FREE_CHAT_LIMIT
-      : Math.max(0, FREE_CHAT_LIMIT - usedChats);
+    // 3. Generate reply using OpenAI
+    const reply = await generateBigMelReplyOpenAI({ ...payload, shopDomain, message });
 
-    return json({
+    // 4. Increment usage count only after a successful AI reply
+    if (!isEntitled) {
+      await incrementChatUsage({ sessionId, shopDomain });
+    }
+
+    const updatedUsage = isEntitled ? 0 : (await getChatUsage({ sessionId, shopDomain }));
+    const remainingChats = isEntitled ? ENV.BIG_MEL_FREE_CHAT_LIMIT : Math.max(0, ENV.BIG_MEL_FREE_CHAT_LIMIT - updatedUsage);
+
+    return Response.json({
       reply,
       remainingChats,
-      isEntitled: entitlement.isEntitled,
-      aiSucceeded,
-      upgradeRequired: !entitlement.isEntitled && usedChats >= FREE_CHAT_LIMIT,
-      upgradeUrl: payload.upgradeUrl || DEFAULT_UPGRADE_URL,
+      isEntitled,
+      upgradeRequired: !isEntitled && updatedUsage >= ENV.BIG_MEL_FREE_CHAT_LIMIT,
+      upgradeUrl: ENV.BIG_MEL_UPGRADE_URL,
     });
+
   } catch (error) {
-    console.error("[Big Mel Chat] Failed to build reply", error);
-    return json({ error: "Big Mel is unavailable right now." }, { status: 500 });
+    console.error("[Big Mel Chat Handler] Failed with error:", error);
+    // Fail closed on error - deny access / return clean error
+    return Response.json(
+      { error: "Big Mel is currently sleeping. Try again later." },
+      { status: 500 }
+    );
   }
 }

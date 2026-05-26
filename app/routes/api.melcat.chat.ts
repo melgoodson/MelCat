@@ -1,5 +1,31 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { handleMelcatChatRequest } from "../services/melcatChat.server";
+import { ENV } from "../services/env.server";
+
+function getAllowedOrigin(request: Request): string {
+  const origin = request.headers.get("origin");
+  const allowed = ENV.ALLOWED_STOREFRONT_ORIGINS;
+
+  if (origin && allowed.length > 0) {
+    if (allowed.includes(origin)) {
+      return origin;
+    }
+    // Fail origin check - return first allowed origin to trigger browser CORS rejection
+    return allowed[0];
+  }
+  
+  return "*";
+}
+
+function corsHeaders(request: Request): HeadersInit {
+  const allowedOrigin = getAllowedOrigin(request);
+  return {
+    "Access-Control-Allow-Origin": allowedOrigin,
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, X-Requested-With",
+    "Access-Control-Max-Age": "86400",
+  };
+}
 
 /**
  * OPTIONS — handle CORS preflight from the Shopify storefront extension.
@@ -33,16 +59,6 @@ function stripOriginHeader(request: Request): Request {
     body: request.body,
     duplex: "half",
   } as RequestInit & { duplex: string });
-}
-
-function corsHeaders(request: Request): HeadersInit {
-  const origin = request.headers.get("origin") || "*";
-  return {
-    "Access-Control-Allow-Origin": origin,
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, X-Requested-With",
-    "Access-Control-Max-Age": "86400",
-  };
 }
 
 function addCorsHeaders(response: Response, request: Request): Response {

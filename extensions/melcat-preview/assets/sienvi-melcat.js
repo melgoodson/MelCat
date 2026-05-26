@@ -83,6 +83,7 @@
     endpoint: '/apps/snarky/melcat/chat',
     apiEndpoint: '/api/melcat/chat',
     customerId: '',
+    customerEmail: '',
     upgradeUrl: '/collections/all'
   };
 
@@ -283,6 +284,7 @@
         CHAT.endpoint = parsed.chatEndpoint || CHAT.endpoint;
         CHAT.apiEndpoint = parsed.apiEndpoint || CHAT.apiEndpoint;
         CHAT.customerId = parsed.customerId || '';
+        CHAT.customerEmail = parsed.customerEmail || '';
         CHAT.upgradeUrl = parsed.upgradeUrl || CHAT.upgradeUrl;
         S.chatUpgradeUrl = CHAT.upgradeUrl;
       } catch (e) {}
@@ -554,6 +556,9 @@
   }
 
   function detectChatEndpoint() {
+    if (CHAT.apiEndpoint && (CHAT.apiEndpoint.indexOf('http://') === 0 || CHAT.apiEndpoint.indexOf('https://') === 0)) {
+      return CHAT.apiEndpoint;
+    }
     return CHAT.endpoint || CHAT.apiEndpoint;
   }
 
@@ -655,6 +660,7 @@
       body.set('shopDomain', resolveShopDomain());
       body.set('sessionId', ensureChatSessionId());
       if (CHAT.customerId) body.set('customerId', CHAT.customerId);
+      if (CHAT.customerEmail) body.set('customerEmail', CHAT.customerEmail);
       body.set('message', message);
       body.set('clientChatCount', String(getChatCount()));
       body.set('upgradeUrl', S.chatUpgradeUrl);
