@@ -179,12 +179,9 @@ function sanitizeReply(text: string) {
   return text.replace(/\s+/g, " ").trim().slice(0, 600);
 }
 
+// ── OpenAI Provider ──
 async function generateBigMelReplyOpenAI(payload: MelcatChatPayload & { message: string }) {
   const apiKey = ENV.OPENAI_API_KEY;
-  if (!apiKey) {
-    throw new Error("Missing OPENAI_API_KEY");
-  }
-
   const url = "https://api.openai.com/v1/chat/completions";
   const systemPrompt = [
     "You are Big Mel, the snarky orange cat mascot for Snarky Pets.",
@@ -228,6 +225,72 @@ async function generateBigMelReplyOpenAI(payload: MelcatChatPayload & { message:
   }
 
   return sanitizeReply(reply);
+}
+
+// ── Gemini Provider ──
+async function generateBigMelReplyGemini(payload: MelcatChatPayload & { message: string }) {
+  const apiKey = ENV.GEMINI_API_KEY;
+  const model = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+  const systemInstruction = [
+    "You are Big Mel, the snarky orange cat mascot for Snarky Pets.",
+    "You help shoppers choose products, understand the store, and unlock rewards.",
+    "You are funny and sarcastic, but never cruel.",
+    "You do not provide veterinary, medical, legal, or financial advice.",
+    "You do not invent discounts, shipping timelines, refund promises, or product claims.",
+    "When unsure, tell the shopper to check the product page or contact support.",
+    "Keep answers under 80 words."
+  ].join("\n");
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      systemInstruction: {
+        parts: [{ text: systemInstruction }],
+      },
+      contents: [
+        {
+          role: "user",
+          parts: [{ text: buildContextBlock(payload) }],
+        },
+      ],
+      generationConfig: {
+        temperature: 0.8,
+        topP: 0.95,
+        maxOutputTokens: 140,
+        thinkingConfig: { thinkingBudget: 0 },
+      },
+    }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Gemini request failed: ${response.status} ${errorText}`);
+  }
+
+  const data = await response.json();
+  const text = data.candidates?.[0]?.content?.parts?.map((part) => part.text || "").join(" ").trim();
+  const blocked = data.promptFeedback?.blockReason || data.candidates?.[0]?.finishReason === "SAFETY";
+
+  if (blocked || !text) {
+    throw new Error("Gemini returned no usable reply");
+  }
+
+  return sanitizeReply(text);
+}
+
+// ── Dynamic Provider Dispatcher ──
+async function generateBigMelReply(payload: MelcatChatPayload & { message: string }) {
+  if (ENV.OPENAI_API_KEY) {
+    return generateBigMelReplyOpenAI(payload);
+  } else if (ENV.GEMINI_API_KEY) {
+    return generateBigMelReplyGemini(payload);
+  } else {
+    throw new Error("No AI API keys configured. Set either OPENAI_API_KEY or GEMINI_API_KEY in Cloud Run.");
+  }
 }
 
 // ── Main Request Handler ────────────────────────────────────
@@ -292,8 +355,8 @@ export async function handleMelcatChatRequest({ request }: { request: Request })
       );
     }
 
-    // 3. Generate reply using OpenAI
-    const reply = await generateBigMelReplyOpenAI({ ...payload, shopDomain, message });
+    // 3. Generate reply using dynamic AI provider
+    const reply = await generateBigMelReply({ ...payload, shopDomain, message });
 
     // 4. Increment usage count only after a successful AI reply
     if (!isEntitled) {

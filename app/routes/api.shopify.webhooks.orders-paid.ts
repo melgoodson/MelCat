@@ -79,8 +79,13 @@ export async function action({ request }: ActionFunctionArgs) {
 
     // 4. Extract line items and verify if BIG_MEL_UNLOCK_VARIANT_ID is purchased
     const lineItems = payload.line_items || [];
+    
+    if (!ENV.BIG_MEL_UNLOCK_VARIANT_ID) {
+      console.warn("[Webhook] orders/paid — BIG_MEL_UNLOCK_VARIANT_ID is not configured in environment variables. Webhook processed without checking digital product unlocks.");
+    }
+
     const hasUnlockVariant = lineItems.some(
-      (item: any) => String(item.variant_id) === String(ENV.BIG_MEL_UNLOCK_VARIANT_ID)
+      (item: any) => ENV.BIG_MEL_UNLOCK_VARIANT_ID && String(item.variant_id) === String(ENV.BIG_MEL_UNLOCK_VARIANT_ID)
     );
 
     if (hasUnlockVariant) {
