@@ -4,6 +4,7 @@ import { createMagicLinkToken } from "../services/auth.server";
 import { sendMagicLink } from "../services/mail.server";
 import { claimQrCampaign } from "../services/qr.server";
 import { getCustomerSession } from "../services/session.server";
+import prisma from "../db.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);

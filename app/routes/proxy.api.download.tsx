@@ -31,16 +31,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
   // Is this asset ID present in any drop the customer is eligible for?
   let isEntitledDrop: any = null;
   if (!isEntitledPack) {
-    const maxTierAgg = await prisma.entitlement.aggregate({
-      where: { customerId, revoked: false },
-      _max: { pack: { select: { tier: { select: { level: true } } } } } // nested select trick: better to get tiers
-    });
     // Let's do it safely:
     const userEntitlements = await prisma.entitlement.findMany({
       where: { customerId, revoked: false },
       include: { pack: { include: { tier: true } } }
     });
-    const maxTier = userEntitlements.length > 0 ? Math.max(...userEntitlements.map(e => e.pack.tier.level)) : 0;
+    const maxTier = userEntitlements.length > 0 ? Math.max(...userEntitlements.map(e => e.pack?.tier?.level ?? 0)) : 0;
 
     isEntitledDrop = await prisma.drop.findFirst({
       where: {

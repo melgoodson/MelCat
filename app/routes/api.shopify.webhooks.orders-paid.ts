@@ -77,38 +77,57 @@ export async function action({ request }: ActionFunctionArgs) {
       return new Response("Database Error", { status: 500 });
     }
 
-    // 4. Extract line items and verify if BIG_MEL_UNLOCK_VARIANT_ID is purchased
+    // 4. Extract line items and verify if mapped variants or BIG_MEL_UNLOCK_VARIANT_ID are purchased
     const lineItems = payload.line_items || [];
-    
+    const variantIds: string[] = lineItems
+      .map((item: any) => item.variant_id ? String(item.variant_id) : "")
+      .filter(Boolean);
+
     if (!ENV.BIG_MEL_UNLOCK_VARIANT_ID) {
-      console.warn("[Webhook] orders/paid — BIG_MEL_UNLOCK_VARIANT_ID is not configured in environment variables. Webhook processed without checking digital product unlocks.");
+      console.warn("[Webhook] orders/paid — BIG_MEL_UNLOCK_VARIANT_ID is not configured in environment variables.");
     }
 
-    const hasUnlockVariant = lineItems.some(
-      (item: any) => ENV.BIG_MEL_UNLOCK_VARIANT_ID && String(item.variant_id) === String(ENV.BIG_MEL_UNLOCK_VARIANT_ID)
+    let mappedVariantIds: string[] = [];
+    if (variantIds.length > 0) {
+      const { data: dbMappings, error: dbError } = await supabase
+        .from("ProductVariantPackMap")
+        .select("variantId")
+        .in("variantId", variantIds);
+
+      if (dbError) {
+        console.error("[Webhook] Error checking dynamic variant mappings:", dbError);
+      } else if (dbMappings) {
+        mappedVariantIds = dbMappings.map((m: any) => String(m.variantId));
+      }
+    }
+
+    const unlockedVariantIds = variantIds.filter(vid => 
+      (ENV.BIG_MEL_UNLOCK_VARIANT_ID && vid === String(ENV.BIG_MEL_UNLOCK_VARIANT_ID)) ||
+      mappedVariantIds.includes(vid)
     );
 
-    if (hasUnlockVariant) {
+    if (unlockedVariantIds.length > 0) {
       const customerEmail = payload.email || payload.customer?.email || null;
       const customerId = payload.customer?.id ? String(payload.customer.id) : null;
-      const variantId = String(ENV.BIG_MEL_UNLOCK_VARIANT_ID);
 
-      console.log(`[Webhook] Granting entitlement. Customer Email: ${customerEmail}, Shopify ID: ${customerId}`);
+      console.log(`[Webhook] Granting entitlements for variants: ${unlockedVariantIds.join(", ")}. Email: ${customerEmail}, Shopify ID: ${customerId}`);
 
-      // Insert active entitlement
-      const { error: entitlementError } = await supabase
-        .from("big_mel_entitlements")
-        .insert({
-          customer_id: customerId,
-          customer_email: customerEmail,
-          shop_domain: shopDomain,
-          variant_id: variantId,
-          is_active: true
-        });
+      for (const variantId of unlockedVariantIds) {
+        // Insert active entitlement
+        const { error: entitlementError } = await supabase
+          .from("big_mel_entitlements")
+          .insert({
+            customer_id: customerId,
+            customer_email: customerEmail,
+            shop_domain: shopDomain,
+            variant_id: variantId,
+            is_active: true
+          });
 
-      if (entitlementError) {
-        console.error("[Webhook] Error inserting active entitlement:", entitlementError);
-        throw entitlementError; // Let it catch so event processed stays false
+        if (entitlementError) {
+          console.error(`[Webhook] Error inserting active entitlement for variant ${variantId}:`, entitlementError);
+          throw entitlementError; // Let it catch so event processed stays false
+        }
       }
     }
 

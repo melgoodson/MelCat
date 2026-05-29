@@ -15,11 +15,13 @@ export async function getDashboardMetrics(dateRange: { from?: Date; to?: Date })
 export async function getCoreCounters(dateRange: { from?: Date; to?: Date }) {
   const eventWhere = dateRange.from ? { createdAt: { gte: dateRange.from, lte: dateRange.to } } : {};
   const customerWhere = dateRange.from ? { createdAt: { gte: dateRange.from, lte: dateRange.to } } : {};
+  const qrRedemptionWhere = dateRange.from ? { claimedAt: { gte: dateRange.from, lte: dateRange.to } } : {};
+  const dropNotificationWhere = dateRange.from ? { sentAt: { gte: dateRange.from, lte: dateRange.to } } : {};
 
   const [totalCustomers, activeEntitlements, qrRedemptions, events] = await Promise.all([
     prisma.customer.count({ where: customerWhere }),
     prisma.entitlement.count({ where: { revoked: false, ...customerWhere } }),
-    prisma.qRRedemption.count({ where: eventWhere }),
+    prisma.qRRedemption.count({ where: qrRedemptionWhere }),
     prisma.customerEvent.groupBy({
       by: ['eventType'],
       _count: { id: true },
@@ -39,7 +41,7 @@ export async function getCoreCounters(dateRange: { from?: Date; to?: Date }) {
     assetDownloads: eventCounts.asset_downloaded || 0,
     upgradeClicks: eventCounts.upgrade_clicked || 0,
     upgradePurchases: eventCounts.upgrade_purchased || 0,
-    dropNotifications: await prisma.dropNotificationLog.count({ where: eventWhere }),
+    dropNotifications: await prisma.dropNotificationLog.count({ where: dropNotificationWhere }),
     dropDownloads: eventCounts.drop_downloaded || 0,
     eventCounts
   };
@@ -70,12 +72,13 @@ export async function getFunnelMetrics(dateRange: { from?: Date; to?: Date }) {
 
 export async function getQRCampaignMetrics(dateRange: { from?: Date; to?: Date }) {
   const eventWhere = dateRange.from ? { createdAt: { gte: dateRange.from, lte: dateRange.to } } : {};
+  const qrRedemptionWhere = dateRange.from ? { claimedAt: { gte: dateRange.from, lte: dateRange.to } } : {};
   
   const campaigns = await prisma.qRCampaign.findMany({
     include: {
       pack: { select: { name: true } },
       redemptions: {
-        where: eventWhere,
+        where: qrRedemptionWhere,
       }
     }
   });
@@ -86,7 +89,7 @@ export async function getQRCampaignMetrics(dateRange: { from?: Date; to?: Date }
 
   const result = campaigns.map(c => {
     // Unique customers
-    const uniqueCust = new Set(c.redemptions.map(r => r.customerId)).size;
+    const uniqueCust = new Set((c.redemptions as any[]).map((r: any) => r.customerId)).size;
     // Claim completed count linked to this campaignHash
     const claimsForCampaign = claims.filter(ev => 
       ev.metadata && typeof ev.metadata === 'object' && (ev.metadata as any).campaignHash === c.campaignHash
@@ -94,7 +97,7 @@ export async function getQRCampaignMetrics(dateRange: { from?: Date; to?: Date }
 
     return {
       campaignHash: c.campaignHash,
-      packName: c.pack.name,
+      packName: (c as any).pack?.name ?? "N/A",
       isActive: c.isActive,
       redemptions: c.redemptions.length,
       uniqueCustomers: uniqueCust,
@@ -144,10 +147,11 @@ export async function getUpgradeMetrics(dateRange: { from?: Date; to?: Date }) {
 
 export async function getDropMetrics(dateRange: { from?: Date; to?: Date }) {
   const eventWhere = dateRange.from ? { createdAt: { gte: dateRange.from, lte: dateRange.to } } : {};
+  const dropNotificationWhere = dateRange.from ? { sentAt: { gte: dateRange.from, lte: dateRange.to } } : {};
 
   const drops = await prisma.drop.findMany({
     include: {
-      notifications: { where: eventWhere }
+      notifications: { where: dropNotificationWhere }
     }
   });
 
@@ -156,8 +160,9 @@ export async function getDropMetrics(dateRange: { from?: Date; to?: Date }) {
   });
 
   return drops.map(drop => {
-    const notifsSent = drop.notifications.filter(n => n.status === 'sent').length;
-    const notifsFailed = drop.notifications.filter(n => n.status === 'failed').length;
+    const notifications = (drop as any).notifications || [];
+    const notifsSent = notifications.filter((n: any) => n.status === 'sent').length;
+    const notifsFailed = notifications.filter((n: any) => n.status === 'failed').length;
     
     const dropDl = downloads.filter(d => 
       d.metadata && typeof d.metadata === 'object' && (d.metadata as any).dropId === drop.id

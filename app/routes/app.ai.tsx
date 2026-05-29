@@ -35,9 +35,9 @@ export default function AISkeleton() {
                     <div style={{ fontSize: "1.2rem" }}>✨</div>
                     <BlockStack gap="100">
                       <Text variant="headingSm" as="h3">Sass Level Configuration</Text>
-                      <Text variant="bodySm" tone="subdued">Adjust how snarky the AI responds based on user tier.</Text>
+                      <Text variant="bodySm" as="p" tone="subdued">Adjust how snarky the AI responds based on user tier.</Text>
                       <Box paddingBlockStart="200">
-                        <ProgressBar progress={75} tone="magic" />
+                        <ProgressBar progress={75} tone="primary" />
                       </Box>
                     </BlockStack>
                   </InlineStack>
@@ -48,7 +48,7 @@ export default function AISkeleton() {
                     <div style={{ fontSize: "1.2rem" }}>🔮</div>
                     <BlockStack gap="100">
                       <Text variant="headingSm" as="h3">Dynamic Personality Core</Text>
-                      <Text variant="bodySm" tone="subdued">AI adapts to how often the customer interacts with their vault.</Text>
+                      <Text variant="bodySm" as="p" tone="subdued">AI adapts to how often the customer interacts with their vault.</Text>
                       <Box paddingBlockStart="200">
                         <Button disabled size="micro">Configure Prompts</Button>
                       </Box>

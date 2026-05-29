@@ -71,7 +71,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export default function LibraryPage() {
-  const { authenticated, customer, packs, drops, maxTier } = useLoaderData<typeof loader>();
+  const { authenticated, customer, packs, drops, maxTier, features } = useLoaderData<typeof loader>();
 
   if (!authenticated) {
     return (

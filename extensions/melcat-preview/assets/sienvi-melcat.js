@@ -663,7 +663,8 @@
       if (CHAT.customerEmail) body.set('customerEmail', CHAT.customerEmail);
       body.set('message', message);
       body.set('clientChatCount', String(getChatCount()));
-      body.set('upgradeUrl', S.chatUpgradeUrl);
+      var historyStr = sessionStorage.getItem('melcat_chat_history') || '[]';
+      body.set('history', historyStr);
       body.set('pageContext', JSON.stringify({
         path: window.location.pathname,
         pageType: pageType,
@@ -690,6 +691,17 @@
       }
 
       appendChatMessage('assistant', data.reply);
+      
+      try {
+        var currentHistory = JSON.parse(sessionStorage.getItem('melcat_chat_history') || '[]');
+        currentHistory.push({ role: 'user', text: message });
+        currentHistory.push({ role: 'model', text: data.reply });
+        if (currentHistory.length > 10) {
+          currentHistory = currentHistory.slice(currentHistory.length - 10);
+        }
+        sessionStorage.setItem('melcat_chat_history', JSON.stringify(currentHistory));
+      } catch (e) {}
+
       if (data.upgradeUrl) S.chatUpgradeUrl = data.upgradeUrl;
       setEntitledSession(!!data.isEntitled);
       // Only count against the free limit when the server confirms AI responded.
@@ -1096,6 +1108,7 @@
     closeChatPanel();
     setState('minimized');
     sessionStorage.setItem(SK_MIN, 'true');
+    sessionStorage.removeItem('melcat_chat_history');
   }
 
   function restoreFromSession() {

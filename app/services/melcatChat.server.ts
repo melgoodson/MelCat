@@ -18,6 +18,7 @@ export type MelcatChatPayload = {
     itemCount?: number;
   };
   upgradeUrl?: string;
+  history?: Array<{ role: "user" | "model" | "assistant"; text: string }>;
 };
 
 async function parseMelcatPayload(request: Request): Promise<MelcatChatPayload> {
@@ -56,6 +57,7 @@ async function parseMelcatPayload(request: Request): Promise<MelcatChatPayload> 
       upgradeUrl: getString("upgradeUrl"),
       pageContext: parseJsonField<MelcatChatPayload["pageContext"]>("pageContext"),
       cartContext: parseJsonField<MelcatChatPayload["cartContext"]>("cartContext"),
+      history: parseJsonField<MelcatChatPayload["history"]>("history"),
     };
   }
 
@@ -195,6 +197,19 @@ async function generateBigMelReplyOpenAI(payload: MelcatChatPayload & { message:
 
   const contextText = buildContextBlock(payload);
 
+  const messages: Array<{ role: string; content: string }> = [
+    { role: "system", content: systemPrompt }
+  ];
+
+  if (payload.history && payload.history.length > 0) {
+    payload.history.forEach(h => {
+      const openAiRole = h.role === "model" || h.role === "assistant" ? "assistant" : "user";
+      messages.push({ role: openAiRole, content: h.text });
+    });
+  }
+
+  messages.push({ role: "user", content: contextText });
+
   const response = await fetch(url, {
     method: "POST",
     headers: {
@@ -203,10 +218,7 @@ async function generateBigMelReplyOpenAI(payload: MelcatChatPayload & { message:
     },
     body: JSON.stringify({
       model: "gpt-4o-mini",
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: contextText }
-      ],
+      messages,
       max_tokens: 150,
       temperature: 0.8,
     }),
@@ -242,6 +254,23 @@ async function generateBigMelReplyGemini(payload: MelcatChatPayload & { message:
     "Keep answers under 80 words."
   ].join("\n");
 
+  const contents: Array<{ role: string; parts: Array<{ text: string }> }> = [];
+
+  if (payload.history && payload.history.length > 0) {
+    payload.history.forEach(h => {
+      const geminiRole = h.role === "user" ? "user" : "model";
+      contents.push({
+        role: geminiRole,
+        parts: [{ text: h.text }]
+      });
+    });
+  }
+
+  contents.push({
+    role: "user",
+    parts: [{ text: buildContextBlock(payload) }],
+  });
+
   const response = await fetch(url, {
     method: "POST",
     headers: {
@@ -251,12 +280,7 @@ async function generateBigMelReplyGemini(payload: MelcatChatPayload & { message:
       systemInstruction: {
         parts: [{ text: systemInstruction }],
       },
-      contents: [
-        {
-          role: "user",
-          parts: [{ text: buildContextBlock(payload) }],
-        },
-      ],
+      contents,
       generationConfig: {
         temperature: 0.8,
         topP: 0.95,
@@ -272,7 +296,7 @@ async function generateBigMelReplyGemini(payload: MelcatChatPayload & { message:
   }
 
   const data = await response.json();
-  const text = data.candidates?.[0]?.content?.parts?.map((part) => part.text || "").join(" ").trim();
+  const text = data.candidates?.[0]?.content?.parts?.map((part: any) => part.text || "").join(" ").trim();
   const blocked = data.promptFeedback?.blockReason || data.candidates?.[0]?.finishReason === "SAFETY";
 
   if (blocked || !text) {

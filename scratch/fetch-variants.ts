@@ -12,6 +12,9 @@ async function getVariants() {
     process.exit(1);
   }
 
+  const shop = session.shop;
+  const accessToken = session.accessToken;
+
   const query = `
     query getProducts($query: String) {
       products(first: 20, query: $query) {
@@ -29,11 +32,11 @@ async function getVariants() {
   `;
 
   async function search(term: string) {
-    const response = await fetch(`https://${session.shop}/admin/api/2026-07/graphql.json`, {
+    const response = await fetch(`https://${shop}/admin/api/2026-07/graphql.json`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Shopify-Access-Token': session.accessToken!,
+        'X-Shopify-Access-Token': accessToken,
       },
       body: JSON.stringify({ 
         query, 
