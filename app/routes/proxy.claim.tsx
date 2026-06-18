@@ -11,8 +11,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const campaign = url.searchParams.get("c"); // QR campaign hash
   const session = await getCustomerSession(request);
   const customerId = session.get("customerId");
+  const appUrl = process.env.SHOPIFY_APP_URL || "https://snarky-mel-cat-34130528345.northamerica-northeast2.run.app";
 
-  return { campaign, isLoggedIn: !!customerId };
+  return { campaign, isLoggedIn: !!customerId, appUrl };
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -63,16 +64,15 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function ClaimPortal() {
+  const { campaign, appUrl } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
-  const [searchParams] = useSearchParams();
-  const campaign = searchParams.get("c") || "";
 
   return (
     <div style={styles.wrapper}>
       <div style={styles.container}>
         <div style={styles.header}>
-            <div style={{ margin: '0 auto 1.5rem', width: '100px', height: '100px', borderRadius: '50%', overflow: 'hidden', border: '3px solid #f28c28' }}>
-              <img src="/apps/snarky/proxy/mascot.jpeg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <div style={{ margin: '0 auto 1.5rem', width: '100px', height: '100px', borderRadius: '50%', overflow: 'hidden', border: '3px solid #f28c28', boxShadow: '0 8px 24px rgba(242, 140, 40, 0.25)' }}>
+              <img src={`${appUrl}/mascot.jpeg`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="MelCat Mascot" />
             </div>
           <h1 style={styles.title}>MelCat</h1>
           <p style={styles.subtitle}>Unlock Your Digital Treasures</p>
@@ -129,7 +129,7 @@ export default function ClaimPortal() {
 const styles: Record<string, React.CSSProperties> = {
   wrapper: {
     minHeight: "100vh",
-    background: "#fffaf0",
+    background: "linear-gradient(135deg, #fffaf0 0%, #fdf2df 50%, #fbe8cc 100%)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
