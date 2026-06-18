@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from "react";
 import type { LoaderFunctionArgs } from "react-router";
 import { useLoaderData } from "react-router";
 import { getCustomerSession } from "../services/session.server";
@@ -122,6 +123,224 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function LibraryPage() {
   const { authenticated, customer, packs, drops, maxTier, features, token, appUrl } = useLoaderData<typeof loader>();
 
+  // State hooks for Tamagotchi & Chat
+  const [hunger, setHunger] = useState(10);
+  const [boredom, setBoredom] = useState(10);
+  const [mascotState, setMascotState] = useState<'idle' | 'eating' | 'playing' | 'purring' | 'angry' | 'thinking'>('idle');
+  const [speechText, setSpeechText] = useState("I'm not saying I'm hungry, but if you don't feed me a treat soon, your internet cables are looking awfully chewable.");
+  const [chatOpen, setChatOpen] = useState(false);
+  const [chatMessages, setChatMessages] = useState<Array<{ role: 'user' | 'model' | 'system'; text: string }>>([]);
+  const [inputText, setInputText] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+  const chatEndRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    setIsClient(true);
+    const savedHunger = localStorage.getItem("melcat_stat_hunger");
+    const savedBoredom = localStorage.getItem("melcat_stat_boredom");
+    const lastTimeStr = localStorage.getItem("melcat_stat_last_time");
+    
+    let h = savedHunger ? parseInt(savedHunger, 10) : 10;
+    let b = savedBoredom ? parseInt(savedBoredom, 10) : 10;
+    const now = Date.now();
+    
+    if (lastTimeStr) {
+      const lastTime = parseInt(lastTimeStr, 10);
+      const elapsedMins = Math.floor((now - lastTime) / 60000);
+      if (elapsedMins > 0) {
+        h = Math.min(100, h + Math.floor(elapsedMins / 3) * 2);
+        b = Math.min(100, b + Math.floor(elapsedMins / 3) * 2);
+      }
+    }
+    
+    setHunger(h);
+    setBoredom(b);
+    localStorage.setItem("melcat_stat_hunger", String(h));
+    localStorage.setItem("melcat_stat_boredom", String(b));
+    localStorage.setItem("melcat_stat_last_time", String(now));
+    
+    // Load initial chat history if available
+    try {
+      const historyStr = sessionStorage.getItem("melcat_chat_history");
+      if (historyStr) {
+        const parsed = JSON.parse(historyStr);
+        setChatMessages(parsed);
+      }
+    } catch (e) {}
+  }, []);
+
+  // Auto-scroll chat history to bottom
+  useEffect(() => {
+    if (chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [chatMessages, chatOpen]);
+
+  const getMascotImage = () => {
+    if (mascotState === 'eating') return `${appUrl}/melcat-eating.webp`;
+    if (mascotState === 'playing') return `${appUrl}/melcat-playing.webp`;
+    if (mascotState === 'purring') return `${appUrl}/melcat-purring.webp`;
+    if (mascotState === 'angry' || hunger >= 80 || boredom >= 80) return `${appUrl}/melcat-angry.webp`;
+    return `${appUrl}/melcat-ai-preview.png`;
+  };
+
+  const getStatusText = () => {
+    if (mascotState === 'eating') return "STATUS: EATING";
+    if (mascotState === 'playing') return "STATUS: PLAYING";
+    if (mascotState === 'purring') return "STATUS: PURRING";
+    if (mascotState === 'thinking') return "STATUS: THINKING";
+    if (hunger >= 80) return "NEEDS: FOOD!";
+    if (boredom >= 80) return "NEEDS: PLAY!";
+    if (hunger >= 60) return "STATUS: HUNGRY";
+    if (boredom >= 60) return "STATUS: BORED";
+    if (hunger <= 25 && boredom <= 25) return "STATUS: HAPPY";
+    return "STATUS: OK";
+  };
+
+  const checkNiceActions = () => {
+    if (localStorage.getItem("melcat_reward_claimed") === "true") return;
+    let actions = parseInt(localStorage.getItem("melcat_nice_actions") || "0", 10);
+    actions++;
+    localStorage.setItem("melcat_nice_actions", String(actions));
+    
+    if (actions >= 5) {
+      localStorage.setItem("melcat_reward_claimed", "true");
+      setSpeechText("Fine. You aren't terrible. You kept me fed. Use code MELCARES for 10% off.");
+    }
+  };
+
+  const handleFeed = () => {
+    if (hunger === 0) {
+      setSpeechText("I am literally full. Do I look like a garbage disposal?");
+      setMascotState('angry');
+      setTimeout(() => setMascotState('idle'), 4000);
+      return;
+    }
+    const newHunger = Math.max(0, hunger - 30);
+    setHunger(newHunger);
+    setMascotState('eating');
+    setSpeechText("Acceptable offering. The void is slightly less hungry.");
+    localStorage.setItem("melcat_stat_hunger", String(newHunger));
+    localStorage.setItem("melcat_stat_last_time", String(Date.now()));
+    
+    checkNiceActions();
+    
+    setTimeout(() => {
+      setMascotState('idle');
+    }, 4000);
+  };
+
+  const handlePlay = () => {
+    if (boredom === 0) {
+      setSpeechText("I am currently too stimulated for this nonsense.");
+      setMascotState('idle');
+      return;
+    }
+    const newBoredom = Math.max(0, boredom - 30);
+    setBoredom(newBoredom);
+    setMascotState('playing');
+    setSpeechText("I will destroy this string. Thank you.");
+    localStorage.setItem("melcat_stat_boredom", String(newBoredom));
+    localStorage.setItem("melcat_stat_last_time", String(Date.now()));
+    
+    checkNiceActions();
+    
+    setTimeout(() => {
+      setMascotState('idle');
+    }, 4000);
+  };
+
+  const handlePet = () => {
+    const newHunger = Math.max(0, hunger - 5);
+    const newBoredom = Math.max(0, boredom - 5);
+    setHunger(newHunger);
+    setBoredom(newBoredom);
+    setMascotState('purring');
+    setSpeechText("*purrs aggressively* Don't tell anyone you saw this.");
+    localStorage.setItem("melcat_stat_hunger", String(newHunger));
+    localStorage.setItem("melcat_stat_boredom", String(newBoredom));
+    localStorage.setItem("melcat_stat_last_time", String(Date.now()));
+    
+    checkNiceActions();
+    
+    setTimeout(() => {
+      setMascotState('idle');
+    }, 3000);
+  };
+
+  const handleChatSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inputText.trim() || isLoading) return;
+
+    const userMessage = inputText.trim();
+    setInputText("");
+    setIsLoading(true);
+    setMascotState('thinking');
+    
+    const newMessages = [...chatMessages, { role: 'user' as const, text: userMessage }];
+    setChatMessages(newMessages);
+
+    try {
+      const historyPayload = newMessages.map(m => ({
+        role: m.role === 'user' ? 'user' as const : 'model' as const,
+        text: m.text
+      }));
+
+      const body = {
+        shopDomain: "fhfwar-jc.myshopify.com",
+        sessionId: getOrCreateSessionId(),
+        customerId: customer?.shopifyCustomerId || customer?.id || null,
+        customerEmail: customer?.email || null,
+        message: userMessage,
+        history: historyPayload,
+        pageContext: {
+          path: "/apps/snarky/library",
+          pageType: "vault"
+        },
+        cartContext: {
+          itemCount: 0
+        }
+      };
+
+      const response = await fetch("/apps/snarky/melcat/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to send message");
+      }
+
+      const data = await response.json();
+      if (data.reply) {
+        const updatedMessages = [...newMessages, { role: 'model' as const, text: data.reply }];
+        setChatMessages(updatedMessages);
+        setSpeechText(data.reply);
+        
+        sessionStorage.setItem("melcat_chat_history", JSON.stringify(updatedMessages));
+      }
+    } catch (error) {
+      console.error("Chat error:", error);
+      setChatMessages(prev => [...prev, { role: 'system' as const, text: "Big Mel is currently sleeping. Try again later." }]);
+    } finally {
+      setIsLoading(false);
+      setMascotState('idle');
+    }
+  };
+
+  const getOrCreateSessionId = () => {
+    let sid = sessionStorage.getItem("sienvi_melcat_session_id");
+    if (!sid) {
+      sid = "melcat-" + Date.now() + "-" + Math.random().toString(36).slice(2, 10);
+      sessionStorage.setItem("sienvi_melcat_session_id", sid);
+    }
+    return sid;
+  };
+
   if (!authenticated) {
     return (
       <div style={styles.wrapper}>
@@ -160,7 +379,7 @@ export default function LibraryPage() {
       <div style={styles.container}>
         <div style={styles.header}>
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1.5rem' }}>
-            <a href="/apps/snarky/logout" style={{ color: '#e37322', textDecoration: 'none', fontWeight: 700, fontSize: '0.9rem', background: 'rgba(242,140,40,0.1)', padding: '0.4rem 1rem', borderRadius: '30px', transition: 'all 0.2s' }}>Sign out ➔</a>
+            <a href={`/apps/snarky/logout${token ? `?token=${token}` : ""}`} style={{ color: '#e37322', textDecoration: 'none', fontWeight: 700, fontSize: '0.9rem', background: 'rgba(242,140,40,0.1)', padding: '0.4rem 1rem', borderRadius: '30px', transition: 'all 0.2s' }}>Sign out ➔</a>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', marginBottom: '1rem' }}>
              <div style={{ width: '70px', height: '70px', borderRadius: '50%', overflow: 'hidden', border: '3px solid #f28c28', boxShadow: '0 4px 15px rgba(242,140,40,0.2)' }}>
@@ -185,17 +404,17 @@ export default function LibraryPage() {
             </div>
             <div style={styles.upgradeBtnContainer}>
               {maxTier < 2 && (
-                <a href="/apps/snarky/upgrade?tier=2" style={{...styles.upgradeBtn, background: '#f28c28', color: '#fff'}}>
+                <a href={`/apps/snarky/upgrade?tier=2${token ? `&token=${token}` : ""}`} style={{...styles.upgradeBtn, background: '#f28c28', color: '#fff'}}>
                   Standard Upgrade
                 </a>
               )}
               {maxTier < 3 && (
-                <a href="/apps/snarky/upgrade?tier=3" style={{...styles.upgradeBtn, background: '#e94560', color: '#fff'}}>
+                <a href={`/apps/snarky/upgrade?tier=3${token ? `&token=${token}` : ""}`} style={{...styles.upgradeBtn, background: '#e94560', color: '#fff'}}>
                   Deluxe Upgrade
                 </a>
               )}
               {maxTier < 4 && (
-                <a href="/apps/snarky/upgrade?tier=4" style={styles.upgradeBtn}>
+                <a href={`/apps/snarky/upgrade?tier=4${token ? `&token=${token}` : ""}`} style={styles.upgradeBtn}>
                   Ultimate Upgrade →
                 </a>
               )}
@@ -225,7 +444,7 @@ export default function LibraryPage() {
                 {pack.packAssets.length > 0 && (
                   <div style={styles.assetList}>
                     {pack.packAssets.map((pa: any) => (
-                      <a href={`/apps/snarky/api/download?id=${pa.digitalAsset.id}`} key={pa.digitalAsset.id} style={styles.assetItemLink}>
+                      <a href={`/apps/snarky/api/download?id=${pa.digitalAsset.id}${token ? `&token=${token}` : ""}`} key={pa.digitalAsset.id} style={styles.assetItemLink}>
                         <div style={styles.assetItem} onMouseEnter={(e) => { e.currentTarget.style.background = '#fbe8cc'; }} onMouseLeave={(e) => { e.currentTarget.style.background = '#fdf8f4'; }}>
                           {pa.digitalAsset.thumbnailUrl ? (
                             <img src={pa.digitalAsset.thumbnailUrl} style={{ width: '48px', height: '48px', borderRadius: '8px', objectFit: 'cover' }} alt={pa.digitalAsset.title} />
@@ -258,7 +477,7 @@ export default function LibraryPage() {
                 {drop.dropAssets.length > 0 && (
                   <div style={styles.assetList}>
                     {drop.dropAssets.map((da: any) => (
-                      <a href={`/apps/snarky/api/download?id=${da.digitalAsset.id}`} key={da.digitalAsset.id} style={styles.assetItemLink}>
+                      <a href={`/apps/snarky/api/download?id=${da.digitalAsset.id}${token ? `&token=${token}` : ""}`} key={da.digitalAsset.id} style={styles.assetItemLink}>
                         <div style={styles.assetItem} onMouseEnter={(e) => { e.currentTarget.style.background = '#ffd8df'; }} onMouseLeave={(e) => { e.currentTarget.style.background = '#fdf8f4'; }}>
                           {da.digitalAsset.thumbnailUrl ? (
                             <img src={da.digitalAsset.thumbnailUrl} style={{ width: '48px', height: '48px', borderRadius: '8px', objectFit: 'cover' }} alt={da.digitalAsset.title} />
@@ -280,28 +499,47 @@ export default function LibraryPage() {
           </div>
         )}
 
-        {/* AI GAME SKELETON (PREVIEW) */}
+        {/* INTERACTIVE MELCAT VAULT VAULT COMPANION */}
         <div style={styles.gameCard}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
               <span style={{ fontSize: '1.5rem' }}>🐾</span>
               <h3 style={{ margin: 0, fontSize: '1.4rem', color: '#2d1b0d', fontWeight: 800 }}>MelCat's Corner</h3>
             </div>
-            <div style={{ padding: '0.35rem 0.85rem', background: 'rgba(138, 43, 226, 0.12)', color: '#8a2be2', borderRadius: '100px', fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.5px' }}>
-              BETA PREVIEW
+            <div style={{ padding: '0.35rem 0.85rem', background: 'rgba(242, 140, 40, 0.12)', color: '#e37322', borderRadius: '100px', fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.5px' }}>
+              {getStatusText()}
             </div>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '2rem', alignItems: 'center' }}>
-            {/* Avatar & Level */}
+            {/* Avatar & Level with click-to-pet Easter Egg */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-              <div style={{ width: '130px', height: '130px', borderRadius: '50%', overflow: 'hidden', border: '4px solid #f28c28', boxShadow: '0 8px 24px rgba(242, 140, 40, 0.25)', position: 'relative', background: '#fff9f0' }}>
-                <img src={`${appUrl}/melcat-ai-preview.png`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="MelCat Companion" />
-              </div>
+              <button 
+                onClick={handlePet}
+                style={{ 
+                  background: 'none', 
+                  border: 'none', 
+                  padding: 0, 
+                  cursor: 'pointer', 
+                  outline: 'none',
+                  transition: 'transform 0.15s ease'
+                }}
+                title="Click to pet Big Mel!"
+                onMouseDown={(e) => { e.currentTarget.style.transform = 'scale(0.95)'; }}
+                onMouseUp={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; }}
+                onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+              >
+                <div style={{ width: '130px', height: '130px', borderRadius: '50%', overflow: 'hidden', border: '4px solid #f28c28', boxShadow: '0 8px 24px rgba(242, 140, 40, 0.25)', position: 'relative', background: '#fff9f0' }}>
+                  <img src={getMascotImage()} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="MelCat Companion" />
+                </div>
+              </button>
               <div style={{ background: '#2d1b0d', color: '#fff', padding: '0.25rem 1.25rem', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 900, marginTop: '-15px', zIndex: 10, boxShadow: '0 4px 10px rgba(0,0,0,0.15)' }}>
-                LVL 1
+                LVL {Math.max(1, maxTier)}
               </div>
-              <span style={{ fontSize: '0.85rem', color: '#6b5c4f', fontWeight: 700, marginTop: '5px' }}>0 / 100 XP</span>
+              <span style={{ fontSize: '0.85rem', color: '#6b5c4f', fontWeight: 700, marginTop: '5px' }}>
+                {localStorage && localStorage.getItem("melcat_reward_claimed") === "true" ? "100 / 100 XP" : "40 / 100 XP"}
+              </span>
             </div>
 
             {/* Stats & Meters */}
@@ -309,20 +547,24 @@ export default function LibraryPage() {
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', marginBottom: '0.35rem', fontWeight: 700, color: '#2d1b0d' }}>
                   <span>🐟 Hunger</span>
-                  <span style={{ color: '#e94560', fontWeight: 800 }}>Starving!</span>
+                  <span style={{ color: hunger >= 60 ? '#e94560' : '#2d1b0d', fontWeight: 800 }}>
+                    {hunger >= 80 ? "Starving!" : hunger >= 60 ? "Hungry" : hunger <= 25 ? "Full" : "Satisfied"}
+                  </span>
                 </div>
                 <div style={{ height: '10px', background: '#f1f5f9', borderRadius: '5px', overflow: 'hidden' }}>
-                  <div style={{ width: '15%', height: '100%', background: '#e94560', borderRadius: '5px' }} />
+                  <div style={{ width: `${hunger}%`, height: '100%', background: hunger >= 60 ? '#e94560' : '#f28c28', borderRadius: '5px', transition: 'width 0.4s ease' }} />
                 </div>
               </div>
 
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', marginBottom: '0.35rem', fontWeight: 700, color: '#2d1b0d' }}>
-                  <span>🎾 Happiness</span>
-                  <span style={{ color: '#f28c28', fontWeight: 800 }}>Bored</span>
+                  <span>🎾 Boredom</span>
+                  <span style={{ color: boredom >= 60 ? '#e37322' : '#2d1b0d', fontWeight: 800 }}>
+                    {boredom >= 80 ? "Bored!" : boredom >= 60 ? "Restless" : boredom <= 25 ? "Happy" : "Amused"}
+                  </span>
                 </div>
                 <div style={{ height: '10px', background: '#f1f5f9', borderRadius: '5px', overflow: 'hidden' }}>
-                  <div style={{ width: '40%', height: '100%', background: '#f28c28', borderRadius: '5px' }} />
+                  <div style={{ width: `${boredom}%`, height: '100%', background: boredom >= 60 ? '#e94560' : '#f28c28', borderRadius: '5px', transition: 'width 0.4s ease' }} />
                 </div>
               </div>
 
@@ -338,24 +580,106 @@ export default function LibraryPage() {
             </div>
           </div>
 
-          <div style={styles.quoteBubble}>
-            "I'm not saying I'm hungry, but if you don't feed me a treat soon, your internet cables are looking awfully chewable."
-          </div>
+          {chatOpen ? (
+            <div style={styles.chatContainer}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem', borderBottom: '1px solid #e2e8f0', paddingBottom: '0.5rem' }}>
+                <span style={{ fontSize: '0.9rem', fontWeight: 800, color: '#2d1b0d' }}>💬 Chat with Big Mel</span>
+                <button 
+                  onClick={() => setChatOpen(false)}
+                  style={{ background: 'none', border: 'none', color: '#e37322', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer' }}
+                >
+                  Close Chat
+                </button>
+              </div>
 
-          <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem' }}>
-            <button disabled style={styles.disabledBtn}>
-              <span style={{ fontSize: '1.25rem' }}>🐟</span>
-              <span style={{ fontSize: '0.75rem', fontWeight: 700 }}>Feed Treat (0)</span>
-            </button>
-            <button disabled style={styles.disabledBtn}>
-              <span style={{ fontSize: '1.25rem' }}>🎾</span>
-              <span style={{ fontSize: '0.75rem', fontWeight: 700 }}>Play Minigame</span>
-            </button>
-            <button disabled style={styles.disabledBtn}>
-              <span style={{ fontSize: '1.25rem' }}>💬</span>
-              <span style={{ fontSize: '0.75rem', fontWeight: 700 }}>Chat AI</span>
-            </button>
-          </div>
+              <div style={styles.chatHistory}>
+                {chatMessages.length === 0 ? (
+                  <div style={{ color: '#6b5c4f', fontStyle: 'italic', fontSize: '0.9rem', margin: 'auto', padding: '1rem', textAlign: 'center' }}>
+                    Type something to start your judgment session...
+                  </div>
+                ) : (
+                  chatMessages.map((msg, i) => (
+                    <div 
+                      key={i} 
+                      style={
+                        msg.role === 'user' 
+                          ? styles.userBubble 
+                          : msg.role === 'system'
+                            ? styles.systemBubble
+                            : styles.modelBubble
+                      }
+                    >
+                      {msg.text}
+                    </div>
+                  ))
+                )}
+                {isLoading && (
+                  <div style={{...styles.modelBubble, display: 'flex', alignItems: 'center', gap: '0.5rem', fontStyle: 'italic', color: '#6b5c4f'}}>
+                    <span>🐾 Big Mel is thinking...</span>
+                  </div>
+                )}
+                <div ref={chatEndRef} />
+              </div>
+
+              <form onSubmit={handleChatSubmit} style={styles.chatForm}>
+                <input 
+                  type="text" 
+                  value={inputText}
+                  onChange={(e) => setInputText(e.target.value)}
+                  placeholder={isLoading ? "Please wait..." : "Ask Big Mel anything..."}
+                  disabled={isLoading}
+                  style={styles.chatInput}
+                />
+                <button 
+                  type="submit" 
+                  disabled={isLoading || !inputText.trim()}
+                  style={{
+                    ...styles.chatSubmitBtn,
+                    opacity: (isLoading || !inputText.trim()) ? 0.6 : 1,
+                    cursor: (isLoading || !inputText.trim()) ? 'not-allowed' : 'pointer'
+                  }}
+                >
+                  Send
+                </button>
+              </form>
+            </div>
+          ) : (
+            <>
+              <div style={styles.quoteBubble}>
+                "{speechText}"
+              </div>
+
+              <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem' }}>
+                <button 
+                  onClick={handleFeed}
+                  style={styles.activeBtn}
+                  onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; }}
+                >
+                  <span style={{ fontSize: '1.25rem' }}>🐟</span>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Feed Treat</span>
+                </button>
+                <button 
+                  onClick={handlePlay}
+                  style={styles.activeBtn}
+                  onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; }}
+                >
+                  <span style={{ fontSize: '1.25rem' }}>🎾</span>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Play Minigame</span>
+                </button>
+                <button 
+                  onClick={() => setChatOpen(true)}
+                  style={{...styles.activeBtn, background: 'linear-gradient(135deg, #2d1b0d, #4a2e12)'}}
+                  onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; }}
+                >
+                  <span style={{ fontSize: '1.25rem' }}>💬</span>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Chat AI</span>
+                </button>
+              </div>
+            </>
+          )}
         </div>
 
         {/* ONBOARDING INSTRUCTIONS */}
@@ -607,6 +931,94 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: 'column' as const,
     alignItems: 'center',
     gap: '0.35rem',
+  },
+  activeBtn: {
+    flex: 1,
+    padding: '1rem',
+    background: 'linear-gradient(135deg, #f28c28, #e37322)',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '16px',
+    cursor: 'pointer',
+    display: 'flex',
+    flexDirection: 'column' as const,
+    alignItems: 'center',
+    gap: '0.35rem',
+    boxShadow: '0 4px 12px rgba(242, 140, 40, 0.15)',
+    transition: 'all 0.2s ease',
+  },
+  chatContainer: {
+    display: 'flex',
+    flexDirection: 'column' as const,
+    gap: '1rem',
+    marginTop: '1.5rem',
+    border: '1px solid #f1f5f9',
+    borderRadius: '16px',
+    padding: '1.25rem',
+    background: '#fafbfd',
+  },
+  chatHistory: {
+    maxHeight: '250px',
+    overflowY: 'auto' as const,
+    display: 'flex',
+    flexDirection: 'column' as const,
+    gap: '0.75rem',
+    paddingRight: '0.5rem',
+  },
+  userBubble: {
+    alignSelf: 'flex-end',
+    background: 'linear-gradient(135deg, #f28c28, #e37322)',
+    color: '#fff',
+    padding: '0.75rem 1.1rem',
+    borderRadius: '16px 16px 4px 16px',
+    fontSize: '0.9rem',
+    maxWidth: '80%',
+    boxShadow: '0 4px 12px rgba(242, 140, 40, 0.15)',
+  },
+  modelBubble: {
+    alignSelf: 'flex-start',
+    background: '#fff',
+    color: '#2d1b0d',
+    padding: '0.75rem 1.1rem',
+    borderRadius: '16px 16px 16px 4px',
+    fontSize: '0.9rem',
+    maxWidth: '80%',
+    border: '1px solid #e2e8f0',
+    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.02)',
+  },
+  systemBubble: {
+    alignSelf: 'center',
+    background: '#fee2e2',
+    color: '#991b1b',
+    padding: '0.5rem 1rem',
+    borderRadius: '12px',
+    fontSize: '0.8rem',
+    maxWidth: '90%',
+  },
+  chatForm: {
+    display: 'flex',
+    gap: '0.75rem',
+    marginTop: '0.5rem',
+  },
+  chatInput: {
+    flex: 1,
+    padding: '0.75rem 1rem',
+    borderRadius: '12px',
+    border: '1px solid #cbd5e1',
+    fontSize: '0.9rem',
+    outline: 'none',
+    boxSizing: 'border-box' as const,
+  },
+  chatSubmitBtn: {
+    padding: '0.75rem 1.25rem',
+    borderRadius: '12px',
+    border: 'none',
+    background: 'linear-gradient(135deg, #f28c28, #e37322)',
+    color: '#fff',
+    fontWeight: 700,
+    fontSize: '0.9rem',
+    cursor: 'pointer',
+    boxShadow: '0 4px 10px rgba(242, 140, 40, 0.2)',
   },
   instructionsCard: {
     marginTop: '3rem',

@@ -2,15 +2,51 @@ import type { LoaderFunctionArgs } from "react-router";
 import { redirect } from "react-router";
 import { getCustomerSession } from "../services/session.server";
 import { safelyTrackCustomerEvent } from "../services/customerEvent.server";
+import { authenticate } from "../shopify.server";
 import prisma from "../db.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const session = await getCustomerSession(request);
-  const customerId = session.get("customerId") as string | undefined;
-
   const url = new URL(request.url);
   const targetTier = parseInt(url.searchParams.get("tier") || "0", 10);
   const source = url.searchParams.get("source") || "library";
+  const token = url.searchParams.get("token");
+
+  let customerId: string | undefined = undefined;
+
+  // 1. Try to authenticate via Shopify App Proxy signature first
+  try {
+    const { session } = await authenticate.public.appProxy(request);
+    const loggedInCustomerId = url.searchParams.get("logged_in_customer_id");
+    if (loggedInCustomerId) {
+      const customer = await prisma.customer.findFirst({
+        where: { shopifyCustomerId: loggedInCustomerId }
+      });
+      if (customer) {
+        customerId = customer.id;
+      }
+    }
+  } catch (err) {
+    // Signature verification failed or not in proxy context, skip
+  }
+
+  // 2. Try to authenticate via URL session token second
+  if (!customerId && token) {
+    const sessionRecord = await prisma.customerSession.findFirst({
+      where: { sessionToken: token, expiresAt: { gte: new Date() } },
+      include: { customer: true }
+    });
+    if (sessionRecord) {
+      customerId = sessionRecord.customerId;
+    }
+  }
+
+  // 3. Fallback to cookie session (for dev/direct local testing)
+  if (!customerId) {
+    const session = await getCustomerSession(request);
+    customerId = session.get("customerId") as string | undefined;
+  }
+
+  const session = await getCustomerSession(request);
 
   if (!customerId) {
     return redirect("/apps/snarky/claim");
