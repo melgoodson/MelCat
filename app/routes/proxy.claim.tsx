@@ -1,5 +1,5 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
-import { Form, useActionData, useSearchParams } from "react-router";
+import { useActionData, useSearchParams } from "react-router";
 import { createMagicLinkToken } from "../services/auth.server";
 import { sendMagicLink } from "../services/mail.server";
 import { claimQrCampaign } from "../services/qr.server";
@@ -99,7 +99,7 @@ export default function ClaimPortal() {
               <div style={styles.errorBanner}>{actionData.error}</div>
             )}
 
-            <Form method="post">
+            <form method="post">
               <input type="hidden" name="campaign" value={campaign} />
               <div style={styles.inputGroup}>
                 <input
@@ -113,7 +113,7 @@ export default function ClaimPortal() {
                   Send Magic Link
                 </button>
               </div>
-            </Form>
+            </form>
           </div>
         )}
 
