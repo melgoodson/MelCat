@@ -1,0 +1,433 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "settings": {
+        "show_collection_description": true,
+        "show_collection_image": false,
+        "color_scheme": "scheme-1"
+      }
+    },
+    "rich_text_AqK7yf": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_GULWFi": {
+          "type": "heading",
+          "settings": {
+            "heading": "Peanut Butter Dog Treats: A Healthy, Delicious, and Friendly Snack for Your Pup",
+            "heading_size": "h1"
+          }
+        },
+        "text_RtEQhF": {
+          "type": "text",
+          "settings": {
+            "text": "<p></p><p></p>"
+          }
+        },
+        "button_VbJgge": {
+          "type": "button",
+          "disabled": true,
+          "settings": {
+            "button_label": "Button label",
+            "button_link": "",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        },
+        "text_J8c8tJ": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>A Simple Fix for a Common Cat Problem</strong></p>"
+          }
+        },
+        "text_Urc8Hy": {
+          "type": "text",
+          "settings": {
+            "text": "<p>If you’ve spent any time with cats, you already know their obsession with small, enclosed spaces. Boxes, paper bags, laundry baskets—you name it, they’ll jump in. Over my ten years of working with cats and helping pet parents choose enrichment products, I’ve learned that this isn’t just quirky behavior—it’s instinct. Cats seek out safe spaces to hide, rest, and stalk imaginary prey.</p><p>That’s where a cat pop up tent or a cat tube comes in. These portable, collapsible hideouts combine the safety of a retreat with the fun of a play tunnel. Whether you’re looking to give your cat a private nap spot, an indoor playground, or a way to travel with comfort, pop up tents and tubes are an affordable, space-saving solution.<br/><br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_GULWFi",
+        "text_RtEQhF",
+        "button_VbJgge",
+        "text_J8c8tJ",
+        "text_Urc8Hy"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "disabled": true,
+      "settings": {
+        "products_per_page": 16,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-1",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "enable_filtering": false,
+        "filter_type": "vertical",
+        "enable_sorting": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "featured_product_jMPgGA": {
+      "type": "featured-product",
+      "blocks": {
+        "text_GT6eKd": {
+          "type": "text",
+          "settings": {
+            "text": "{{ section.settings.product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title_9GyXpm": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h2"
+          }
+        },
+        "price_Yr3ffV": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker_bckE94": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector_EbJFaz": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons_L7imdj": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "share_dz4L8n": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "text_GT6eKd",
+        "title_9GyXpm",
+        "price_Yr3ffV",
+        "variant_picker_bckE94",
+        "quantity_selector_EbJFaz",
+        "buy_buttons_L7imdj",
+        "share_dz4L8n"
+      ],
+      "name": "t:sections.featured-product.presets.name",
+      "settings": {
+        "product": "cat-tube",
+        "color_scheme": "",
+        "secondary_background": false,
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rich_text_xbFPbM": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_ynjcCq": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Why Cats Love Pop Up Tents and Tubes</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_faVBT6": {
+          "type": "text",
+          "settings": {
+            "text": "<p>The psychology is simple: cats feel safe in enclosed spaces. Tents and tubes give them that plus an element of play.</p><ul><li><strong>Instinctual appeal:</strong> Cats are both predators and prey animals. Having a tunnel or enclosed tent satisfies their urge to hide while keeping watch.<br/><br/></li><li><strong>Stress relief:</strong> In busy households, shy or anxious cats often retreat to these structures to decompress.<br/><br/></li><li><strong>Exercise and play:</strong> Tubes add another layer—cats dash in and out, chase toys through the tunnel, and even ambush their feline housemates.<br/><br/></li></ul><p>When I brought home a fabric cat tube for my two young rescues, it quickly became their favorite toy. They spent hours chasing each other through it, then curling up together for a nap inside. That mix of fun and comfort is what makes these products stand out.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_ynjcCq",
+        "text_faVBT6"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_KaQxnw": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_rXpewP": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Key Features That Matter in a Cat Pop Up Tent or Tube</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_zht9aM": {
+          "type": "text",
+          "settings": {
+            "text": "<h3><strong>1. Portability and Storage</strong></h3><p>The biggest selling point is right in the name: <strong>pop up</strong>. These tents and tubes fold flat for storage and spring open in seconds. If you live in an apartment or travel often, this feature is a lifesaver. The Snarky Pets Cat Tube, for example, folds into a compact carrying size, making it easy to stash in a closet or take to a friend’s house when introducing your cat to a new space.</p><h3><strong>2. Durability</strong></h3><p>Cats don’t exactly go easy on their toys. Look for <strong>scratch-resistant mesh panels</strong> or durable polyester fabric. Reinforced seams help prevent tears when your cat claws at the entrance or pounces mid-chase. In my experience, cheaper tubes collapse or fray quickly, while sturdier options last for years with regular play.</p><h3><strong>3. Ventilation and Visibility</strong></h3><p>Mesh windows or breathable panels are important. They prevent overheating and give cats a sense of security while still letting them peek outside. For owners, visibility means you can keep an eye on what your cat is doing—especially useful if you have multiple cats playing together.</p><h3><strong>4. Size and Space</strong></h3><p>Check dimensions carefully. A <strong>cat pop up tent</strong> often provides more lounging space, while a <strong>cat tube</strong> gives active cats an outlet for running and hiding. Larger cats like Maine Coons need wide entrances (8–10 inches) to move comfortably.</p><h3><strong>5. Easy Cleaning</strong></h3><p>Accidents happen, especially if you take the tube or tent on the road. Choose designs with <strong>removable cushions, wipe-clean surfaces, or washable mats</strong>. It saves you from having a product that’s cute but unusable after a few spills.<br/><br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_rXpewP",
+        "text_zht9aM"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_7GJRRB": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_Q6cWLY": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Indoor Uses: Play, Privacy, and Peace</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_faMV36": {
+          "type": "text",
+          "settings": {
+            "text": "<p>A cat pop up tent or tube is more than just an accessory—it can transform your cat’s daily routine indoors.</p><ul><li><strong>Private nap spot:</strong> Place it in a quiet corner with a blanket, and it becomes your cat’s personal bedroom.<br/><br/></li><li><strong>Interactive play zone:</strong> Add dangling toys or sprinkle a little catnip inside. Tubes, in particular, become highways for zoomies.<br/><br/></li><li><strong>Household harmony:</strong> If you have multiple pets, providing each cat their own tent or tube can reduce conflicts by giving everyone their own “territory.”<br/><br/></li></ul><p>I’ve fostered cats who never felt safe enough to sleep in the open. As soon as I introduced a pop up tent, they finally rested without stress. It’s a simple fix for anxious cats.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_Q6cWLY",
+        "text_faMV36"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_8atpqp": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_7jTBtL": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Outdoor and Travel Benefits</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_cE7LyU": {
+          "type": "text",
+          "settings": {
+            "text": "<p>While tents are more common outdoors, cat tubes can also work in safe, supervised environments.</p><ul><li><strong>Balcony use:</strong> Place a tube on your balcony so your cat can lounge and watch the world.<br/><br/></li><li><strong>Travel companion:</strong> Because they fold flat, tubes are perfect for hotel stays, road trips, or visits to relatives. Your cat gets a familiar hideout in an unfamiliar space.<br/><br/></li><li><strong>Supervised outdoor fun:</strong> Some models include stakes or reinforced bottoms, letting you use them briefly in the yard.<br/><br/></li></ul><p>Important note: These are not predator-proof. Never leave your cat unattended outdoors, even in a sturdy tent or tube.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_7jTBtL",
+        "text_cE7LyU"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_6r4c3W": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_NaVtVa": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Training Your Cat to Love Their New Tent or Tube</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_6w7drF": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Some cats take to a tube instantly. Others need encouragement. Here’s my tried-and-true process:</p><ol><li><strong>Introduce indoors:</strong> Set it up in a familiar room. Don’t force your cat inside—let curiosity do the work.<br/><br/></li><li><strong>Use positive reinforcement:</strong> Toss treats or toys inside, or rub a little catnip on the interior.<br/><br/></li><li><strong>Play interactively:</strong> Drag a wand toy through the tunnel to trigger chasing behavior.<br/><br/></li><li><strong>Keep sessions short at first:</strong> Build up your cat’s confidence gradually.<br/><br/></li></ol><p>With this approach, I’ve never had a cat ignore a pop up tent for more than a few days.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_NaVtVa",
+        "text_6w7drF"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_nLTi66": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_W6cEpH": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Real-Life Examples from My Experience</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_YzAKaa": {
+          "type": "text",
+          "settings": {
+            "text": "<ul><li><strong>The Playful Kitten:</strong> Loved darting through a pop up tube to chase feather toys. It doubled as her favorite nap spot once she tired out.<br/><br/></li><li><strong>The Senior Cat:</strong> Preferred a tent-style hideout lined with a soft blanket. It became her safe place when grandchildren visited.<br/><br/></li><li><strong>The Two-Cat Household:</strong> With one tent and one tube, both cats had “territories,” cutting down on scuffles and stress.<br/><br/></li><li><strong>The Travel Cat:</strong> A nervous tabby calmed down during hotel stays because his familiar tube came along for the trip.<br/><br/></li></ul><p>The versatility of these products makes them suitable for almost any type of cat.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_W6cEpH",
+        "text_YzAKaa"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_QNTdcA": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_Q7drgC": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Conclusion: A Small Purchase, Big Impact</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_Ff8GJk": {
+          "type": "text",
+          "settings": {
+            "text": "<p>After a decade of working with cats, I can confidently say a cat pop up tent or cat tube is one of the most useful enrichment products you can buy. It ticks every box: safe, portable, affordable, and loved by cats of all ages.</p><p>The Snarky Pets Cat Tube, in particular, combines the portability of a tent with the playful design of a tunnel—perfect for active cats who love to hide and dash, as well as shy cats who just need a cozy retreat.</p><p>If your cat craves stimulation, privacy, or a safe way to explore new environments, this is a simple investment that pays off in happy purrs, healthier play, and more restful naps.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_Q7drgC",
+        "text_Ff8GJk"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_wVWxnC": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_xVMrXT": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>FAQs </strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_G6zn6q": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>1. Is a cat pop up tent or tube safe for kittens?<br/></strong> Yes! Tubes and tents are great for kittens—they encourage play and provide safe hiding spots. Just supervise to make sure small kittens don’t get tangled in hanging toys.</p><p><strong>2. Can I use a cat tube outdoors?<br/></strong> You can, but only under supervision. They’re not predator-proof. For outdoor use, set it up in a shaded, enclosed area and always keep an eye on your cat.</p><p><strong>3. How do I clean a cat tube?<br/></strong> Most tubes can be vacuumed for fur and spot-cleaned with mild soap and water. Some models come with removable mats or washable bases for easier care.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_xVMrXT",
+        "text_G6zn6q"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "rich_text_AqK7yf",
+    "product-grid",
+    "featured_product_jMPgGA",
+    "rich_text_xbFPbM",
+    "rich_text_KaQxnw",
+    "rich_text_7GJRRB",
+    "rich_text_8atpqp",
+    "rich_text_6r4c3W",
+    "rich_text_nLTi66",
+    "rich_text_QNTdcA",
+    "rich_text_wVWxnC"
+  ]
+}

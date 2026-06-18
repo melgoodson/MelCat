@@ -1,0 +1,109 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "newsletter_7pxELr": {
+      "type": "newsletter",
+      "blocks": {
+        "heading_xeYAbR": {
+          "type": "heading",
+          "settings": {
+            "heading": "Get Snarky Deals!",
+            "heading_size": "h1"
+          }
+        },
+        "paragraph_HhAk8V": {
+          "type": "paragraph",
+          "settings": {
+            "text": "<p>Be the first to know about new collections and exclusive offers.</p>"
+          }
+        },
+        "email_form_kTYnTY": {
+          "type": "email_form",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "heading_xeYAbR",
+        "paragraph_HhAk8V",
+        "email_form_kTYnTY"
+      ],
+      "custom_css": [],
+      "name": "t:sections.newsletter.presets.name",
+      "settings": {
+        "color_scheme": "scheme-3936c1f8-4b2b-44df-83ae-70ec9066eb4a",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "brand_information_iqJ6Rd": {
+          "type": "brand_information",
+          "settings": {
+            "show_social": true
+          }
+        },
+        "link_list_4hmxDU": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Quick links",
+            "menu": "icone-menu"
+          }
+        },
+        "link_list_VF9Jjy": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Categories",
+            "menu": "cate"
+          }
+        },
+        "link_list_kHTr4G": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Policies",
+            "menu": "footer"
+          }
+        }
+      },
+      "block_order": [
+        "brand_information_iqJ6Rd",
+        "link_list_4hmxDU",
+        "link_list_VF9Jjy",
+        "link_list_kHTr4G"
+      ],
+      "custom_css": [
+        ".footer-block__details-content li a {color: black !important;}"
+      ],
+      "settings": {
+        "color_scheme": "scheme-846af204-badb-46a7-b640-2ba102f72363",
+        "newsletter_enable": false,
+        "newsletter_heading": "Subscribe to our emails",
+        "enable_follow_on_shop": false,
+        "show_social": false,
+        "enable_country_selector": true,
+        "enable_language_selector": true,
+        "payment_enable": false,
+        "show_policy": false,
+        "margin_top": 0,
+        "padding_top": 36,
+        "padding_bottom": 20
+      }
+    }
+  },
+  "order": [
+    "newsletter_7pxELr",
+    "footer"
+  ]
+}

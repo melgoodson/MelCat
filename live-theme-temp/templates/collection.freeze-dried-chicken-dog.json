@@ -1,0 +1,337 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "settings": {
+        "show_collection_description": true,
+        "show_collection_image": false,
+        "color_scheme": "scheme-1"
+      }
+    },
+    "rich_text_AqK7yf": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_GULWFi": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Freeze Dried Chicken Dog Treats</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_RtEQhF": {
+          "type": "text",
+          "settings": {
+            "text": "<p></p><p></p>"
+          }
+        },
+        "button_VbJgge": {
+          "type": "button",
+          "disabled": true,
+          "settings": {
+            "button_label": "Button label",
+            "button_link": "",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        },
+        "text_J8c8tJ": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Why Freeze Dried Chicken Dog Treats Are a Great Choice for Your Pet</strong></p>"
+          }
+        },
+        "text_Urc8Hy": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Freeze dried chicken dog treats are one of the healthiest, simplest, and most loved snacks you can give your pup. Made from 100% human-grade chicken breast, these treats are high in lean protein, easy to digest, and perfect for dogs of all sizes. Unlike processed biscuits with fillers or preservatives, freeze dried chicken is pure, natural, and absolutely irresistible to dogs.</p><p>At Snarky Pets, we keep things simple: just one ingredient your pup will love. Whether you’re training, topping meals, or rewarding good behavior, freeze dried chicken treats are a guilt-free way to keep tails wagging.<br/><br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_GULWFi",
+        "text_RtEQhF",
+        "button_VbJgge",
+        "text_J8c8tJ",
+        "text_Urc8Hy"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "disabled": true,
+      "settings": {
+        "products_per_page": 16,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-1",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "enable_filtering": false,
+        "filter_type": "vertical",
+        "enable_sorting": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "featured_product_jMPgGA": {
+      "type": "featured-product",
+      "blocks": {
+        "text_GT6eKd": {
+          "type": "text",
+          "settings": {
+            "text": "{{ section.settings.product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title_9GyXpm": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h2"
+          }
+        },
+        "price_Yr3ffV": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker_bckE94": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector_EbJFaz": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons_L7imdj": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "share_dz4L8n": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "text_GT6eKd",
+        "title_9GyXpm",
+        "price_Yr3ffV",
+        "variant_picker_bckE94",
+        "quantity_selector_EbJFaz",
+        "buy_buttons_L7imdj",
+        "share_dz4L8n"
+      ],
+      "name": "t:sections.featured-product.presets.name",
+      "settings": {
+        "product": "chicken-dog-treats",
+        "color_scheme": "",
+        "secondary_background": false,
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rich_text_xbFPbM": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_ynjcCq": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong> Why Choose Freeze Dried Chicken Dog Treats?</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_faVBT6": {
+          "type": "text",
+          "settings": {
+            "text": "<p>When it comes to dog treats, less is more. Our freeze dried chicken treats contain only one ingredient: premium chicken breast. No fillers, no additives, no preservatives — just the nutrition your dog needs and the flavor they crave.<br/>Dogs thrive on high-protein diets, and chicken breast is one of the leanest, healthiest sources of protein available. It supports muscle strength, energy, and overall vitality. Plus, because these treats are single-ingredient, they’re gentle on sensitive stomachs and ideal for dogs with food allergies.<br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_ynjcCq",
+        "text_faVBT6"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_KaQxnw": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_rXpewP": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Benefits of Snarky Pets Freeze Dried Chicken Treats</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_zht9aM": {
+          "type": "text",
+          "settings": {
+            "text": "<h3><strong>🦴 High-Quality Protein</strong></h3><p>Protein powers everything from strong muscles to a healthy immune system. These treats give your dog the boost they need to stay active and strong without unnecessary calories or fillers.</p><h3><strong>🐾 Perfect for Training and Snacking</strong></h3><p>Lightweight, bite-sized, and easy to break apart, freeze-dried chicken treats make the ultimate training reward. They’re also convenient for hikes, walks, or quick everyday snacks.</p><h3><strong>🍗 100% Human-Grade Chicken</strong></h3><p>We don’t compromise on quality. Every treat is made with the same chicken breast you’d feel good eating yourself. That means no artificial ingredients, no junk, and nothing but goodness in every bite</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_rXpewP",
+        "text_zht9aM"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_AUanFq": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_UYQpe3": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>How to Use Freeze Dried Chicken Treats</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_AQxGdm": {
+          "type": "text",
+          "settings": {
+            "text": "<ul><li><strong>Training Rewards:</strong> Keep sessions fun and effective with tasty, protein-packed rewards.<br/><br/></li><li><strong>Meal Toppers:</strong> Crumble over kibble to tempt picky eaters.<br/></li><li><strong>Daily Snacks:</strong> A healthy way to spoil your pup without guilt.</li></ul>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_UYQpe3",
+        "text_AQxGdm"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_7GJRRB": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_Q6cWLY": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Why Snarky Pets?</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_faMV36": {
+          "type": "text",
+          "settings": {
+            "text": "<p>At Snarky Pets, we believe treats should be simple, healthy, and loved by pets. That’s why our freeze dried chicken treats are made from only one ingredient and sourced responsibly. Unlike mass-market treats with fillers and preservatives, ours deliver pure quality and flavor.</p><p>If you’re looking for a treat that combines taste, nutrition, and trust — this is it.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_Q6cWLY",
+        "text_faMV36"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_wVWxnC": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_xVMrXT": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>FAQs About Freeze Dried Chicken Dog Treats</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_G6zn6q": {
+          "type": "text",
+          "settings": {
+            "text": "<h3><strong>Are freeze dried chicken treats safe for puppies?</strong></h3><p>Yes, just break them into smaller pieces. The lean protein helps support growth.</p><h3><strong>Do these treats have preservatives?</strong></h3><p>Nope — just 100% chicken breast. Nothing else.</p><h3><strong>How do I store them?</strong></h3><p>In a cool, dry place. You can refrigerate or freeze for extra freshness.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_xVMrXT",
+        "text_G6zn6q"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "rich_text_AqK7yf",
+    "product-grid",
+    "featured_product_jMPgGA",
+    "rich_text_xbFPbM",
+    "rich_text_KaQxnw",
+    "rich_text_AUanFq",
+    "rich_text_7GJRRB",
+    "rich_text_wVWxnC"
+  ]
+}

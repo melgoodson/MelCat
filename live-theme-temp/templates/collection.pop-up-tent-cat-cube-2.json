@@ -1,0 +1,436 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "settings": {
+        "show_collection_description": true,
+        "show_collection_image": false,
+        "color_scheme": "scheme-1"
+      }
+    },
+    "rich_text_AqK7yf": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_GULWFi": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Cat Cube: Stylish Fun & Comfort for Your  Cat</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_RtEQhF": {
+          "type": "text",
+          "settings": {
+            "text": "<p></p><p></p>"
+          }
+        },
+        "button_VbJgge": {
+          "type": "button",
+          "disabled": true,
+          "settings": {
+            "button_label": "Button label",
+            "button_link": "",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        },
+        "text_Urc8Hy": {
+          "type": "text",
+          "settings": {
+            "text": "<p>If you want a pet accessory that seamlessly blends play, comfort, and style, a cat cube is your best bet. Over my 10 years working with feline behavior and home pet products, I’ve seen cats instantly gravitate toward cube-shaped hideaways—both for the privacy they offer and the sense of control they create.</p><p>Sexy Liza’s Pop Up Tent Cat Cube from Snarky Pets delivers exactly that. Measuring ~24″ long × 22″ high × 20″ wide, with a generous 14-inch entry hole, a neutral yet elegant design, mesh panels for airflow and visibility, and a lightweight collapsible structure—it’s perfect for cats that love lounging, hiding, or just observing their domain. In this article, I’ll explain why cubical hideouts are one of the best accessories you can get, compare with competitor options, and give you tips to choose, place, and enjoy a cat cube that makes both you and your cat happy. Let’s get started.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_GULWFi",
+        "text_RtEQhF",
+        "button_VbJgge",
+        "text_Urc8Hy"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "disabled": true,
+      "settings": {
+        "products_per_page": 16,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-1",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "enable_filtering": false,
+        "filter_type": "vertical",
+        "enable_sorting": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "featured_product_jMPgGA": {
+      "type": "featured-product",
+      "blocks": {
+        "text_GT6eKd": {
+          "type": "text",
+          "settings": {
+            "text": "{{ section.settings.product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title_9GyXpm": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h2"
+          }
+        },
+        "price_Yr3ffV": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker_bckE94": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector_EbJFaz": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons_L7imdj": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "share_dz4L8n": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "text_GT6eKd",
+        "title_9GyXpm",
+        "price_Yr3ffV",
+        "variant_picker_bckE94",
+        "quantity_selector_EbJFaz",
+        "buy_buttons_L7imdj",
+        "share_dz4L8n"
+      ],
+      "name": "t:sections.featured-product.presets.name",
+      "settings": {
+        "product": "cat-tube",
+        "color_scheme": "",
+        "secondary_background": false,
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rich_text_xbFPbM": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_ynjcCq": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Why the Cat Cube Is a Perfect Choice for Indoor Cats</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_faVBT6": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Cats love enclosed spaces because they feel safe. A cube provides four walls and a roof with an entrance that allows retreat. This satisfies their instinct to hide, rest, and watch without distractions.</p><ul><li><br/><strong>Privacy & Security:</strong> Cats often pick cube hideouts to nap or observe from behind secure walls. It gives shy or anxious cats a place to decompress.<br/></li><li><br/><strong>Ventilation & Visibility:</strong> Good cubes use mesh panels or vents so the cube doesn’t feel stuffy or isolating. Sexy Liza’s cube includes durable mesh windows that let your cat see out and you check in.<br/></li><li><br/><strong>Space Efficiency:</strong> The cube’s dimensions (24×22×20 in) offer plenty of room without being bulky. It fits bedrooms, corners, or near windows.<br/></li><li><br/><strong>Multi-Function Use:</strong> Cubes aren’t just beds; they’re observation posts, hiding spots, and play zones.</li></ul>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_ynjcCq",
+        "text_faVBT6"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_KaQxnw": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_rXpewP": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>What Makes the Snarky Pets Cat Cube Stand Out</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_zht9aM": {
+          "type": "text",
+          "settings": {
+            "text": "<p>After testing dozens of cubes and tents, here are the details that make this particular cube shine:</p><ul><li><br/><strong>Generous Entrance Hole:</strong> A 14-inch diameter opening makes it comfortable even for larger or “chonky” cats. No crouching or squeezing required.<br/></li><li><br/><strong>Connectivity:</strong> Zippered edges allow it to connect seamlessly to Snarky Pets’ Cat Tunnel, so your cat gets extended play space or a modular combo layout.<br/></li><li><br/><strong>Collapsible & Lightweight:</strong> Pop-open design, fold-flat storage. Great for setups that need flexibility or for people who move things around often.<br/></li><li><br/><strong>Sleek, Neutral Style:</strong> Grey/black tones blend with most interiors; no loud colors or pet-only aesthetics. Looks good even when it’s just sitting in your living room.<br/></li><li><br/><strong>Mesh Ventilation:</strong> Ensures airflow and helps reduce odor or humidity buildup. Also allows your cat to peek outside, which many enjoy.</li></ul>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_rXpewP",
+        "text_zht9aM"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_7GJRRB": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_Q6cWLY": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Key Benefits You’ll Notice Quickly</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_faMV36": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Faster Calm for Anxious Cats</strong> – I’ve fostered nervous cats who didn’t rest comfortably until given a cube hideout. Once they had one, behavior softened.<br/><strong>Reduced Furniture Damage</strong> – Cats often abandon couch arms or curtains once they have an appealing alternative.<br/><strong>Room for Play + Rest</strong> – They dash in, retreat, nap, and observe—without needing multiple pieces of furniture.<br/><strong>Cleaner, Neater Look</strong> – Compared to big cat trees or overly bright beds, a cube adds function without clutter.<br/><strong>Easy Clean & Maintain</strong> – Light enough to move; mesh lets you spot clean; collapsible for storage on busy days.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_Q6cWLY",
+        "text_faMV36"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_8atpqp": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_7jTBtL": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>How to Choose the Right Cat Cube for You & Your Cat</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_cE7LyU": {
+          "type": "text",
+          "settings": {
+            "text": "<p>From my experience, these features are the ones you should prioritize:</p><ul><li><br/><strong>Entry size</strong>: For larger cats, ensure the hole is at least ~14 in diameter.<br/></li><li><br/><strong>Interior room</strong>: Enough space to stretch, rest, or stand under without hitting the cube top.<br/></li><li><br/><strong>Material durability</strong>: Reinforced seams, sturdy mesh vents. Avoid thin fabric that tears.<br/></li><li><br/><strong>Connection options</strong>: If you want to link with tunnels or other cubes, check for connectors or zippers (like the Snarky Pets version).<br/></li><li><br/><strong>Fold-flat storage</strong>: If space is limited, look for cubes that collapse easily and can be moved under beds or closets.</li></ul>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_7jTBtL",
+        "text_cE7LyU"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_QNTdcA": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_Q7drgC": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Placement Tips & Usage Examples</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_Ff8GJk": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Put the cube near quiet but familiar areas—by windows, near beds, or beside favorite lounging chairs.<br/>If connecting to the cat tunnel, create an “adventure zone” that leads from cube → tunnel → cube for maximal fun.<br/><br/>Rotate cubes between rooms to keep novelty alive.<br/>Use inside during visitors or when noises are loud—cats love retreats to escape noise.<br/>For everyday engagement, toss a toy or small ball in the cube; they’ll surprise themselves.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_Q7drgC",
+        "text_Ff8GJk"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_PVmERH": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_hDNwXi": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Care & Maintenance</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_Yy87Jm": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Vacuum interior and mesh walls regularly to reduce fur build-up.<br/>Spot clean with mild soap; keep mesh dry to avoid mildew.<br/>Periodically check seams & zippers, especially the ones used to connect to tunnels.<br/>Fold and store when not in use for long periods, especially in climates with humidity.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_hDNwXi",
+        "text_Yy87Jm"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_wVWxnC": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_xVMrXT": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>FAQs</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_G6zn6q": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>1. Can big cats comfortably fit in this Cat Cube?</strong><br/>Yes. With a 14-inch entrance and roomy interior (~24×22×20 in), it’s designed to accommodate larger cats so they can enter, stretch, and move comfortably without strain.</p><p><strong>2. Is the cube safe to leave out all the time?</strong><br/>For indoor use—absolutely. It’s stable, ventilated, and safe. If you connect it to a tunnel, ensure transitions are smooth and that zippers are secure. Rotate its position occasionally and clean regularly.</p><p><strong>3. How do I clean or store this Cat Cube when not in use?</strong><br/>Spot clean with gentle soap, avoid soaking mesh. Fully air dry before storage. It collapses flat, so fold it up and stash it in a closet or under furniture to save space.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_xVMrXT",
+        "text_G6zn6q"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "collection_list_xQTnje": {
+      "type": "collection-list",
+      "blocks": {
+        "featured_collection_6yWXCd": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "cat-needs"
+          }
+        },
+        "featured_collection_K9DKHW": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "toys"
+          }
+        },
+        "featured_collection_iQWE9T": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "pet-treats"
+          }
+        }
+      },
+      "block_order": [
+        "featured_collection_6yWXCd",
+        "featured_collection_K9DKHW",
+        "featured_collection_iQWE9T"
+      ],
+      "name": "t:sections.collection-list.presets.name",
+      "settings": {
+        "title": "You May Also Like",
+        "heading_size": "h1",
+        "image_ratio": "square",
+        "columns_desktop": 3,
+        "color_scheme": "",
+        "show_view_all": false,
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "rich_text_AqK7yf",
+    "product-grid",
+    "featured_product_jMPgGA",
+    "rich_text_xbFPbM",
+    "rich_text_KaQxnw",
+    "rich_text_7GJRRB",
+    "rich_text_8atpqp",
+    "rich_text_QNTdcA",
+    "rich_text_PVmERH",
+    "rich_text_wVWxnC",
+    "collection_list_xQTnje"
+  ]
+}

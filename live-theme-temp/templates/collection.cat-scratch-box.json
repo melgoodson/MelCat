@@ -1,0 +1,443 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "settings": {
+        "show_collection_description": true,
+        "show_collection_image": false,
+        "color_scheme": "scheme-1"
+      }
+    },
+    "rich_text_AqK7yf": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_GULWFi": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Cat Scratch Box: The Stylish, Safe Way to Satisfy Your Cat’s Claws</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_RtEQhF": {
+          "type": "text",
+          "settings": {
+            "text": "<p></p><p></p>"
+          }
+        },
+        "button_VbJgge": {
+          "type": "button",
+          "disabled": true,
+          "settings": {
+            "button_label": "Button label",
+            "button_link": "",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        },
+        "text_J8c8tJ": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Why Peanut Butter Dog Treats Are a Great Choice for Your Pet</strong></p>"
+          }
+        },
+        "text_Urc8Hy": {
+          "type": "text",
+          "settings": {
+            "text": "<p>If your cat has ever turned your couch or curtains into their personal scratching post, you’re not alone—and it’s not just bad manners, it’s instinct. Cats scratch to sharpen claws, stretch muscles, mark territory, and relieve stress. Over my 10 years of working with cats, I’ve discovered that a cat scratch box—especially one made from durable materials—can redirect destructive behavior toward something better, while actually looking good in your home.</p><p>In this guide, I’ll explain why a scratch box is a smarter alternative to traditional posts, draw from competitor insights, and share tips on picking, placing, and training your cat to use it. You’ll learn how to protect your furniture, support your cat’s wellbeing, and maintain a stylish space all at once.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_GULWFi",
+        "text_RtEQhF",
+        "button_VbJgge",
+        "text_J8c8tJ",
+        "text_Urc8Hy"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "disabled": true,
+      "settings": {
+        "products_per_page": 16,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-1",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "enable_filtering": false,
+        "filter_type": "vertical",
+        "enable_sorting": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "featured_product_jMPgGA": {
+      "type": "featured-product",
+      "blocks": {
+        "text_GT6eKd": {
+          "type": "text",
+          "settings": {
+            "text": "{{ section.settings.product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title_9GyXpm": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h2"
+          }
+        },
+        "price_Yr3ffV": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker_bckE94": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector_EbJFaz": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons_L7imdj": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "share_dz4L8n": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "text_GT6eKd",
+        "title_9GyXpm",
+        "price_Yr3ffV",
+        "variant_picker_bckE94",
+        "quantity_selector_EbJFaz",
+        "buy_buttons_L7imdj",
+        "share_dz4L8n"
+      ],
+      "name": "t:sections.featured-product.presets.name",
+      "settings": {
+        "product": "small-cat-scratch-box",
+        "color_scheme": "",
+        "secondary_background": false,
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rich_text_xbFPbM": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_ynjcCq": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Why Cats Need a Scratch Box—and Why You Do Too</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_faVBT6": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Natural Behavior, Real Consequence<br/></strong> Cats scratch for multiple reasons: claw maintenance, muscle stretching, marking territory chemically, and emotional release. Without an acceptable outlet, furniture becomes the victim. A proper scratcher supports physical and mental health while preserving your décor.</p><p><strong>Stress Relief and Harmony</strong> Scratching is a self-soothing action. For multi-cat households, shared scratch surfaces can reduce territorial tensions.<br/><br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_ynjcCq",
+        "text_faVBT6"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_KaQxnw": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_rXpewP": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Key Features to Look for in a Cat Scratch Box</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_zht9aM": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Here’s how I choose the best ones after testing dozens:</p><h3><strong>Durable & Attractive Materials</strong></h3><p>Quality scratch boxes use thick corrugated cardboard, replaceable inserts, and sturdy construction. Bonus points for style—vibrant honeycomb patterns or neutral hues that won't clash with home décor.<br/><br/></p><h3><strong>Size That Cats Love</strong></h3><p>Your box should allow stretching, lounging, and even base-nesting. A generous size—around 17\" x 13\" x 8\"—works for larger cats and multi-cat lounging.<br/><br/></p><h3><strong>Playful Design Elements</strong></h3><p>Peekaboo holes or cutouts add engagement. Cats love poking paws, hiding, or watching motion through these windows.<br/><br/></p><p><strong>Easy Maintenance</strong></p><p>Most top models come with replaceable scratch pads; some washable cushions. Look for tool-free pad swaps and wipe-clean surfaces.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_rXpewP",
+        "text_zht9aM"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_7GJRRB": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_Q6cWLY": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Personal Insights: Why I Recommend Scratch Boxes Every Time</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_faMV36": {
+          "type": "text",
+          "settings": {
+            "text": "<p>I’ve tested everything from simple posts to elaborate towers. A few examples:</p><ul><li><strong>The couch devotee cat</strong>: A cat in my care was relentless in clawing armrests—until I placed a sleek scratch box nearby. Within days, the fabric was spared.<br/><br/></li><li><strong>The overwhelmed multi-cat home</strong>: A client with three cats found peace once each had their scratch box. No more tension; no more scratched chairs.<br/><br/></li></ul><p><strong>Aesthetic win</strong>: One instance stands out—home décor met cat needs. A designer scratch box doubled as a coffee table accent, and guests couldn’t believe it was for cats (until they peeked inside).</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_Q6cWLY",
+        "text_faMV36"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_8atpqp": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_7jTBtL": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>How to Introduce Your Cat to the Scratch Box</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_cE7LyU": {
+          "type": "text",
+          "settings": {
+            "text": "<ol><li><strong>Prime with familiar scents</strong> – rub a towel on your cat’s face or inside the box.<br/><br/></li><li><strong>Use interactive rewards</strong> – place treats or sprinkle catnip near scratch surfaces.<br/><br/></li><li><strong>Replicate natural placement</strong> – situate near their favorite stretching areas, like next to a window or post-nap spot.<br/><br/></li></ol><p><strong>Encourage with play</strong> – feather toys traced along the box edges attract cats quickly.<br/><br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_7jTBtL",
+        "text_cE7LyU"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_QNTdcA": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_Q7drgC": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Placement & Care Tips</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_Ff8GJk": {
+          "type": "text",
+          "settings": {
+            "text": "<ul><li><strong>Spread throughout the house</strong> – especially near sleeping and entry areas.<br/><br/></li><li><strong>Buy multiples for multi-cat homes</strong> – each needs their own space to avoid conflict.<br/><br/></li><li><strong>Rotate positions occasionally</strong> – keeps things novel.<br/><br/></li></ul><p><strong>Replace scratch inserts every few months</strong> – ensures satisfaction, longevity.<br/><br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_Q7drgC",
+        "text_Ff8GJk"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_PVmERH": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_hDNwXi": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Final Takeaway</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_Yy87Jm": {
+          "type": "text",
+          "settings": {
+            "text": "<p>A well-chosen <strong>cat scratch box</strong> is a win-win. It satisfies your cat’s instincts, protects your furniture, and enhances your home’s aesthetic. From playful tunnels to elegantly simple scratchers, the right product keeps claws sharp and your heart full. Try one today—you might see less furniture damage, less tension, and more cozy cat naps sooner than you expect.<br/><br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_hDNwXi",
+        "text_Yy87Jm"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_wVWxnC": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_xVMrXT": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>FAQs</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_G6zn6q": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>1. How often should I replace the scratch insert?<br/></strong> Every 3–6 months for average use; sooner if your cat is heavy on the paws or uses it nightly.</p><p><strong>2. Do cats scratch cardboard as well as sisal?<br/></strong> Yes—cardboard is softer, offers satisfying texture, and is especially appealing when paired with activity or hiding cues.</p><p><strong>3. How many scratch boxes should a multi-cat home have?</strong> Provide at least one box per cat, ideally plus one extra to reduce competition and provide variety.<br/><br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_xVMrXT",
+        "text_G6zn6q"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "collection_list_CaA6qf": {
+      "type": "collection-list",
+      "blocks": {
+        "featured_collection_xhWdbF": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "cat-needs"
+          }
+        },
+        "featured_collection_eYmeHX": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "toys"
+          }
+        },
+        "featured_collection_tRyYzP": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "pet-treats"
+          }
+        }
+      },
+      "block_order": [
+        "featured_collection_xhWdbF",
+        "featured_collection_eYmeHX",
+        "featured_collection_tRyYzP"
+      ],
+      "name": "t:sections.collection-list.presets.name",
+      "settings": {
+        "title": "You May Also Like",
+        "heading_size": "h1",
+        "image_ratio": "square",
+        "columns_desktop": 3,
+        "color_scheme": "",
+        "show_view_all": false,
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "rich_text_AqK7yf",
+    "product-grid",
+    "featured_product_jMPgGA",
+    "rich_text_xbFPbM",
+    "rich_text_KaQxnw",
+    "rich_text_7GJRRB",
+    "rich_text_8atpqp",
+    "rich_text_QNTdcA",
+    "rich_text_PVmERH",
+    "rich_text_wVWxnC",
+    "collection_list_CaA6qf"
+  ]
+}

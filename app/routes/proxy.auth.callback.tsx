@@ -67,7 +67,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         claimMessage
           ? `${claimMessage} Redirecting to your library...`
           : "You're verified! Redirecting to your library...",
-        "/apps/snarky/library"
+        `/apps/snarky/library?token=${sessionToken}`
       ),
       {
         status: 200,

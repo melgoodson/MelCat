@@ -1,0 +1,465 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "settings": {
+        "show_collection_description": true,
+        "show_collection_image": false,
+        "color_scheme": "scheme-1"
+      }
+    },
+    "rich_text_AqK7yf": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_GULWFi": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Rudy’s “I’m Begging for” Freeze Dried Beef Liver Dog Treats: A Real Treat with Real Nutrition</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_RtEQhF": {
+          "type": "text",
+          "settings": {
+            "text": "<p></p><p></p>"
+          }
+        },
+        "button_VbJgge": {
+          "type": "button",
+          "disabled": true,
+          "settings": {
+            "button_label": "Button label",
+            "button_link": "",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        },
+        "text_J8c8tJ": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>A Treat That Does More Than Taste Good</strong></p>"
+          }
+        },
+        "text_Urc8Hy": {
+          "type": "text",
+          "settings": {
+            "text": "<p>After working with dogs for over a decade, I’ve learned that not all treats are created equal. If you're looking for a treat that’s both healthy and irresistible, freeze dried beef liver treats are a great option. Rudy’s “I’m Begging for” Freeze Dried Beef Liver Treats are a staple in my training toolkit because they check all the boxes—high-quality ingredients, excellent nutritional value, and a flavor dogs can’t resist. Whether you're training a puppy or rewarding a senior dog, these treats are perfect for all ages and sizes.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_GULWFi",
+        "text_RtEQhF",
+        "button_VbJgge",
+        "text_J8c8tJ",
+        "text_Urc8Hy"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "disabled": true,
+      "settings": {
+        "products_per_page": 16,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-1",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "enable_filtering": false,
+        "filter_type": "vertical",
+        "enable_sorting": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "featured_product_jMPgGA": {
+      "type": "featured-product",
+      "blocks": {
+        "text_GT6eKd": {
+          "type": "text",
+          "settings": {
+            "text": "{{ section.settings.product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title_9GyXpm": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h1"
+          }
+        },
+        "price_Yr3ffV": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker_bckE94": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector_EbJFaz": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons_L7imdj": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "share_dz4L8n": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "text_GT6eKd",
+        "title_9GyXpm",
+        "price_Yr3ffV",
+        "variant_picker_bckE94",
+        "quantity_selector_EbJFaz",
+        "buy_buttons_L7imdj",
+        "share_dz4L8n"
+      ],
+      "name": "t:sections.featured-product.presets.name",
+      "settings": {
+        "product": "liver-treats-for-dogs",
+        "color_scheme": "",
+        "secondary_background": false,
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rich_text_xbFPbM": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_ynjcCq": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>What's Inside Counts: Why Beef Liver Works</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_faVBT6": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Rudy’s Freeze Dried Beef Liver Treats are made with 100% USDA beef liver—no grains, fillers, or artificial additives. This single-ingredient purity makes them ideal for dogs with sensitive stomachs or dietary restrictions. Beef liver is a powerhouse of nutrients that provide:<br/><br/>●Protein for muscle repair and energy<br/>●Vitamin A to support eye health and immunity<br/>●B Vitamins for better metabolism and nervous system function<br/>●Iron and essential minerals to promote overall vitality<br/><br/>Not only does it boost your dog’s energy and focus during training, but the rich aroma makes it irresistible to even the pickiest eaters. After switching to Rudy’s beef liver treats, my rescue dog, Tank, showed a noticeable improvement in coat shine and energy.<br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_ynjcCq",
+        "text_faVBT6"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_KaQxnw": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_rXpewP": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>The Freeze Drying Advantage</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_zht9aM": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Freeze-drying is a key factor in preserving the natural benefits of beef liver. Unlike other preservation methods that can degrade nutrients through heat, freeze-drying locks in all the essential vitamins, minerals, and enzymes. The result is a treat that’s as nutritious as it is tasty. Plus, the freeze-drying process keeps the treats lightweight and shelf-stable, making them perfect for on-the-go pet parents.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_rXpewP",
+        "text_zht9aM"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_AUanFq": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_UYQpe3": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>What Sets Rudy’s Treats Apart</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_AQxGdm": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>●Single Ingredient, Pure Purpose</strong><br/>These treats are made from 100% USDA beef liver—nothing else. This makes them an excellent choice for dogs with food sensitivities, allergies, or digestive issues. You know exactly what you're giving your dog, and there are no hidden ingredients.<br/><br/><strong>●Small Batch Production</strong><br/> Rudy’s treats are crafted in small batches to ensure quality and consistency. This attention to detail results in a premium product you can trust for your pet.<br/><br/><strong>●Resealable Packaging</strong><br/>The resealable pouch keeps the treats fresh and easy to transport. Whether you’re training at the park or taking a walk, you can carry them with you without worrying about spoilage.<br/><br/><strong>●Subscription Options & Satisfaction Guarantee</strong><br/>Rudy’s treats are available with a subscription option, offering a 15% discount on regular deliveries. Plus, they come with a 30-day money-back guarantee, so you can shop with confidence.<br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_UYQpe3",
+        "text_AQxGdm"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_7GJRRB": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_Q6cWLY": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Health Benefits for Your Dog</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_faMV36": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>●Low-Calorie, High-Reward</strong><br/>These treats are high in nutritional value but low in calories, making them perfect for training without overloading your dog with excess weight.<br/><br/><strong>●Ideal for Picky Eaters and Dogs with Allergies</strong><br/>The single-ingredient formula makes these treats perfect for dogs with food sensitivities or picky eating habits. The natural aroma also encourages dogs to pay attention and focus during training sessions.<br/><br/><strong>●Supports Immunity, Skin, and Energy</strong><br/>Packed with vitamins A and B, and essential minerals like iron, these treats support your dog’s immune system, promote healthy skin, and boost overall energy levels. Many pet owners notice an improvement in their dog’s coat and vitality after introducing these freeze dried treats.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_Q6cWLY",
+        "text_faMV36"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_8atpqp": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_7jTBtL": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>How to Use These Treats Effectively</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_cE7LyU": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>●For Training</strong><br/>Rudy’s Freeze Dried Beef Liver Treats are perfect for positive reinforcement. You can break them into smaller pieces for small dogs or puppies, and give whole treats for bigger milestones like vet visits or nail trimming.<br/><br/><strong>●As a Meal Topper</strong><br/>Add a few crumbles to your dog’s regular food to make mealtime more enticing, especially for picky eaters.<br/><br/><strong>●For Special Diets</strong><br/>These treats are low in calories but packed with nutrients, making them suitable for dogs on weight management plans or those with special dietary needs.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_7jTBtL",
+        "text_cE7LyU"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_ReEm6p": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_nATef3": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>What Dog Parents Are Saying</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_txBnKV": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Brittany T. says, “Loves it! My dog’s favorite treat.” These treats are so delicious that dogs devour them quickly, and owners feel confident in the nutritional quality they’re providing.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_nATef3",
+        "text_txBnKV"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_QNTdcA": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_Q7drgC": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>My Final Take as an Expert</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_Ff8GJk": {
+          "type": "text",
+          "settings": {
+            "text": "<p>As a dog trainer and pet care professional, I’ve worked with countless treats, and Rudy’s “I’m Begging for” Freeze Dried Beef Liver Treats stand out for their transparency, nutritional value, and flavor. Here’s why I often recommend them:<br/><br/><strong>●Honest Ingredients</strong><br/>No fillers, no additives—just pure beef liver.<br/><br/><strong>●Freeze-Drying Preserves Quality</strong><br/>This method locks in all the nutrients and flavors your dog loves.<br/><br/><strong>●Versatile Usage</strong><br/>Whether for training, mealtime enhancement, or just a tasty reward, these treats fit perfectly into any routine.<br/><br/><strong>●Convenience & Savings</strong><br/>With resealable packaging, subscription options, and a satisfaction guarantee, Rudy’s treats offer peace of mind for pet parents.<br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_Q7drgC",
+        "text_Ff8GJk"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_GNmtfi": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_7TVE8n": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Conclusion</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_GFPC4H": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Treat your dog to something they’ll love and benefit from. Rudy’s “I’m Begging for” Freeze Dried Beef Liver Treats offer a perfect blend of taste and nutrition, making them an ideal addition to your dog’s routine. Ready to upgrade your dog’s treat game? Order a 4 oz pouch today or subscribe for 15% off and ensure you always have a supply of these dog-approved treats.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_7TVE8n",
+        "text_GFPC4H"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_wVWxnC": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_xVMrXT": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>FAQs</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_G6zn6q": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>1. Are these treats safe for puppies?</strong><br/>Yes! Just break them into smaller pieces based on your puppy’s size. These treats are a healthy, single-ingredient option perfect for young dogs.<br/><br/><strong>2. Can dogs with allergies eat these treats?</strong><br/>Definitely. With only one ingredient—100% USDA beef liver—these treats are free from grains, fillers, and artificial additives, making them perfect for dogs with food sensitivities.<br/><strong><br/>3. How many treats can I give my dog per day?</strong><br/>These treats should be given in moderation. I typically recommend around ½ to 1 oz per day, depending on your dog’s size. Adjust portions based on their individual health and diet needs.<br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_xVMrXT",
+        "text_G6zn6q"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "rich_text_AqK7yf",
+    "product-grid",
+    "featured_product_jMPgGA",
+    "rich_text_xbFPbM",
+    "rich_text_KaQxnw",
+    "rich_text_AUanFq",
+    "rich_text_7GJRRB",
+    "rich_text_8atpqp",
+    "rich_text_ReEm6p",
+    "rich_text_QNTdcA",
+    "rich_text_GNmtfi",
+    "rich_text_wVWxnC"
+  ]
+}

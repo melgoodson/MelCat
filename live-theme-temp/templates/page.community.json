@@ -1,0 +1,107 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "rich_text_arbEqq": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_f7VAtY": {
+          "type": "heading",
+          "settings": {
+            "heading": "😻 Snarky Community 😻",
+            "heading_size": "h1"
+          }
+        },
+        "text_Na7qeK": {
+          "type": "text",
+          "settings": {
+            "text": "<p>🐾 Welcome to the Snarky Pet Community! At Snarky Pets, we believe pets aren't just animals — they're family, best friends, and full-blown weirdos (just like us!). Our community is a place for proud pet parents to share laughs, life hacks, and everyday fur-baby chaos.📸 </p><p><strong>Share Your Snark!</strong></p><p>We LOVE seeing your pets being their quirky, goofy, and snuggly selves. </p><p>Tag us on TikTok or Instagram @SnarkyPets and use #SnarkyFurFam to be featured on our site or social media!💬 </p><p>Connect with Other Pet PeopleFrom crate-training fails to spa day wins, our pet community is all about! 🎉 </p><p>Join the PackStay snarky. Stay spoiled. Stay in the loop.Your pet is already a star — we’re just here to make it official. 🐾</p><p>Snarky Pet: Where sass meets snuggles.<br/><br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_f7VAtY",
+        "text_Na7qeK"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "1753021347f72616df": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_QeAH9g": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "disabled": true,
+          "settings": {
+            "title": "",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_QeAH9g"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "17530214259d1511ce": {
+      "type": "apps",
+      "blocks": {
+        "juniper_tiktok_feed_mintty_tiktok_feed_BYCpU6": {
+          "type": "shopify://apps/mintt-tiktok-feed/blocks/mintty-tiktok-feed/fa514c33-5475-4484-b270-5f1e7eb87a9a",
+          "settings": {
+            "title": "",
+            "title_color": "",
+            "alignment": "center",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "juniper_tiktok_feed_mintty_tiktok_feed_BYCpU6"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "rich_text_arbEqq",
+    "1753021347f72616df",
+    "17530214259d1511ce"
+  ]
+}

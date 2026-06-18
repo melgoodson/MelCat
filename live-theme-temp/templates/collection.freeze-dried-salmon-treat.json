@@ -1,0 +1,433 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "settings": {
+        "show_collection_description": true,
+        "show_collection_image": false,
+        "color_scheme": "scheme-1"
+      }
+    },
+    "rich_text_AqK7yf": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_GULWFi": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Freeze Dried Beef Dog Treats: A Healthy, Irresistible Snack for Your Dog</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_RtEQhF": {
+          "type": "text",
+          "settings": {
+            "text": "<p></p><p></p>"
+          }
+        },
+        "button_VbJgge": {
+          "type": "button",
+          "disabled": true,
+          "settings": {
+            "button_label": "Button label",
+            "button_link": "",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        },
+        "text_J8c8tJ": {
+          "type": "text",
+          "settings": {
+            "text": "<h2>Why Freeze Dried Beef  Dog Treats Are  Essential for Your Pup</h2>"
+          }
+        },
+        "text_Urc8Hy": {
+          "type": "text",
+          "settings": {
+            "text": "<p>As pet owners, we strive to provide our dogs with treats that are not only tasty but also beneficial for their health. Among the many options available, freeze dried beef  dog treats stand out for their incredible nutritional value and irresistible flavor. These nutrient-packed snacks support your dog’s overall well-being while satisfying their cravings. In this guide, we’ll dive into the benefits of freeze dried beef dog treats, how to choose the best ones, and why these treats should be part of your dog's diet.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_GULWFi",
+        "text_RtEQhF",
+        "button_VbJgge",
+        "text_J8c8tJ",
+        "text_Urc8Hy"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "disabled": true,
+      "settings": {
+        "products_per_page": 16,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-1",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "enable_filtering": false,
+        "filter_type": "vertical",
+        "enable_sorting": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "featured_product_jMPgGA": {
+      "type": "featured-product",
+      "blocks": {
+        "text_GT6eKd": {
+          "type": "text",
+          "settings": {
+            "text": "{{ section.settings.product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title_9GyXpm": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h2"
+          }
+        },
+        "price_Yr3ffV": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker_bckE94": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector_EbJFaz": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons_L7imdj": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "share_dz4L8n": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "text_GT6eKd",
+        "title_9GyXpm",
+        "price_Yr3ffV",
+        "variant_picker_bckE94",
+        "quantity_selector_EbJFaz",
+        "buy_buttons_L7imdj",
+        "share_dz4L8n"
+      ],
+      "name": "t:sections.featured-product.presets.name",
+      "settings": {
+        "product": "dog-meatball-treats",
+        "color_scheme": "",
+        "secondary_background": false,
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rich_text_xbFPbM": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_ynjcCq": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>What Are Freeze Dried Beef Dog Treats?</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_faVBT6": {
+          "type": "text",
+          "settings": {
+            "text": "<h6>Freeze drying is an excellent option for preserving the nutrients, flavor, and aroma of food. Freeze dried beef dog treats are made from wild-caught beef, preserving its high-quality protein, omega-3 fatty acids, and essential vitamins. Unlike many other treats, they are free from preservatives, fillers, and artificial additives, making them an ideal choice for dogs with food sensitivities or allergies.</h6><h6>Freeze beef is packed with omega-3 fatty acids, which support a healthy coat, joint mobility, and heart health. By adding freeze dried beef dog treats to your dog’s diet, you’re providing them with a treat that’s both delicious and full of health benefits.</h6>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_ynjcCq",
+        "text_faVBT6"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_KaQxnw": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_rXpewP": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>The Health Benefits of Snarky Pets' Dog Meatball Treats</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_zht9aM": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>High-Quality Protein for Muscle Development</strong><br/>Protein is essential for muscle repair and growth, and these meatball treats are a fantastic source of it. Whether you have an active dog or one that’s recovering from an injury, the protein in these treats supports your dog’s muscle health and helps them stay strong and energized.<br/><br/><strong>No Additives or Preservatives</strong><br/>Unlike many commercial dog treats that are loaded with preservatives and fillers, Snarky Pets' Dog Meatball Treats are made with only natural ingredients. This means your dog is getting a clean, healthy snack that you can feel good about giving them.<br/><br/><strong>Supports Joint Health</strong><br/>These treats help support your dog’s joint health, thanks to the high-quality protein and the natural fats they contain. For older dogs or those with joint issues, this can be particularly beneficial, as it can reduce inflammation and improve mobility.<br/><br/><strong>Suitable for Dogs of All Ages</strong><br/>Whether you have a puppy, an adult dog, or a senior dog, these meatballs are suitable for all stages of life. The treats are gentle on their stomachs and provide essential nutrients that are perfect for growing puppies or senior dogs.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_rXpewP",
+        "text_zht9aM"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_AUanFq": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_UYQpe3": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Why Choose Snarky Pets’ Dog Meatball Treats Over Other Dog Treats?</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_AQxGdm": {
+          "type": "text",
+          "settings": {
+            "text": "<p>●Protein-Packed: These meatball treats provide a premium source of protein, essential for muscle development and overall strength.<br/>●Natural Ingredients: Made with 100% natural ingredients and free from harmful chemicals, preservatives, and additives.<br/>●Great Flavor: Snarky Pets’ meatball treats are so delicious that your dog will be begging for more. Even the pickiest eaters will love them!<br/>●Ethically Sourced: The ingredients used in Snarky Pets' treats are responsibly sourced, ensuring high quality and sustainability.<br/><br/><br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_UYQpe3",
+        "text_AQxGdm"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_7GJRRB": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_Q6cWLY": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>How to Incorporate Snarky Pets’ Dog Meatball Treats into Your Dog’sDiet</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_faMV36": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Use Them for Training</strong><br/>Snarky Pets’ Dog Meatball Treats are the perfect size for training sessions. Their strong flavor and small size make them ideal for rewarding your dog during training, keeping them motivated and focused.<br/><br/><strong>Healthy Snack Between Meals</strong><br/>These meatballs are great for when you want to give your dog a healthy snack between meals. Whether you’re at home or on the go, these treats are easy to carry and serve.<br/><strong><br/>Top Your Dog’s Food</strong><br/>If your dog is a picky eater, crumble these meatballs on top of their food to add extra flavor and protein. This will make mealtime more exciting and nutritious.<br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_Q6cWLY",
+        "text_faMV36"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_8atpqp": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_7jTBtL": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Optimizing the Experience with Snarky Pets’ Dog Meatball Treats</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_cE7LyU": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Incorporating Snarky Pets' Dog Meatball Treats into your dog’s diet is easy. You can use these treats to:</p><p><br/>●Enhance Training Sessions: Use the meatballs as rewards to reinforce positive behavior during training sessions.<br/>●Boost Mealtime: Add them to your dog’s regular meals to boost flavor and nutrition.<br/>●Reward Good Behavior: Whether your dog has just learned a new trick or behaved well, reward them with these healthy treats to reinforce good behavior.<br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_7jTBtL",
+        "text_cE7LyU"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_849fgp": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_PXi69P": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Choosing the Right Dog Meatball Treats</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_pF4tcg": {
+          "type": "text",
+          "settings": {
+            "text": "<p>When selecting the best treats for your dog, always look for:</p><p><br/>●Natural Ingredients: Choose treats made from 100% natural ingredients with no added preservatives.<br/>●Ethical Sourcing: Ensure the treats come from responsibly sourced ingredients.<br/>●Health Benefits: Look for treats that provide more than just taste—opt for treats that offer additional health benefits like protein and joint support.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_PXi69P",
+        "text_pF4tcg"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_QNTdcA": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_Q7drgC": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Conclusion: Give Your Dog the Best with SnarkyPets’ Dog Meatball Treats</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_Ff8GJk": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Snarky Pets' Dog Meatball Treats are the perfect way to treat your dog while ensuring they get the nutrition they need. These protein-rich, natural treats are great for training, rewarding, or simply treating your dog to something special. They are the healthy choice you can feel good about giving your dog.<br/><br/><br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_Q7drgC",
+        "text_Ff8GJk"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_wVWxnC": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_xVMrXT": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>FAQs About Snarky Pets’ Dog Meatball Treats</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_G6zn6q": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>1.Can I give my dog Snarky Pets’ meatball treats every day?</strong><br/> Yes! These treats are safe for daily use, but they should be given in moderation to avoid overfeeding.<br/><br/><strong>2.Are these treats suitable for puppies?</strong><br/> Yes, Snarky Pets’ meatball treats are safe for puppies. Just ensure the portion size is appropriate for their age and size.<br/><br/><strong>3.How should I store these meatball treats?</strong><br/> Store Snarky Pets' Dog Meatball Treats in an airtight container in a cool, dry place to maintain freshness. For longer shelf life, you can also freeze them.<br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_xVMrXT",
+        "text_G6zn6q"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "rich_text_AqK7yf",
+    "product-grid",
+    "featured_product_jMPgGA",
+    "rich_text_xbFPbM",
+    "rich_text_KaQxnw",
+    "rich_text_AUanFq",
+    "rich_text_7GJRRB",
+    "rich_text_8atpqp",
+    "rich_text_849fgp",
+    "rich_text_QNTdcA",
+    "rich_text_wVWxnC"
+  ]
+}

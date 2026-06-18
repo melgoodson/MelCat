@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Big Mel - Full Feature Guide</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: #2d1b0d;
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background-color: #fffdf8;
+    }
+    h1.main-title {
+      font-size: 2.2em;
+      color: #2d1b0d;
+      border-bottom: 3px solid #f28c28;
+      padding-bottom: 12px;
+      margin-bottom: 4px;
+    }
+    .subtitle {
+      color: #888;
+      font-size: 0.95em;
+      margin-bottom: 32px;
+    }
+    h2.section-title {
+      font-size: 1.5em;
+      color: #fff;
+      background: linear-gradient(135deg, #2d1b0d 0%, #6b4019 100%);
+      padding: 12px 20px;
+      border-radius: 10px;
+      margin: 40px 0 16px;
+    }
+    h3 {
+      color: #f28c28;
+      margin-top: 0;
+      margin-bottom: 6px;
+    }
+    ul {
+      margin: 8px 0 0 0;
+      padding-left: 20px;
+    }
+    li { margin-bottom: 8px; }
+    em { color: #888; font-style: italic; }
+    .box {
+      border: 1.5px solid #f5e0c0;
+      background: #fff;
+      padding: 18px 22px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+    }
+    .box-dark {
+      border: 1.5px solid #c9853a;
+      background: #fdf3e7;
+      padding: 18px 22px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+    }
+    .badge {
+      display: inline-block;
+      background: #f28c28;
+      color: #fff;
+      font-size: 0.7em;
+      font-weight: 800;
+      padding: 2px 10px;
+      border-radius: 20px;
+      vertical-align: middle;
+      margin-left: 8px;
+      letter-spacing: 0.05em;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 0.9em;
+    }
+    th {
+      background: #2d1b0d;
+      color: #fff;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #f0e8dc;
+    }
+    tr:nth-child(even) td { background: #fdf8f2; }
+  </style>
+</head>
+<body>
+
+  <h1 class="main-title">Big Mel — Full Feature Guide</h1>
+  <p class="subtitle">MelCat Storefront Companion + Admin Dashboard · Snarky Pets</p>
+
+  <!-- PART 1: COMPANION -->
+  <h2 class="section-title">Part 1 — Storefront Companion</h2>
+  <p>The companion is a fully animated Big Mel mascot that lives in the bottom-right corner of the store. It engages shoppers with contextual snark and drives them toward conversion.</p>
+
+  <div class="box">
+    <h3>1. Context-Aware Messages</h3>
+    <p>Mel responds to where the customer is on the site — he never says the same thing everywhere.</p>
+    <ul>
+      <li><strong>Welcome:</strong> On first visit, he walks in and greets: <em>"Hey. Welcome to Snarky Pets. Try not to be boring."</em></li>
+      <li><strong>Home / Collections:</strong> Judges indecision: <em>"I can smell the indecision from here."</em></li>
+      <li><strong>Product Page:</strong> Pressures them to buy: <em>"That thing's been staring at you for 30 seconds."</em></li>
+      <li><strong>Cart Page:</strong> Encourages checkout: <em>"You're SO close. Don't chicken out now."</em></li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <h3>2. Call-to-Action Buttons (CTAs) <span class="badge">Selective</span></h3>
+    <p>Not every message has a button — only the ones where it makes sense to take action.</p>
+    <ul>
+      <li><strong>"Shop more chaos"</strong> — homepage, links to collections page.</li>
+      <li><strong>"Add it already →"</strong> — product pages, auto-scrolls to the Add to Cart button.</li>
+      <li><strong>"Checkout →"</strong> — cart page, goes straight to payment.</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <h3>3. Add-to-Cart Celebration</h3>
+    <p>Big Mel automatically detects when a product is added to cart and reacts with a jump animation and a sarcastic approval message like <em>"Finally. A financially responsible bad decision."</em></p>
+  </div>
+
+  <div class="box">
+    <h3>4. Idle &amp; Random Snark</h3>
+    <p>If the user sits on a page for 45–90 seconds doing nothing, Mel drops a random unprompted comment to re-engage them — up to 3 times per session.</p>
+    <ul>
+      <li><em>"Still here. Still judging."</em></li>
+      <li><em>"You've been on this page a while. Commitment or confusion?"</em></li>
+      <li><em>"This silence is comfortable. For me. Less so for your cart."</em></li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <h3>5. Life-like Animations (State Machine)</h3>
+    <p>Big Mel uses high-quality, custom-animated GIFs hosted on the Shopify CDN for maximum performance.</p>
+    <table>
+      <tr><th>State</th><th>What Happens</th></tr>
+      <tr><td>Walk-in</td><td>First visit: Big Mel slides in from the bottom of the screen</td></tr>
+      <tr><td>Idle</td><td>Gentle breathing animation plays on loop</td></tr>
+      <tr><td>Prowling</td><td>Smoothly walks left/right (JS pacing matches 4s CSS linear transition to prevent gliding)</td></tr>
+      <tr><td>Sleeping</td><td>Heavy sleeping animation when user is completely idle</td></tr>
+      <tr><td>Celebrate</td><td>Jumps and glows when an item is added to cart</td></tr>
+      <tr><td>Watching</td><td>Judging animation when user scrolls 30%+ down the page</td></tr>
+    </table>
+  </div>
+
+  <div class="box">
+    <h3>6. "Tap Me" Hint System</h3>
+    <p>If a new visitor doesn't interact within 9 seconds, a subtle orange ring pulses around Big Mel and a tiny "tap me" label appears briefly. Once clicked, the hint disables itself permanently for that session.</p>
+  </div>
+
+  <div class="box">
+    <h3>7. Shopper-Friendly Rules</h3>
+    <ul>
+      <li><strong>Session Dismiss:</strong> The "X" button hides Big Mel for the entire browsing session.</li>
+      <li><strong>Checkout Blackout:</strong> Completely disabled on the checkout page — zero distractions during payment.</li>
+      <li><strong>Bubble Pause:</strong> Hovering over a speech bubble pauses its auto-hide timer.</li>
+      <li><strong>Performance:</strong> Built in pure vanilla JS/CSS — zero impact on store speed.</li>
+      <li><strong>Accessibility:</strong> Fully disables all animations if the customer has "Reduce Motion" turned on in their OS.</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <h3>8. Asset Management Architecture</h3>
+    <ul>
+      <li><strong>Shopify CLI Limits:</strong> Extension <code>assets/</code> folders cannot handle large <code>.gif</code> or <code>.webp</code> files.</li>
+      <li><strong>Global CDN Hosting:</strong> Emotion GIFs (e.g. <code>melcat-idle.gif</code>) are uploaded directly to the Shopify Admin under <strong>Content > Files</strong>.</li>
+      <li><strong>Liquid Integration:</strong> The <code>companion.liquid</code> block uses the <code>file_url</code> filter to dynamically pull these global assets into the JavaScript state machine.</li>
+    </ul>
+  </div>
+
+  <!-- PART 2: DASHBOARD -->
+  <h2 class="section-title">Part 2 — MelCat Admin Dashboard</h2>
+  <p>The Admin Dashboard lives inside your Shopify app (MelCat Dashboard) and is the merchant-facing control centre for the entire Big Mel digital product ecosystem.</p>
+
+  <div class="box-dark">
+    <h3>Home — Analytics Overview</h3>
+    <p>The main page shows real-time performance stats, filterable by last 7 days, 30 days, or all-time.</p>
+    <table>
+      <tr><th>Metric</th><th>What It Tracks</th></tr>
+      <tr><td>Total Customers</td><td>Total unique buyers in the system</td></tr>
+      <tr><td>Active Entitlements</td><td>Customers currently with an active digital pack access</td></tr>
+      <tr><td>QR Redemptions</td><td>How many times a physical-product QR code was scanned &amp; claimed</td></tr>
+      <tr><td>Library Views</td><td>Times customers opened their digital vault/library</td></tr>
+      <tr><td>Asset Downloads</td><td>Total file downloads across all packs</td></tr>
+      <tr><td>Upgrade Clicks</td><td>Customers who clicked an upgrade offer</td></tr>
+      <tr><td>Upgrade Purchases</td><td>Customers who completed an upgrade purchase</td></tr>
+      <tr><td>Drop Downloads</td><td>Downloads from exclusive content drops</td></tr>
+    </table>
+    <p style="margin-top:12px;">It also shows <strong>Funnel Conversion Rates:</strong> QR Claim &rarr; Vault, Vault &rarr; Upgrade Click, Click &rarr; Purchase, Drop Notification &rarr; Download.</p>
+  </div>
+
+  <div class="box-dark">
+    <h3>Digital Packs</h3>
+    <p>Packs are the "folders" that hold your digital content. Each pack belongs to a tier (Lite, Standard, Deluxe, or Ultimate).</p>
+    <ul>
+      <li>Create, name, and assign packs to access tiers.</li>
+      <li>See how many assets and QR campaigns are linked to each pack.</li>
+      <li>Delete/deactivate packs when no longer needed.</li>
+    </ul>
+    <p><em>Example: Create a pack called "Big Mel Sticker Pack Vol.1" and assign it to the Standard tier.</em></p>
+  </div>
+
+  <div class="box-dark">
+    <h3>Assets &amp; Storage</h3>
+    <p>Upload and organise the actual digital files (GIFs, stickers, wallpapers, PDFs) that customers download from their library. Each asset is attached to a Pack so access is tier-gated automatically.</p>
+  </div>
+
+  <div class="box-dark">
+    <h3>Content Drops</h3>
+    <p>Schedule exclusive content releases for specific tiers. When a drop goes live, customers with the required tier get notified and can download the new content — driving retention and repeat engagement.</p>
+    <ul>
+      <li>Set a drop title and required tier level.</li>
+      <li>Schedule a future release date.</li>
+      <li>Track notifications sent, failures, and download rates per drop.</li>
+    </ul>
+  </div>
+
+  <div class="box-dark">
+    <h3>Order Rules (Variant Mapping)</h3>
+    <p>Links specific Shopify product variants to digital packs. When a customer purchases a mapped variant, they are automatically granted access to the correct digital pack — no manual steps needed.</p>
+    <p><em>Example: Buying the "Snarky Cat Mug — Deluxe Bundle" variant automatically unlocks the Deluxe pack in their library.</em></p>
+  </div>
+
+  <div class="box-dark">
+    <h3>QR Campaigns</h3>
+    <p>The physical-to-digital bridge. Generates unique QR codes to be printed on product inserts shipped inside physical orders.</p>
+    <ul>
+      <li>Create a campaign and link it to a specific digital pack.</li>
+      <li>A customer scans the QR code from their box and claims their free digital pack.</li>
+      <li>Track redemptions, unique users, and claim completion rates per campaign.</li>
+    </ul>
+  </div>
+
+  <div class="box-dark">
+    <h3>Customer Database</h3>
+    <p>A full view of every customer who has interacted with the digital system.</p>
+    <ul>
+      <li>View each customer's email, active entitlements, and tier level.</li>
+      <li>See their full history: QR scans, downloads, and upgrade activity.</li>
+      <li>Useful for customer support and auditing access issues.</li>
+    </ul>
+  </div>
+
+</body>
+</html>

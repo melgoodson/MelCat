@@ -1,0 +1,62 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "cart-items": {
+      "type": "main-cart-items",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "custom_liquid_Cgb6yj": {
+      "type": "custom-liquid",
+      "custom_css": [
+        ".custom-liquid {text-align: center; font-size: 25px; font-weight: 600; background: #fff7d4; padding: 14px 0; border-radius: 6px; width: 100%; display: block;}",
+        ".free-ship-msg {display: block; text-align: center;}"
+      ],
+      "name": "t:sections.custom-liquid.presets.name",
+      "settings": {
+        "custom_liquid": "<span class=\"free-ship-msg\">\n{% if cart.total_price < 7900 %}\n🎉 You're only {{ 7900 | minus: cart.total_price | money }} away from Free Shipping! 🐾\n{% else %}\n✅ Free Shipping Unlocked! 🎉\n{% endif %}\n</span>",
+        "color_scheme": "",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "cart-footer": {
+      "type": "main-cart-footer",
+      "blocks": {
+        "subtotal": {
+          "type": "subtotal",
+          "settings": {}
+        },
+        "buttons": {
+          "type": "buttons",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "subtotal",
+        "buttons"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "padding_top": 20,
+        "padding_bottom": 40
+      }
+    }
+  },
+  "order": [
+    "cart-items",
+    "custom_liquid_Cgb6yj",
+    "cart-footer"
+  ]
+}

@@ -1,0 +1,508 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "settings": {
+        "show_collection_description": true,
+        "show_collection_image": false,
+        "color_scheme": "scheme-1"
+      }
+    },
+    "rich_text_AqK7yf": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_GULWFi": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Cat Tunnel: The Ultimate Play Space for Happy, Healthy Cats</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_RtEQhF": {
+          "type": "text",
+          "settings": {
+            "text": "<p></p><p></p>"
+          }
+        },
+        "button_VbJgge": {
+          "type": "button",
+          "disabled": true,
+          "settings": {
+            "button_label": "Button label",
+            "button_link": "",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        },
+        "text_J8c8tJ": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "<p><strong>Why Peanut Butter Dog Treats Are a Great Choice for Your Pet</strong></p>"
+          }
+        },
+        "text_Urc8Hy": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Cats are natural explorers. They love darting into bags, hiding under beds, and popping out from unexpected places. A cat tunnel taps directly into that instinct—creating a safe, stimulating environment that encourages play, exercise, and relaxation. If your cat is bored, anxious, or simply loves to play chase, a tunnel is one of the best ways to enrich their life indoors.</p><p>The Snarky Pets Cat Tunnel is built to deliver that fun every day. With a collapsible frame, roomy 12-inch diameter, mesh peek windows, crinkle textures, and playful neon leaf accents, it keeps cats curious and active. Unlike flimsy tunnels that flatten after a few uses, this one holds its shape, folds flat for storage, and stands up to claws and zoomies. Below, I’ll share why tunnels matter, what sets this one apart, and how to get the most out of it.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_GULWFi",
+        "text_RtEQhF",
+        "button_VbJgge",
+        "text_J8c8tJ",
+        "text_Urc8Hy"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "disabled": true,
+      "settings": {
+        "products_per_page": 16,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-1",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "enable_filtering": false,
+        "filter_type": "vertical",
+        "enable_sorting": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "featured_product_jMPgGA": {
+      "type": "featured-product",
+      "blocks": {
+        "text_GT6eKd": {
+          "type": "text",
+          "settings": {
+            "text": "{{ section.settings.product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title_9GyXpm": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h2"
+          }
+        },
+        "price_Yr3ffV": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker_bckE94": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector_EbJFaz": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons_L7imdj": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "share_dz4L8n": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "text_GT6eKd",
+        "title_9GyXpm",
+        "price_Yr3ffV",
+        "variant_picker_bckE94",
+        "quantity_selector_EbJFaz",
+        "buy_buttons_L7imdj",
+        "share_dz4L8n"
+      ],
+      "name": "t:sections.featured-product.presets.name",
+      "settings": {
+        "product": "cat-tunnel",
+        "color_scheme": "",
+        "secondary_background": false,
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rich_text_xbFPbM": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_ynjcCq": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Why Cats Love Tunnels</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_faVBT6": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Cats in the wild hunt by stalking and hiding. Indoors, tunnels recreate that environment:</p><ul><li><br/><strong>Safe retreat</strong> – perfect for shy or anxious cats who need their own nook.<br/></li><li><br/><strong>Playground</strong> – encourages chasing, hide-and-seek, and ambush games.<br/></li><li><br/><strong>Exercise outlet</strong> – supports zoomies and weight control in a fun way.<br/></li><li><br/><strong>Multi-cat harmony</strong> – gives cats an outlet for play that reduces tension.<br/></li></ul><p>In my years of working with cats, tunnels have always been the one toy that never loses its novelty. Even senior cats who ignore most toys still perk up at the crinkle sound of a tunnel.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_ynjcCq",
+        "text_faVBT6"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_KaQxnw": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_rXpewP": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>What Makes the Snarky Pets Cat Tunnel Different</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_zht9aM": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Most tunnels are made with thin fabric, narrow openings, and little thought for longevity. Here’s why this one stands out:</p><ul><li><br/><strong>Roomy size</strong>: At around 72 inches long and 12 inches wide, it fits everything from kittens to “chonky” cats.<br/></li><li><br/><strong>Interactive design</strong>: Neon green leaf accents and a bell ball toy keep cats visually and physically engaged.<br/></li><li><br/><strong>Peekaboo mesh windows</strong>: Cats can watch from inside or pop out mid-chase.<br/></li><li><br/><strong>Durable & safe materials</strong>: Built to withstand daily clawing and rough play.<br/></li><li><br/><strong>Collapsible storage</strong>: Folds flat when not in use, making it easy to stash away.</li></ul>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_rXpewP",
+        "text_zht9aM"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_7GJRRB": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_Q6cWLY": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Benefits of Adding a Cat Tunnel to Your Home</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_faMV36": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Promotes healthy exercise</strong> – especially important for indoor cats.<br/><strong>Encourages independence</strong> – cats can entertain themselves when you’re busy.<br/><strong>Reduces stress</strong> – a dedicated hideout lowers anxiety in multi-pet homes.<br/><strong>Strengthens bonding</strong> – interactive games like wand-toy chase through the tunnel build trust.<br/><strong>Protects your furniture</strong> – a tunnel redirects energy away from destructive scratching.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_Q6cWLY",
+        "text_faMV36"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_8atpqp": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_7jTBtL": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>How This Tunnel Compares to Competitors</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_cE7LyU": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Vs. SmartyKat Crackle Chute</strong>: While fun, it’s only 9.5 inches wide—too small for larger cats. The Snarky Pets tunnel is wider and sturdier.</p><p><br/><strong>Vs. PAWZ Road Tunnels</strong>: These offer fun shapes but use softer fabrics that wear quickly. Snarky Pets uses reinforced seams and scratch-friendly material.<br/><br/><strong>Vs. Catry Camino Tunnel</strong>: Aesthetic but less interactive. Snarky Pets balances durability and engagement with crinkle sounds and bright accents.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_7jTBtL",
+        "text_cE7LyU"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_JAgnX6": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_MUjKer": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Tips for Getting the Most Out of Your Cat Tunnel</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_efUHYw": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Placement matters</strong>: Set it near windows, cat trees, or favorite play areas.<br/><strong>Mix it up</strong>: Rotate locations weekly to keep curiosity high.<br/><strong>Add extras</strong>: Drop a toy ball inside or dangle a teaser at the opening.<br/><strong>Pair with treats</strong>: Toss in a few crunchy snacks to build positive associations.<br/><strong>Supervised outdoor fun</strong>: Use it on patios or balconies (never unsupervised).</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_MUjKer",
+        "text_efUHYw"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_NMznp7": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_QBeCqD": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Real-Life Examples</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_rKyj73": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Rescue cat confidence</strong>: A shy foster I cared for used the tunnel as a stepping stone toward engaging with people. She felt safe enough to peek out but still had privacy.</p><p><strong>Overweight cat success</strong>: A tunnel combined with toys turned lazy lounging into daily cardio, helping trim pounds without stress.<br/><br/><strong>Multi-cat play</strong>: Two brothers I worked with turned their tunnel into a racetrack. The peek windows kept them from colliding, and they played longer without fighting.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_QBeCqD",
+        "text_rKyj73"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_QNTdcA": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_Q7drgC": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Care & Maintenance</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_Ff8GJk": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Shake out fur and crumbs weekly.<br/>Spot clean with mild soap and air dry.<br/>Fold and store flat when not in use.<br/>Inspect mesh windows and seams periodically for wear—though the reinforced build is designed to last.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_Q7drgC",
+        "text_Ff8GJk"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_3GwxrJ": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_qdjhCY": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Why Choose Snarky Pets</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_LyNe3c": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Snarky Pets focuses on products that are practical for humans and irresistible for cats. Their tunnel reflects this: stylish black-and-gray fabric, playful accents, and thoughtful durability. It’s a perfect match for pet parents who want enrichment without compromising aesthetics.<br/><br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_qdjhCY",
+        "text_LyNe3c"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_wVWxnC": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_xVMrXT": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>FAQs </strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_G6zn6q": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>1. Will the tunnel work for large cats?</strong><br/>Yes—at 12 inches wide, it accommodates bigger breeds and even multiple cats at once.</p><p><strong>2. How do I get my cat interested?</strong><br/>Start with toys, treats, or catnip inside. Use a teaser wand to lure your cat through—the crinkle sound will spark curiosity.</p><p><strong>3. Can it be used outdoors?</strong><br/>It’s designed for indoor use but can be used on flat, shaded patios with supervision. Always fold it away after outdoor play to extend its life.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_xVMrXT",
+        "text_G6zn6q"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "collection_list_hrjDgP": {
+      "type": "collection-list",
+      "blocks": {
+        "featured_collection_xHxbpt": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "cat-needs"
+          }
+        },
+        "featured_collection_iT8MaN": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "toys"
+          }
+        },
+        "featured_collection_JTDgHq": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "pet-treats"
+          }
+        }
+      },
+      "block_order": [
+        "featured_collection_xHxbpt",
+        "featured_collection_iT8MaN",
+        "featured_collection_JTDgHq"
+      ],
+      "name": "t:sections.collection-list.presets.name",
+      "settings": {
+        "title": "You May Also Like",
+        "heading_size": "h1",
+        "image_ratio": "square",
+        "columns_desktop": 3,
+        "color_scheme": "",
+        "show_view_all": false,
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "rich_text_AqK7yf",
+    "product-grid",
+    "featured_product_jMPgGA",
+    "rich_text_xbFPbM",
+    "rich_text_KaQxnw",
+    "rich_text_7GJRRB",
+    "rich_text_8atpqp",
+    "rich_text_JAgnX6",
+    "rich_text_NMznp7",
+    "rich_text_QNTdcA",
+    "rich_text_3GwxrJ",
+    "rich_text_wVWxnC",
+    "collection_list_hrjDgP"
+  ]
+}

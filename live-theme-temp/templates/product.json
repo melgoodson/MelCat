@@ -1,0 +1,248 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "vendor": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "{{ product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "judge_me_reviews_all_reviews_text_gD8jPN": {
+          "type": "shopify://apps/judge-me-reviews/blocks/all_reviews_text/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "disabled": true,
+          "settings": {}
+        },
+        "judge_me_reviews_medals_3XjhNE": {
+          "type": "shopify://apps/judge-me-reviews/blocks/medals/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
+        "judge_me_reviews_preview_badge_dNAJrA": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
+        "judge_me_reviews_verified_badge_iRAXDd": {
+          "type": "shopify://apps/judge-me-reviews/blocks/verified_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
+        "description_JNpLE7": {
+          "type": "description",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "collapsible_tab_yFEVWN": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Product Details",
+            "icon": "box",
+            "content": "{{ product.metafields.custom.product_detail_des | metafield_tag }}",
+            "page": ""
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "subscriptions_app_block_AtgC9j": {
+          "type": "shopify://apps/subscriptions/blocks/app-block/a3bfe9ec-96f8-4508-a003-df608a36d2ad",
+          "settings": {
+            "color_text_body": "#6d7175",
+            "dividers_color": "#8f8d8d",
+            "bacgkround_color": "#ffffff",
+            "border_thickness": 1,
+            "border_radius": 0,
+            "subscription_policy_url": "",
+            "product": "{{product}}"
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "collapsible_tab_VRpqGm": {
+          "type": "collapsible_tab",
+          "disabled": true,
+          "settings": {
+            "heading": "Item Detail",
+            "icon": "box",
+            "content": "{{ product.metafields.custom.item_detail_new | metafield_tag }}<p></p>",
+            "page": ""
+          }
+        },
+        "puco_blocks_benefits_benefits_01_Jfm3Am": {
+          "type": "shopify://apps/puco-blocks/blocks/benefits-benefits-01/6ea1fa34-d588-43da-abbd-c69bdc1e3b3b",
+          "settings": {
+            "benefit_text_1": "Free shipping",
+            "benefit_svg_1": "",
+            "benefit_text_2": "24/7 support",
+            "benefit_svg_2": "",
+            "benefit_text_3": "Easy returns",
+            "benefit_svg_3": "",
+            "benefit_text_4": "Secure payment",
+            "benefit_svg_4": "",
+            "icon_size": 20,
+            "text_size": 12,
+            "border_radius": 5,
+            "text_color": "#121212",
+            "border_color": "#121212",
+            "background_card_color": "rgba(0,0,0,0)",
+            "background_color": "rgba(0,0,0,0)",
+            "padding_top": 15,
+            "padding_bottom": 15
+          }
+        },
+        "puco_blocks_guarantee_guarantee_01_3FmQVk": {
+          "type": "shopify://apps/puco-blocks/blocks/guarantee-guarantee-01/6ea1fa34-d588-43da-abbd-c69bdc1e3b3b",
+          "settings": {
+            "guarantee_svg": "",
+            "guarantee_heading": "Money back guarantee",
+            "guarantee_description": "30 day money back guarantee, no questions asked.",
+            "icon_size": 40,
+            "heading_size": 16,
+            "description_size": 16,
+            "border_radius": 5,
+            "icon_color": "#137e2d",
+            "text_color": "#121212",
+            "border_color": "#dedede",
+            "background_color": "rgba(0,0,0,0)",
+            "padding_top": 15,
+            "padding_bottom": 15
+          }
+        },
+        "puco_blocks_payment_payment_01_MAefGJ": {
+          "type": "shopify://apps/puco-blocks/blocks/payment-payment-01/6ea1fa34-d588-43da-abbd-c69bdc1e3b3b",
+          "settings": {
+            "payment_methods": "shopify_pay, klarna, paypal, sofort, visa, master",
+            "icon_align": "left",
+            "icon_size": 38,
+            "icon_gap": 5,
+            "enable_black_white_mode": false,
+            "background_color": "rgba(0,0,0,0)",
+            "padding_top": 15,
+            "padding_bottom": 15
+          }
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        },
+        "custom_liquid_q6FXe7": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "<script type=\"application/ld+json\">\n{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"FAQPage\",\n  \"mainEntity\": [\n    {\n      \"@type\": \"Question\",\n      \"name\": \"Does a reusable pet hair roller work better than sticky lint rollers?\",\n      \"acceptedAnswer\": {\n        \"@type\": \"Answer\",\n        \"text\": \"Yes. Reusable pet hair rollers lift embedded dog and cat hair from fabric without adhesive sheets, making them more effective for daily use.\"\n      }\n    },\n    {\n      \"@type\": \"Question\",\n      \"name\": \"Can this pet hair roller be used on couches and car seats?\",\n      \"acceptedAnswer\": {\n        \"@type\": \"Answer\",\n        \"text\": \"Yes. It works well on common upholstery, couches, chairs, car seats, and pet bedding.\"\n      }\n    }\n  ]\n}\n</script>"
+          }
+        }
+      },
+      "block_order": [
+        "vendor",
+        "title",
+        "judge_me_reviews_all_reviews_text_gD8jPN",
+        "judge_me_reviews_medals_3XjhNE",
+        "judge_me_reviews_preview_badge_dNAJrA",
+        "judge_me_reviews_verified_badge_iRAXDd",
+        "description_JNpLE7",
+        "price",
+        "collapsible_tab_yFEVWN",
+        "quantity_selector",
+        "buy_buttons",
+        "subscriptions_app_block_AtgC9j",
+        "variant_picker",
+        "collapsible_tab_VRpqGm",
+        "puco_blocks_benefits_benefits_01_Jfm3Am",
+        "puco_blocks_guarantee_guarantee_01_3FmQVk",
+        "puco_blocks_payment_payment_01_MAefGJ",
+        "share",
+        "custom_liquid_q6FXe7"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "scheme-3936c1f8-4b2b-44df-83ae-70ec9066eb4a",
+        "media_size": "small",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "gallery_layout": "thumbnail_slider",
+        "mobile_thumbnails": "hide",
+        "media_position": "left",
+        "image_zoom": "hover",
+        "hide_variants": true,
+        "enable_video_looping": true,
+        "padding_top": 36,
+        "padding_bottom": 12
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "settings": {
+        "heading": "You may also like",
+        "heading_size": "h2",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-1",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "padding_top": 36,
+        "padding_bottom": 28
+      }
+    },
+    "1753022706505d9ed6": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_fjXfXj": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_fjXfXj"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "related-products",
+    "1753022706505d9ed6"
+  ]
+}

@@ -1,0 +1,433 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "slideshow_wRdw7y": {
+      "type": "slideshow",
+      "blocks": {
+        "slide_Exq6U3": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/The_Ultimate_Play_Space_for_Happy_Cats_1.png",
+            "image_overlay_opacity": 0,
+            "heading": "",
+            "heading_size": "h1",
+            "subheading": "",
+            "button_label": "Shop Cat Cubes & Tunnels",
+            "link": "shopify://collections/cat-tunnel",
+            "button_style_secondary": false,
+            "show_text_box": true,
+            "box_align": "bottom-right",
+            "text_alignment": "right",
+            "text_alignment_mobile": "right",
+            "color_scheme": "scheme-1"
+          }
+        },
+        "slide_DMxU8f": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/SNARKY_PETS_BACKGROUND_5.png",
+            "image_overlay_opacity": 0,
+            "heading": "",
+            "heading_size": "h1",
+            "subheading": "",
+            "button_label": "Shop Now",
+            "link": "shopify://collections/cat-needs",
+            "button_style_secondary": false,
+            "show_text_box": true,
+            "box_align": "middle-center",
+            "text_alignment": "center",
+            "text_alignment_mobile": "center",
+            "color_scheme": "scheme-1"
+          }
+        },
+        "slide_pwdjC3": {
+          "type": "slide",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/SNARKY_PETS_BACKGROUND_4.png",
+            "image_overlay_opacity": 0,
+            "heading": "",
+            "heading_size": "h1",
+            "subheading": "",
+            "button_label": "Shop Now",
+            "link": "shopify://products/pet-stain-remover",
+            "button_style_secondary": false,
+            "show_text_box": true,
+            "box_align": "middle-center",
+            "text_alignment": "center",
+            "text_alignment_mobile": "center",
+            "color_scheme": "scheme-1"
+          }
+        },
+        "slide_t9WLpr": {
+          "type": "slide",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/5.png",
+            "image_overlay_opacity": 0,
+            "heading": "",
+            "heading_size": "h1",
+            "subheading": "",
+            "button_label": "Shop Now",
+            "link": "shopify://collections/toys",
+            "button_style_secondary": false,
+            "show_text_box": true,
+            "box_align": "middle-center",
+            "text_alignment": "center",
+            "text_alignment_mobile": "center",
+            "color_scheme": "scheme-1"
+          }
+        },
+        "slide_F3qKw3": {
+          "type": "slide",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/WhatsApp_Image_2025-07-23_at_2.30.15_AM.jpg",
+            "image_overlay_opacity": 0,
+            "heading": "",
+            "heading_size": "h1",
+            "subheading": "",
+            "button_label": "Shop Now",
+            "link": "shopify://collections/pet-treats",
+            "button_style_secondary": false,
+            "show_text_box": true,
+            "box_align": "middle-center",
+            "text_alignment": "center",
+            "text_alignment_mobile": "center",
+            "color_scheme": "scheme-1"
+          }
+        }
+      },
+      "block_order": [
+        "slide_Exq6U3",
+        "slide_DMxU8f",
+        "slide_pwdjC3",
+        "slide_t9WLpr",
+        "slide_F3qKw3"
+      ],
+      "custom_css": [
+        ".slideshow__text .banner__box {padding: 0px !important;}",
+        ".banner__box {padding: 0px !important; background-color: #00000000 !important;}",
+        ".button.button--primary {background-color: #881c2c !important; opacity: 1 !important;}",
+        ".banner__buttons {margin-top: 25% !important;}",
+        ".slideshow__controls {background-color: #fffcea !important;}"
+      ],
+      "name": "t:sections.slideshow.presets.name",
+      "settings": {
+        "layout": "full_bleed",
+        "slide_height": "adapt_image",
+        "slider_visual": "dots",
+        "auto_rotate": true,
+        "change_slides_speed": 9,
+        "image_behavior": "none",
+        "show_text_below": false,
+        "accessibility_info": "Slideshow about our brand"
+      }
+    },
+    "collection_list_hKaQU6": {
+      "type": "collection-list",
+      "blocks": {
+        "featured_collection_EUbCb8": {
+          "type": "featured_collection",
+          "disabled": true,
+          "settings": {
+            "collection": "all"
+          }
+        },
+        "featured_collection_YHqACG": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "cat-needs"
+          }
+        },
+        "featured_collection_tkEW3F": {
+          "type": "featured_collection",
+          "disabled": true,
+          "settings": {
+            "collection": "toys"
+          }
+        },
+        "featured_collection_WiW9tp": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "pet-care"
+          }
+        }
+      },
+      "block_order": [
+        "featured_collection_EUbCb8",
+        "featured_collection_YHqACG",
+        "featured_collection_tkEW3F",
+        "featured_collection_WiW9tp"
+      ],
+      "disabled": true,
+      "name": "t:sections.collection-list.presets.name",
+      "settings": {
+        "title": "",
+        "heading_size": "h2",
+        "image_ratio": "adapt",
+        "columns_desktop": 4,
+        "color_scheme": "scheme-3936c1f8-4b2b-44df-83ae-70ec9066eb4a",
+        "show_view_all": false,
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "featured_collection_PMBXM8": {
+      "type": "featured-collection",
+      "name": "t:sections.featured-collection.presets.name",
+      "settings": {
+        "collection": "all",
+        "products_to_show": 25,
+        "title": "",
+        "heading_size": "h2",
+        "description": "",
+        "show_description": true,
+        "description_style": "subtitle",
+        "columns_desktop": 3,
+        "enable_desktop_slider": true,
+        "full_width": false,
+        "show_view_all": false,
+        "view_all_style": "solid",
+        "color_scheme": "scheme-3936c1f8-4b2b-44df-83ae-70ec9066eb4a",
+        "image_ratio": "adapt",
+        "image_shape": "round",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": true,
+        "quick_add": "standard",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "pagefly_section_Rb87aT": {
+      "type": "pagefly-section",
+      "disabled": true,
+      "custom_css": [
+        ".sc-dQEsWe {background-color: #fffcea !important;}"
+      ],
+      "name": "PageFly Section",
+      "settings": {
+        "section_id": "pf-d4ae9e5e"
+      }
+    },
+    "1752930068cf88af81": {
+      "type": "apps",
+      "blocks": {
+        "testimonials_slider_carousel_widget_block_RCqMTY": {
+          "type": "shopify://apps/testimonials-slider/blocks/carousel-widget-block/cd756d38-7c3d-4332-af00-4ff87263e921",
+          "settings": {
+            "themeId": "black",
+            "font": "default",
+            "configNumber": "1",
+            "autoscroll": true,
+            "showAvatar": true,
+            "ratingType": "stars",
+            "emojiType": "0",
+            "solidShadow": false,
+            "shadowColor": "#ffe986"
+          }
+        }
+      },
+      "block_order": [
+        "testimonials_slider_carousel_widget_block_RCqMTY"
+      ],
+      "custom_css": [],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "multicolumn_QNHVw9": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_FtGt3j": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/car.svg",
+            "title": "Fast Shipping with Tracking",
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_zt99z3": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/tick.svg",
+            "title": "Safe & Pet-Friendly Materials",
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_BAr3Ek": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/paw.svg",
+            "title": "Trusted by Pet Owners",
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_FtGt3j",
+        "column_zt99z3",
+        "column_BAr3Ek"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "Why Choose Us",
+        "heading_size": "h2",
+        "image_width": "third",
+        "image_ratio": "adapt",
+        "button_label": "",
+        "button_link": "",
+        "columns_desktop": 3,
+        "column_alignment": "center",
+        "background_style": "primary",
+        "color_scheme": "scheme-3936c1f8-4b2b-44df-83ae-70ec9066eb4a",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "featured_blog_HYyfV8": {
+      "type": "featured-blog",
+      "name": "t:sections.featured-blog.presets.name",
+      "settings": {
+        "blog": "5-signs-your-pet-is-bored",
+        "post_limit": 3,
+        "heading": "Blog posts",
+        "heading_size": "h1",
+        "columns_desktop": 3,
+        "show_view_all": true,
+        "show_image": true,
+        "show_date": true,
+        "show_author": false,
+        "color_scheme": "scheme-3936c1f8-4b2b-44df-83ae-70ec9066eb4a",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "video_e6CfWw": {
+      "type": "video",
+      "name": "t:sections.video.presets.name",
+      "settings": {
+        "heading": "",
+        "heading_size": "h1",
+        "enable_video_looping": false,
+        "video": "shopify://files/videos/0219(1).mp4",
+        "video_url": "",
+        "description": "",
+        "full_width": false,
+        "color_scheme": "scheme-5",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "1752929863118c6af2": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_HnPyWN": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_HnPyWN"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "image_with_text_FQckrB": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_K4JKpP": {
+          "type": "heading",
+          "settings": {
+            "heading": "Meet Big Mel: The Virtual Pet Who is Already Judging You",
+            "heading_size": "h2"
+          }
+        },
+        "text_xFkBja": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Discover Big Mel, the virtual pet with personality! Explore the story of this unique digital companion who's ready to judge your every move. Learn more about Big Mel and start your adventure today.</p>",
+            "text_style": "body"
+          }
+        },
+        "button_DbRgBV": {
+          "type": "button",
+          "settings": {
+            "button_label": "Meet Big Mel",
+            "button_link": "shopify://pages/meet-big-mel-the-virtual-pet-who-is-already-judging-you-1",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_K4JKpP",
+        "text_xFkBja",
+        "button_DbRgBV"
+      ],
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/melcat-smug.webp",
+        "height": "adapt",
+        "desktop_image_width": "small",
+        "layout": "image_first",
+        "image_behavior": "none",
+        "content_layout": "no-overlap",
+        "desktop_content_position": "top",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "left",
+        "section_color_scheme": "scheme-3936c1f8-4b2b-44df-83ae-70ec9066eb4a",
+        "color_scheme": "scheme-3936c1f8-4b2b-44df-83ae-70ec9066eb4a",
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    }
+  },
+  "order": [
+    "slideshow_wRdw7y",
+    "collection_list_hKaQU6",
+    "featured_collection_PMBXM8",
+    "pagefly_section_Rb87aT",
+    "1752930068cf88af81",
+    "multicolumn_QNHVw9",
+    "featured_blog_HYyfV8",
+    "video_e6CfWw",
+    "1752929863118c6af2",
+    "image_with_text_FQckrB"
+  ]
+}

@@ -1,0 +1,82 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.header.name",
+  "type": "header",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement-bar-0": {
+          "type": "announcement",
+          "settings": {
+            "text": "Free Shipping on Orders Over $100 + Free Treats",
+            "link": ""
+          }
+        },
+        "announcement_Vhq4A8": {
+          "type": "announcement",
+          "settings": {
+            "text": "Shop Durable Toys & Smart Products for Happy Pets",
+            "link": ""
+          }
+        },
+        "announcement_gYAHQ8": {
+          "type": "announcement",
+          "settings": {
+            "text": "Welcome To Our Snarky Pet Shop",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "announcement-bar-0",
+        "announcement_Vhq4A8",
+        "announcement_gYAHQ8"
+      ],
+      "settings": {
+        "auto_rotate": true,
+        "change_slides_speed": 5,
+        "color_scheme": "scheme-3",
+        "show_line_separator": true,
+        "show_social": true,
+        "enable_country_selector": true,
+        "enable_language_selector": true
+      }
+    },
+    "header": {
+      "type": "header",
+      "custom_css": [
+        ".header__menu-item {padding: 1.2rem; text-decoration: none; color: rgb(0 0 0); font-size: 20px;}",
+        ".header__icon:not(.header__icon--summary),.header__icon span {color: black !important;}"
+      ],
+      "settings": {
+        "logo_position": "middle-left",
+        "mobile_logo_position": "center",
+        "menu": "icone-menu",
+        "menu_type_desktop": "dropdown",
+        "sticky_header_type": "reduce-logo-size",
+        "show_line_separator": true,
+        "color_scheme": "scheme-5",
+        "menu_color_scheme": "scheme-846af204-badb-46a7-b640-2ba102f72363",
+        "enable_country_selector": true,
+        "enable_language_selector": true,
+        "enable_customer_avatar": true,
+        "margin_bottom": 0,
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
+}

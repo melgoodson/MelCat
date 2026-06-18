@@ -1,0 +1,507 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "settings": {
+        "show_collection_description": true,
+        "show_collection_image": false,
+        "color_scheme": "scheme-1"
+      }
+    },
+    "rich_text_AqK7yf": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_GULWFi": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Cat Cave: The Perfect Blend of Comfort and Style for Your Cat</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_RtEQhF": {
+          "type": "text",
+          "settings": {
+            "text": "<p></p><p></p>"
+          }
+        },
+        "button_VbJgge": {
+          "type": "button",
+          "disabled": true,
+          "settings": {
+            "button_label": "Button label",
+            "button_link": "",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        },
+        "text_J8c8tJ": {
+          "type": "text",
+          "settings": {
+            "text": "<h2>Why Cats Deserve More Than Just a Bed</h2>"
+          }
+        },
+        "text_Urc8Hy": {
+          "type": "text",
+          "settings": {
+            "text": "<p>After more than a decade of working with cats—training them, fostering rescues, and living with my own—I’ve come to realize one simple truth: cats thrive when they have a place that’s just theirs. Not the couch, not the bed, not the corner of your desk. A private, cozy retreat where they can curl up, hide, and feel secure. That’s exactly what a Cat Cave delivers.</p><p>The Snarky Pets Cat Cave takes this idea to the next level. It’s not just another pet bed—it’s a modern, felt hideout designed with your cat’s comfort and your home’s style in mind. In this article, I’ll break down why cat caves are so effective, what makes this particular one unique, and how it benefits both cats and their owners.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_GULWFi",
+        "text_RtEQhF",
+        "button_VbJgge",
+        "text_J8c8tJ",
+        "text_Urc8Hy"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "disabled": true,
+      "settings": {
+        "products_per_page": 16,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-1",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "enable_filtering": false,
+        "filter_type": "vertical",
+        "enable_sorting": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "featured_product_jMPgGA": {
+      "type": "featured-product",
+      "blocks": {
+        "text_GT6eKd": {
+          "type": "text",
+          "settings": {
+            "text": "{{ section.settings.product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title_9GyXpm": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h2"
+          }
+        },
+        "price_Yr3ffV": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker_bckE94": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector_EbJFaz": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons_L7imdj": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "share_dz4L8n": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "text_GT6eKd",
+        "title_9GyXpm",
+        "price_Yr3ffV",
+        "variant_picker_bckE94",
+        "quantity_selector_EbJFaz",
+        "buy_buttons_L7imdj",
+        "share_dz4L8n"
+      ],
+      "name": "t:sections.featured-product.presets.name",
+      "settings": {
+        "product": "cat-cave",
+        "color_scheme": "",
+        "secondary_background": false,
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rich_text_xbFPbM": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_ynjcCq": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Why Cats Love Enclosed Hideouts</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_faVBT6": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Cats are both hunters and prey by nature, which makes them instinctively drawn to enclosed spaces. A <strong>Cat Cave</strong> mimics the safe dens they’d find in the wild. Here’s why that matters:</p><ul><li><strong>Security and Privacy</strong> – Enclosed walls let cats feel safe when they nap.<br/><br/></li><li><strong>Warmth</strong> – Felt material traps body heat, creating a snug environment.<br/><br/></li><li><strong>Observation</strong> – Openings let cats peek out while still feeling hidden.<br/><br/></li></ul><p>I’ve seen this firsthand. A nervous rescue I once fostered would bolt under the bed whenever guests arrived. But when given a felt cat cave, she began using it instead—still hidden, but in a healthier, more accessible spot.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_ynjcCq",
+        "text_faVBT6"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_KaQxnw": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_rXpewP": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>The Materials That Make It Special</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_zht9aM": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Not all pet products are created equal, and one thing I appreciate about the Snarky Pets Cat Cave is the thought put into the materials.</p><ul><li><strong>Premium Felt:</strong> Thick, durable felt creates a structure that holds its shape while staying soft and cozy. Cats love the texture, and it resists odors better than synthetic fabrics.<br/><br/></li><li><strong>Safe and Non-Toxic:</strong> No harsh chemicals or artificial dyes. That’s peace of mind for any owner.<br/><br/></li><li><strong>Hand-Finished Details:</strong> Every cave has clean stitching, a smooth interior, and a quality finish that feels more like furniture than a basic pet bed.<br/><br/></li></ul><p>I’ve used a lot of cat furniture over the years, and cheaper options collapse or fray quickly. Felt caves like this one last longer and continue looking good even after months of daily use.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_rXpewP",
+        "text_zht9aM"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_7GJRRB": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_Q6cWLY": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>A Cat Cave That Fits Your Home Too</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_faMV36": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Let’s be honest—pet furniture often clashes with home décor. But this Cat Cave is designed to blend in, not stick out. With its modern circular shape, minimalist design, and subtle color options, it looks like an intentional piece of home décor.</p><p>I keep one in my living room, and visitors often mistake it for a designer accent piece until my cat pops her head out. It’s refreshing to find a pet product that doesn’t compromise style for function.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_Q6cWLY",
+        "text_faMV36"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_8atpqp": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_7jTBtL": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Unique Features of the Snarky Pets Cat Cave</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_cE7LyU": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Here’s what sets this product apart from standard cat beds:</p><ul><li><strong>Circular Entrance with Side Vents</strong> – Cats love to peek out while feeling secure. The vents allow airflow so the inside never feels stuffy.<br/><br/></li><li><strong>Spacious Design</strong> – Sized for cats up to 12 lbs, with enough room to curl, stretch, or nap in multiple positions.<br/><br/></li><li><strong>Sturdy Yet Portable</strong> – Lightweight enough to move from room to room, but solid enough to keep its shape.<br/><br/></li><li><strong>Easy Cleaning</strong> – Vacuum out fur or wipe down with a damp cloth. Unlike fabric beds, you won’t be constantly washing covers.<br/><br/></li></ul><p>One of my clients, who has a curious tabby, uses the cave in her office. She says her cat spends hours watching her work from inside, safe but still close by.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_7jTBtL",
+        "text_cE7LyU"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_QNTdcA": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_Q7drgC": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>The Health and Behavioral Benefits</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_Ff8GJk": {
+          "type": "text",
+          "settings": {
+            "text": "<p>A Cat Cave<strong> </strong>doesn’t just look good—it actively improves your cat’s daily life.</p><ul><li><strong>Reduces Stress:</strong> Cats who have a retreat handle household noise, visitors, and other pets better.</li><li><strong>Promotes Better Sleep:</strong> Deeper, undisturbed rest supports overall health and mood.<br/></li><li><strong>Supports Instincts:</strong> Satisfies their need to hide, stalk, and observe safely.</li><li><strong>Keeps Fur Contained:</strong> Many cats choose the cave over furniture, which means less hair on your couch or bed.<br/><br/></li></ul><p>I’ve noticed anxious cats become calmer once they have a cave. It’s like giving them their own “room” in the house.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_Q7drgC",
+        "text_Ff8GJk"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_NDnFqk": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_eRWtEd": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>How to Choose and Place Your Cat Cave</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_RJMc7P": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Even the best product needs the right setup. A few tips from my experience:</p><ul><li><strong>Placement Matters:</strong> Put it in a quiet corner or near a sunny window—cats love warmth and privacy.<br/><br/></li><li><strong>Introduce Gradually:</strong> If your cat ignores it at first, add a toy, blanket, or sprinkle of catnip inside.<br/><br/></li><li><strong>One Per Cat:</strong> In multi-cat homes, give each cat their own cave to avoid turf wars.<br/><br/></li></ul><p>When I first brought one home, I placed it too close to a busy walkway. My cat ignored it for days. Moving it near the window instantly made it her favorite nap spot.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_eRWtEd",
+        "text_RJMc7P"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_TNwNti": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_MJqPMr": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Care and Maintenance Tips</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_TtWFJA": {
+          "type": "text",
+          "settings": {
+            "text": "<p>A Cat Cave is built to last, but a little care keeps it fresh:</p><ul><li><strong>Vacuum Weekly</strong> – Removes fur and dander.<br/><br/></li><li><strong>Spot Clean with Mild Soap</strong> – Gently dab stains; no harsh scrubbing needed.<br/><br/></li><li><strong>Air Dry Naturally</strong> – Avoid dryers or heaters that could warp the felt.<br/><br/></li></ul><p>One trick I share with clients: rotate the cave occasionally to keep it “new” in your cat’s eyes. Cats love exploring things that seem different, even if it’s just a small change in angle or location.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_MJqPMr",
+        "text_TtWFJA"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_Yd6ndw": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_KVGQa4": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Conclusion: Why Your Cat Needs a Cave</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_wCtFxr": {
+          "type": "text",
+          "settings": {
+            "text": "<p>After ten years of observing feline behavior, I can say this with confidence: every cat benefits from having a private, enclosed retreat. The Snarky Pets Cat Cave provides that safe hideout while also serving as an attractive piece of home décor.</p><p>It’s durable, easy to clean, comfortable for cats, and stylish for owners. If you’ve been looking for a way to make your cat happier while keeping your home tidy and modern, this is it.</p><p>Give your cat the gift of comfort and security—it’s an investment that pays off every single day in purrs, naps, and fewer fur-covered couches.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_KVGQa4",
+        "text_wCtFxr"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_wVWxnC": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_xVMrXT": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>FAQs </strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_G6zn6q": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>1. Is the Snarky Pets Cat Cave suitable for large cats?</strong><br/> It comfortably fits cats up to 12 lbs. For very large breeds like Maine Coons, you may need a bigger option.</p><p><br/><strong>2. How do I get my cat to use the cave?</strong><br/>Place it in a quiet spot and add familiar scents—like a favorite blanket—or a sprinkle of catnip. Most cats warm up quickly.<br/><br/><strong>3.Can it be used for kittens as well?</strong><br/>Yes! Kittens often love cat caves because they feel extra safe inside. Just make sure the entrance is accessible and the cave is placed in a safe spot.<br/><br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_xVMrXT",
+        "text_G6zn6q"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "collection_list_JBERtg": {
+      "type": "collection-list",
+      "blocks": {
+        "featured_collection_y44Qpi": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "cat-needs"
+          }
+        },
+        "featured_collection_GjKDmP": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "toys"
+          }
+        },
+        "featured_collection_dJKMFC": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "pet-treats"
+          }
+        }
+      },
+      "block_order": [
+        "featured_collection_y44Qpi",
+        "featured_collection_GjKDmP",
+        "featured_collection_dJKMFC"
+      ],
+      "name": "t:sections.collection-list.presets.name",
+      "settings": {
+        "title": "You May Also Like",
+        "heading_size": "h1",
+        "image_ratio": "square",
+        "columns_desktop": 3,
+        "color_scheme": "",
+        "show_view_all": false,
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "rich_text_AqK7yf",
+    "product-grid",
+    "featured_product_jMPgGA",
+    "rich_text_xbFPbM",
+    "rich_text_KaQxnw",
+    "rich_text_7GJRRB",
+    "rich_text_8atpqp",
+    "rich_text_QNTdcA",
+    "rich_text_NDnFqk",
+    "rich_text_TNwNti",
+    "rich_text_Yd6ndw",
+    "rich_text_wVWxnC",
+    "collection_list_JBERtg"
+  ]
+}

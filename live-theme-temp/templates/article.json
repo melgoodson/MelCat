@@ -1,0 +1,74 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-article",
+      "blocks": {
+        "featured_image": {
+          "type": "featured_image",
+          "settings": {
+            "image_height": "small"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {
+            "blog_show_date": true,
+            "blog_show_author": false
+          }
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        },
+        "content": {
+          "type": "content",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "featured_image",
+        "title",
+        "share",
+        "content"
+      ],
+      "custom_css": [
+        ".article-template__content,.article-template__content p,.article-template__content h1,.article-template__content h2,.article-template__content h3 {font-family: \"Assistant\", sans-serif !important; font-size: 1.3rem; line-height: 1.7;}",
+        "h1,.article-template__title {font-family: \"Assistant\", sans-serif !important; font-size: 36px !important; line-height: 1.2;}"
+      ],
+      "settings": {}
+    },
+    "featured_blog_QqPVbK": {
+      "type": "featured-blog",
+      "name": "t:sections.featured-blog.presets.name",
+      "settings": {
+        "blog": "5-signs-your-pet-is-bored",
+        "post_limit": 3,
+        "heading": "Recent Post",
+        "heading_size": "h1",
+        "columns_desktop": 3,
+        "show_view_all": true,
+        "show_image": true,
+        "show_date": true,
+        "show_author": false,
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "main",
+    "featured_blog_QqPVbK"
+  ]
+}

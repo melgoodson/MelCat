@@ -1,0 +1,369 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "settings": {
+        "show_collection_description": true,
+        "show_collection_image": false,
+        "color_scheme": "scheme-1"
+      }
+    },
+    "rich_text_AqK7yf": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_GULWFi": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Peanut Butter in Dog Treats: A Healthy, Tasty Addition to Your Dog's Diet</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_RtEQhF": {
+          "type": "text",
+          "settings": {
+            "text": "<p></p><p></p>"
+          }
+        },
+        "button_VbJgge": {
+          "type": "button",
+          "disabled": true,
+          "settings": {
+            "button_label": "Button label",
+            "button_link": "",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        },
+        "text_J8c8tJ": {
+          "type": "text",
+          "settings": {
+            "text": "<h2>Why Peanut Butter Is a Perfect Ingredient for Dog Treats</h2>"
+          }
+        },
+        "text_Urc8Hy": {
+          "type": "text",
+          "settings": {
+            "text": "<p>If you’ve ever given your dog a spoonful of peanut butter, you know how much they enjoy it. Peanut butter is not just a tasty treat, it’s a nutrient-packed snack that many pet owners incorporate into their dog’s diet. And now, with Snarky Pets’ Crunchy Peanut Butter Dog Treats, you can offer your dog the same great taste and health benefits in a convenient, ready-to-serve form.<br/><br/>In this article, we’ll dive into why peanut butter is a great choice for dog treats, how it benefits your pet’s health, and why Crunchy Peanut Butter Dog Treats are the perfect snack for your furry friend. You’ll discover the reasons these treats are a delicious, healthy option to add to your dog’s diet.<br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_GULWFi",
+        "text_RtEQhF",
+        "button_VbJgge",
+        "text_J8c8tJ",
+        "text_Urc8Hy"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "disabled": true,
+      "settings": {
+        "products_per_page": 16,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-1",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "enable_filtering": false,
+        "filter_type": "vertical",
+        "enable_sorting": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "featured_product_jMPgGA": {
+      "type": "featured-product",
+      "blocks": {
+        "text_GT6eKd": {
+          "type": "text",
+          "settings": {
+            "text": "{{ section.settings.product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title_9GyXpm": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h2"
+          }
+        },
+        "price_Yr3ffV": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker_bckE94": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector_EbJFaz": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons_L7imdj": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "share_dz4L8n": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "text_GT6eKd",
+        "title_9GyXpm",
+        "price_Yr3ffV",
+        "variant_picker_bckE94",
+        "quantity_selector_EbJFaz",
+        "buy_buttons_L7imdj",
+        "share_dz4L8n"
+      ],
+      "name": "t:sections.featured-product.presets.name",
+      "settings": {
+        "product": "peanut-butter-dog-treats-crunchy",
+        "color_scheme": "",
+        "secondary_background": false,
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rich_text_xbFPbM": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_ynjcCq": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Why Peanut Butter Is Good for Dogs</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_faVBT6": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Peanut butter offers several health benefits for dogs, making it an excellent addition to their diet. Here’s why peanut butter is such a great choice for your dog:<br/><br/><strong>●Protein Power: </strong>Peanut butter is rich in protein, which helps with muscle growth and repair. Dogs need protein for overall health, and adding peanut butter to their treats is a great way to provide them with additional protein.<br/><br/><strong>●Healthy Fats:</strong> The healthy fats found in peanut butter give dogs long-lasting energy and help maintain a shiny, soft coat. These fats are also beneficial for your dog’s skin health.<br/><br/><strong>●Vitamins and Minerals:</strong> Peanut butter contains essential vitamins like B vitamins, vitamin E, and niacin. These nutrients help support your dog’s immune system, energy levels, and overall health.<br/><br/><strong>●Brain Health:</strong> The omega-3 and omega-6 fatty acids in peanut butter can enhance brain function, especially for senior dogs. These healthy fats play a critical role in maintaining cognitive function, which helps keep dogs sharp as they age.<br/><br/>When you feed your dog Snarky Pets’ Crunchy Peanut Butter Dog Treats, you're providing them with all the nutritional benefits of peanut butter in a fun, crunchy treat.<br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_ynjcCq",
+        "text_faVBT6"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_KaQxnw": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_rXpewP": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>How Peanut Butter Enhances Dog Treats</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_zht9aM": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>●Peanut butter isn’t just nutritious: </strong>it also improves the taste, texture, and nutritional profile of dog treats. Here’s how Crunchy Peanut Butter Dog Treats elevate your dog’s snack time.<br/><br/><strong>●Delicious Flavor:</strong> Dogs love the rich, savory flavor of peanut butter. Crunchy Peanut Butter Dog Treats from Snarky Pets are packed with that peanut butter goodness, making them the perfect treat for any occasion.<br/><br/><strong>●Crunchy Texture: </strong>The crunchy texture of these treats not only satisfies your dog’s chewing instincts but also helps clean their teeth. It adds a fun element to snack time that dogs absolutely enjoy.<br/><br/><strong>●Binding Agent:</strong> Peanut butter acts as an excellent binding agent in dog treats, holding together ingredients like oats, flour, and eggs. This ensures that your treats stay intact and are easy for your dog to enjoy.<br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_rXpewP",
+        "text_zht9aM"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_7GJRRB": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_Q6cWLY": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Peanut Butter and Dog Health: What to Consider</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_faMV36": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Peanut butter offers excellent health benefits, but it’s important to consider a few things when incorporating it into your dog’s diet:<br/><br/><strong>●Portion Control:</strong> Peanut butter is calorie-dense, so moderation is key. Treats like Crunchy Peanut Butter Dog Treats should make up no more than 10% of your dog’s daily caloric intake to avoid weight gain.<br/><br/><strong>●Dog Allergies:</strong> Some dogs may have peanut allergies. If your dog has an allergy to peanuts, look for alternative treats made from ingredients like sweet potato, coconut oil, or pumpkin.<br/><br/><strong>●Choosing the Right Peanut Butter: </strong>Always select natural peanut butter for your dog’s treats, avoiding products with added sugars, salt, or artificial sweeteners like xylitol. Snarky Pets ensures their treats are made with only the finest, dog-safe ingredients.<br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_Q6cWLY",
+        "text_faMV36"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_8atpqp": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_7jTBtL": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>The Benefits of Peanut Butter for Senior Dogs</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_cE7LyU": {
+          "type": "text",
+          "settings": {
+            "text": "<p>●Peanut butter can be especially beneficial for senior dogs, who may experience changes in metabolism, joints, and overall health. Here’s how peanut butter helps senior dogs:<br/><br/>●Joint Health: The omega-3 fatty acids in peanut butter help reduce inflammation, making them ideal for senior dogs who may suffer from joint pain or arthritis.<br/><br/>●Cognitive Function: The healthy fats in peanut butter support brain health and can help prevent cognitive dysfunction syndrome (CDS) in senior dogs.<br/><br/>For senior dogs, Snarky Pets’ Crunchy Peanut Butter Dog Treats provide a tasty way to support joint and brain health while also satisfying their cravings.<br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_7jTBtL",
+        "text_cE7LyU"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_QNTdcA": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_Q7drgC": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Conclusion: Give Your Dog the Peanut Butter TreatThey Deserve</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_Ff8GJk": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Snarky Pets’ Crunchy Peanut Butter Dog Treats are more than just a delicious snack—they are packed with essential nutrients that support your dog’s overall health. Made with natural peanut butter, these treats are rich in protein, healthy fats, and important vitamins and minerals.</p><p><br/>Remember to feed these treats in moderation and choose products that are free of harmful additives like xylitol. Your dog will love the taste, and you can feel good knowing you’re offering them a treat that’s both nutritious and beneficial.<br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_Q7drgC",
+        "text_Ff8GJk"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_wVWxnC": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_xVMrXT": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>FAQs About Peanut Butter in Dog Treats</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_G6zn6q": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>1.Is peanut butter safe for dogs to eat every day?</strong><br/>Peanut butter can be a great daily treat, but it should be given in moderation. It should make up no more than 10% of your dog’s daily caloric intake.<br/><strong><br/>2.Can I use peanut butter as the main ingredient in dog treats?</strong><br/>Yes! Crunchy Peanut Butter Dog Treats are made with peanut butter as the main ingredient, providing a tasty and healthy base for your dog’s treats.<br/><br/><strong>3.Can peanut butter help my dog’s joints?</strong><br/>Yes! The omega-3 fatty acids in peanut butter help support joint health and reduce inflammation, especially for senior dogs.<br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_xVMrXT",
+        "text_G6zn6q"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "rich_text_AqK7yf",
+    "product-grid",
+    "featured_product_jMPgGA",
+    "rich_text_xbFPbM",
+    "rich_text_KaQxnw",
+    "rich_text_7GJRRB",
+    "rich_text_8atpqp",
+    "rich_text_QNTdcA",
+    "rich_text_wVWxnC"
+  ]
+}

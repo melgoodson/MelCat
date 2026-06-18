@@ -1,5 +1,5 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
-import { useActionData, useSearchParams } from "react-router";
+import { useActionData, useLoaderData, useSearchParams } from "react-router";
 import { createMagicLinkToken } from "../services/auth.server";
 import { sendMagicLink } from "../services/mail.server";
 import { claimQrCampaign } from "../services/qr.server";

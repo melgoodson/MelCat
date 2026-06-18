@@ -1,0 +1,86 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "1753021347f72616df": {
+      "type": "apps",
+      "blocks": {
+        "melcat_dashboard_pack_preview_gxD7Ym": {
+          "type": "shopify://apps/melcat-dashboard/blocks/pack-preview/019e0a5a-9132-7a04-9bd6-fb4665c4f2c4",
+          "settings": {
+            "title": "What's inside the Digital Pack?",
+            "subtitle": "Reaction GIFs, stickers, and exclusive printable art.",
+            "bg_color": "#fdf8f4",
+            "text_color": "#2d1b0d"
+          }
+        },
+        "melcat_dashboard_bundle_explainer_rcJyKV": {
+          "type": "shopify://apps/melcat-dashboard/blocks/bundle-explainer/019e0a5a-9132-7a04-9bd6-fb4665c4f2c4",
+          "settings": {}
+        },
+        "melcat_dashboard_tier_comparison_gj68fW": {
+          "type": "shopify://apps/melcat-dashboard/blocks/tier-comparison/019e0a5a-9132-7a04-9bd6-fb4665c4f2c4",
+          "settings": {
+            "tier_1_name": "Standard Pack",
+            "tier_1_feature_1": "20 Reaction GIFs",
+            "tier_1_feature_2": "10 Stickers",
+            "tier_2_name": "Deluxe Pack",
+            "tier_2_feature_1": "Everything in Standard",
+            "tier_2_feature_2": "Bonus Animations",
+            "tier_2_feature_3": "Exclusive Printables",
+            "tier_3_name": "Ultimate Pack",
+            "tier_3_feature_1": "Everything in Deluxe",
+            "tier_3_feature_2": "Lifetime Access",
+            "tier_3_feature_3": "All Future Drops Free!"
+          }
+        },
+        "instafeed_app_block_QeAH9g": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "disabled": true,
+          "settings": {
+            "title": "",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "melcat_dashboard_pack_preview_gxD7Ym",
+        "melcat_dashboard_bundle_explainer_rcJyKV",
+        "melcat_dashboard_tier_comparison_gj68fW",
+        "instafeed_app_block_QeAH9g"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "1753021347f72616df"
+  ]
+}
