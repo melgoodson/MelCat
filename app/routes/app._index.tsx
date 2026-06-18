@@ -241,6 +241,57 @@ export default function Index() {
 
       </div>
 
+      {/* ── BIG MEL INTERACTIVE & SALES ANALYTICS ───────────────── */}
+      <div style={{ display:"grid", gridTemplateColumns:"2fr 1fr", gap:"1.5rem", padding:"0 2.5rem 2.5rem" }}>
+        
+        {/* Chat & Widget Interactions */}
+        <div style={{ background:"#fff", borderRadius:"24px", padding:"2rem", boxShadow:"0 2px 16px rgba(0,0,0,0.06)", border:"1px solid #e5e7eb" }}>
+          <h2 style={{ margin:"0 0 1.25rem", fontSize:"1.25rem", fontWeight:800, color:"#1f2937", display:"flex", alignItems:"center", gap:"0.5rem" }}>
+            <span>💬</span> Big Mel Chat Activity
+          </h2>
+          <p style={{ margin:"0 0 1.5rem", fontSize:"0.9rem", color:"#6b7280" }}>
+            Monitor how customers are interacting with the Big Mel storefront widget in real-time.
+          </p>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"1rem" }}>
+            <div style={{ background:"#f9fafb", border:"1px solid #f3f4f6", padding:"1.5rem", borderRadius:"16px", textAlign:"center" }}>
+              <div style={{ fontSize:"2.25rem", fontWeight:900, color:"#f28c28", marginBottom:"0.25rem" }}>{core.totalChats || 0}</div>
+              <div style={{ fontSize:"0.85rem", fontWeight:700, color:"#4b5563" }}>Total Messages Sent</div>
+              <div style={{ fontSize:"0.75rem", color:"#9ca3af", marginTop:"0.25rem" }}>AI-generated judgment replies</div>
+            </div>
+            <div style={{ background:"#f9fafb", border:"1px solid #f3f4f6", padding:"1.5rem", borderRadius:"16px", textAlign:"center" }}>
+              <div style={{ fontSize:"2.25rem", fontWeight:900, color:"#8b5cf6", marginBottom:"0.25rem" }}>{core.uniqueChatSessions || 0}</div>
+              <div style={{ fontSize:"0.85rem", fontWeight:700, color:"#4b5563" }}>Active Chat Sessions</div>
+              <div style={{ fontSize:"0.75rem", color:"#9ca3af", marginTop:"0.25rem" }}>Unique visitor interactions</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Product-Linked Access & Upgrades */}
+        <div style={{ background:"linear-gradient(135deg, #1e293b 0%, #0f172a 100%)", color:"#fff", borderRadius:"24px", padding:"2rem", boxShadow:"0 4px 20px rgba(15,23,42,0.15)", position:"relative", overflow:"hidden" }}>
+          <div style={{ position:"absolute", top:"-50px", right:"-50px", width:"150px", height:"150px", borderRadius:"50%", background:"rgba(242,140,40,0.15)", pointerEvents:"none" }} />
+          <h2 style={{ margin:"0 0 1.25rem", fontSize:"1.25rem", fontWeight:800, color:"#fff", display:"flex", alignItems:"center", gap:"0.5rem" }}>
+            <span>🛒</span> Product Access Rules
+          </h2>
+          <div style={{ display:"flex", flexDirection:"column", gap:"1rem" }}>
+            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", borderBottom:"1px solid rgba(255,255,255,0.1)", paddingBottom:"0.75rem" }}>
+              <span style={{ fontSize:"0.9rem", color:"#94a3b8" }}>🐈 Tunnels Claimed</span>
+              <span style={{ fontSize:"1.15rem", fontWeight:800, color:"#f28c28" }}>{core.tunnelsClaimed || 0}</span>
+            </div>
+            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", borderBottom:"1px solid rgba(255,255,255,0.1)", paddingBottom:"0.75rem" }}>
+              <span style={{ fontSize:"0.9rem", color:"#94a3b8" }}>📦 Cubes Claimed</span>
+              <span style={{ fontSize:"1.15rem", fontWeight:800, color:"#f28c28" }}>{core.cubesClaimed || 0}</span>
+            </div>
+            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", paddingTop:"0.25rem" }}>
+              <span style={{ fontSize:"0.9rem", color:"#94a3b8" }}>⚡ Upgrade Conv. Rate</span>
+              <span style={{ background:"#10b981", color:"#fff", fontSize:"0.85rem", fontWeight:800, padding:"0.25rem 0.6rem", borderRadius:"30px" }}>
+                {core.freeToPaidConversionRate || "0.0%"}
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
       {/* ── METRICS TABLES ─────────────────────────────────────── */}
       <div style={{ padding:"0 2.5rem 2.5rem", display:"grid", gridTemplateColumns:"1fr", gap:"1.5rem" }}>
         

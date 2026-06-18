@@ -44,8 +44,18 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       return new Response("No variants", { status: 200 });
     }
 
+    const lineItems = (order.line_items || []).map((item: any) => ({
+      variantId: item.variant_id?.toString(),
+      title: item.title?.toString(),
+    }));
+
     console.log(`[Webhook] orders/paid — checking entitlements for ${email}, variants: ${variantIds.join(", ")}`);
-    const { customer, granted, grantedNew, alreadyOwned, mappings } = await grantPurchaseEntitlements(shopifyCustomerId || "", email, variantIds);
+    const { customer, granted, grantedNew, alreadyOwned, mappings } = await grantPurchaseEntitlements(
+      shopifyCustomerId || "",
+      email,
+      variantIds,
+      lineItems
+    );
 
     if (granted) {
       const token = crypto.randomBytes(32).toString('hex');

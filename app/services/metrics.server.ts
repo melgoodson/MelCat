@@ -1,4 +1,5 @@
 import prisma from "../db.server";
+import { supabase } from "./supabase.server";
 
 export async function getDashboardMetrics(dateRange: { from?: Date; to?: Date }) {
   const [core, funnel, qr, upgrade, drop] = await Promise.all([
@@ -18,7 +19,7 @@ export async function getCoreCounters(dateRange: { from?: Date; to?: Date }) {
   const qrRedemptionWhere = dateRange.from ? { claimedAt: { gte: dateRange.from, lte: dateRange.to } } : {};
   const dropNotificationWhere = dateRange.from ? { sentAt: { gte: dateRange.from, lte: dateRange.to } } : {};
 
-  const [totalCustomers, activeEntitlements, qrRedemptions, events] = await Promise.all([
+  const [totalCustomers, activeEntitlements, qrRedemptions, events, chatSessionsResult] = await Promise.all([
     prisma.customer.count({ where: customerWhere }),
     prisma.entitlement.count({ where: { revoked: false, ...customerWhere } }),
     prisma.qRRedemption.count({ where: qrRedemptionWhere }),
@@ -26,12 +27,81 @@ export async function getCoreCounters(dateRange: { from?: Date; to?: Date }) {
       by: ['eventType'],
       _count: { id: true },
       where: eventWhere
+    }),
+    prisma.customerEvent.groupBy({
+      by: ['sessionId'],
+      where: { eventType: "chat_sent", ...eventWhere }
     })
   ]);
 
   const eventCounts = events.reduce((acc, curr) => ({
     ...acc, [curr.eventType]: curr._count.id
   }), {} as Record<string, number>);
+
+  const uniqueChatSessions = chatSessionsResult.filter(r => r.sessionId).length;
+
+  let totalChats = eventCounts.chat_sent || 0;
+  let finalUniqueSessions = uniqueChatSessions;
+
+  // Fallback to Supabase big_mel_chat_usage table to show historical chats before event tracking was active
+  try {
+    const { data: usageData } = await supabase
+      .from("big_mel_chat_usage")
+      .select("chat_count");
+
+    if (usageData && usageData.length > 0) {
+      const historicChats = usageData.reduce((acc, curr) => acc + (curr.chat_count || 0), 0);
+      const historicSessions = usageData.length;
+      
+      if (totalChats === 0) {
+        totalChats = historicChats;
+      }
+      if (finalUniqueSessions === 0) {
+        finalUniqueSessions = historicSessions;
+      }
+    }
+  } catch (err) {
+    console.error("[Metrics] Failed to fetch historical chat usage:", err);
+  }
+
+  // Free Tier Purchases (tunnels/cubes)
+  const freeTierEvents = await prisma.customerEvent.findMany({
+    where: { eventType: "free_tier_granted", ...eventWhere }
+  });
+
+  let tunnelsClaimed = 0;
+  let cubesClaimed = 0;
+  freeTierEvents.forEach(e => {
+    const productType = (e.metadata as any)?.productType;
+    if (productType === "tunnel") tunnelsClaimed++;
+    else if (productType === "cube") cubesClaimed++;
+  });
+
+  // Free-to-paid conversion rate
+  const freeTierCustomersResult = await prisma.customerEvent.groupBy({
+    by: ['customerId'],
+    where: { eventType: "free_tier_granted" }
+  });
+  
+  const freeTierCustomerIds = freeTierCustomersResult
+    .map(r => r.customerId)
+    .filter(Boolean) as string[];
+
+  let convertedUpgrades = 0;
+  if (freeTierCustomerIds.length > 0) {
+    const upgradedCustomersResult = await prisma.customerEvent.groupBy({
+      by: ['customerId'],
+      where: {
+        customerId: { in: freeTierCustomerIds },
+        eventType: "upgrade_purchased"
+      }
+    });
+    convertedUpgrades = upgradedCustomersResult.length;
+  }
+
+  const freeToPaidConversionRate = freeTierCustomerIds.length > 0
+    ? ((convertedUpgrades / freeTierCustomerIds.length) * 100).toFixed(1) + "%"
+    : "0.0%";
 
   return {
     totalCustomers,
@@ -43,6 +113,11 @@ export async function getCoreCounters(dateRange: { from?: Date; to?: Date }) {
     upgradePurchases: eventCounts.upgrade_purchased || 0,
     dropNotifications: await prisma.dropNotificationLog.count({ where: dropNotificationWhere }),
     dropDownloads: eventCounts.drop_downloaded || 0,
+    totalChats,
+    uniqueChatSessions: finalUniqueSessions,
+    tunnelsClaimed,
+    cubesClaimed,
+    freeToPaidConversionRate,
     eventCounts
   };
 }

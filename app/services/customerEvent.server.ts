@@ -10,7 +10,9 @@ export type EventType =
   | "drop_unlocked"
   | "drop_downloaded"
   | "magic_link_requested"
-  | "magic_link_consumed";
+  | "magic_link_consumed"
+  | "chat_sent"
+  | "free_tier_granted";
 
 export async function trackCustomerEvent(params: {
   customerId?: string;
@@ -19,8 +21,6 @@ export async function trackCustomerEvent(params: {
   sessionId?: string;
   source?: string;
 }): Promise<void> {
-  if (!FEATURES.gamification) return;
-
   await prisma.customerEvent.create({
     data: {
       customerId: params.customerId,
@@ -39,13 +39,11 @@ export async function safelyTrackCustomerEvent(params: {
   sessionId?: string;
   source?: string;
 }): Promise<void> {
-  if (!FEATURES.gamification) return;
-
   try {
     await trackCustomerEvent(params);
   } catch (error) {
     // Fail silently in production to avoid disrupting user flow
-    console.error(`[Gamification] Failed to track event ${params.eventType}:`, error);
+    console.error(`[Analytics] Failed to track event ${params.eventType}:`, error);
   }
 }
 

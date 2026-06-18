@@ -1,6 +1,7 @@
 import type { ActionFunctionArgs } from "react-router";
 import { ENV } from "../services/env.server";
 import { supabase } from "../services/supabase.server";
+import { grantPurchaseEntitlements } from "../services/entitlement.server";
 import crypto from "crypto";
 
 function verifyShopifyWebhook(rawBody: string, hmacHeader: string | null): boolean {
@@ -106,11 +107,34 @@ export async function action({ request }: ActionFunctionArgs) {
       mappedVariantIds.includes(vid)
     );
 
+    // Check for cat tunnel or cat cube free access
+    const hasFreeItem = lineItems.some((item: any) => {
+      const title = (item.title || "").toLowerCase();
+      return title.includes("tunnel") || title.includes("cube");
+    });
+
+    if (hasFreeItem) {
+      unlockedVariantIds.push("free_tier_tunnel_cube");
+    }
+
     if (unlockedVariantIds.length > 0) {
       const customerEmail = payload.email || payload.customer?.email || null;
       const customerId = payload.customer?.id ? String(payload.customer.id) : null;
 
       console.log(`[Webhook] Granting entitlements for variants: ${unlockedVariantIds.join(", ")}. Email: ${customerEmail}, Shopify ID: ${customerId}`);
+
+      // Sync customer library in PostgreSQL using Prisma
+      if (customerEmail) {
+        try {
+          const lineItemsMapped = lineItems.map((item: any) => ({
+            variantId: item.variant_id?.toString(),
+            title: item.title?.toString(),
+          }));
+          await grantPurchaseEntitlements(customerId || "", customerEmail, variantIds, lineItemsMapped);
+        } catch (err) {
+          console.error("[Webhook] Failed to grant entitlements via Prisma:", err);
+        }
+      }
 
       for (const variantId of unlockedVariantIds) {
         // Insert active entitlement

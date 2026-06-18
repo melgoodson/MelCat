@@ -1,5 +1,7 @@
 import { ENV } from "./env.server";
 import { supabase } from "./supabase.server";
+import prisma from "../db.server";
+import { safelyTrackCustomerEvent } from "./customerEvent.server";
 
 const MAX_MESSAGE_LENGTH = 500;
 
@@ -381,6 +383,30 @@ export async function handleMelcatChatRequest({ request }: { request: Request })
 
     // 3. Generate reply using dynamic AI provider
     const reply = await generateBigMelReply({ ...payload, shopDomain, message });
+
+    // Track storefront chat event in database
+    try {
+      let dbCustomer = null;
+      if (payload.customerEmail || payload.customerId) {
+        dbCustomer = await prisma.customer.findFirst({
+          where: {
+            OR: [
+              payload.customerEmail ? { email: payload.customerEmail.trim() } : undefined,
+              payload.customerId ? { shopifyCustomerId: String(payload.customerId).trim() } : undefined
+            ].filter(Boolean) as any
+          }
+        });
+      }
+      await safelyTrackCustomerEvent({
+        customerId: dbCustomer?.id,
+        eventType: "chat_sent",
+        metadata: { shopDomain, isEntitled, sessionId },
+        source: "storefront",
+        sessionId
+      });
+    } catch (err) {
+      console.error("[Big Mel Chat Handler] Failed to log chat event:", err);
+    }
 
     // 4. Increment usage count only after a successful AI reply
     if (!isEntitled) {
