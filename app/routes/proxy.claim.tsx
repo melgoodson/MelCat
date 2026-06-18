@@ -29,7 +29,8 @@ export async function action({ request }: ActionFunctionArgs) {
 
     // Build callback URL with campaign context
     const url = new URL(request.url);
-    let callbackUrl = `${url.origin}/apps/snarky/auth/callback?token=${token}`;
+    const shop = url.searchParams.get("shop") || "fhfwar-jc.myshopify.com";
+    let callbackUrl = `https://${shop}/apps/snarky/auth/callback?token=${token}`;
     if (campaignHash) {
       callbackUrl += `&c=${encodeURIComponent(campaignHash)}`;
     }
