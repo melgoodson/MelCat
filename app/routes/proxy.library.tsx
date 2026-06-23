@@ -132,8 +132,15 @@ export default function LibraryPage() {
   const [chatMessages, setChatMessages] = useState<Array<{ role: 'user' | 'model' | 'system'; text: string }>>([]);
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isClient, setIsClient] = useState(false);
-  const chatEndRef = useRef<HTMLDivElement | null>(null);
+  const [pathPrefix, setPathPrefix] = useState("/apps/snarky");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (window.location.pathname.startsWith("/proxy")) {
+        setPathPrefix("/proxy");
+      }
+    }
+  }, []);
 
   useEffect(() => {
     setIsClient(true);
@@ -303,7 +310,7 @@ export default function LibraryPage() {
         }
       };
 
-      const response = await fetch("/apps/snarky/melcat/chat", {
+      const response = await fetch(`${pathPrefix}/melcat/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -353,7 +360,7 @@ export default function LibraryPage() {
             <p style={styles.text}>
               Big Mel is waiting! You need a magic link to access your digital treasures.
             </p>
-            <a href="/apps/snarky/claim" style={styles.link}>
+            <a href={`${pathPrefix}/claim`} style={styles.link}>
               Enter the Vault →
             </a>
           </div>
@@ -379,7 +386,7 @@ export default function LibraryPage() {
       <div style={styles.container}>
         <div style={styles.header}>
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1.5rem' }}>
-            <a href={`/apps/snarky/logout${token ? `?token=${token}` : ""}`} style={{ color: '#e37322', textDecoration: 'none', fontWeight: 700, fontSize: '0.9rem', background: 'rgba(242,140,40,0.1)', padding: '0.4rem 1rem', borderRadius: '30px', transition: 'all 0.2s' }}>Sign out ➔</a>
+            <a href={`${pathPrefix}/logout${token ? `?token=${token}` : ""}`} style={{ color: '#e37322', textDecoration: 'none', fontWeight: 700, fontSize: '0.9rem', background: 'rgba(242,140,40,0.1)', padding: '0.4rem 1rem', borderRadius: '30px', transition: 'all 0.2s' }}>Sign out ➔</a>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', marginBottom: '1rem' }}>
              <div style={{ width: '70px', height: '70px', borderRadius: '50%', overflow: 'hidden', border: '3px solid #f28c28', boxShadow: '0 4px 15px rgba(242,140,40,0.2)', background: '#fff9f0' }}>
@@ -404,17 +411,17 @@ export default function LibraryPage() {
             </div>
             <div style={styles.upgradeBtnContainer}>
               {maxTier < 2 && (
-                <a href={`/apps/snarky/upgrade?tier=2${token ? `&token=${token}` : ""}`} style={{...styles.upgradeBtn, background: '#f28c28', color: '#fff'}}>
+                <a href={`${pathPrefix}/upgrade?tier=2${token ? `&token=${token}` : ""}`} style={{...styles.upgradeBtn, background: '#f28c28', color: '#fff'}}>
                   Standard Upgrade
                 </a>
               )}
               {maxTier < 3 && (
-                <a href={`/apps/snarky/upgrade?tier=3${token ? `&token=${token}` : ""}`} style={{...styles.upgradeBtn, background: '#e94560', color: '#fff'}}>
+                <a href={`${pathPrefix}/upgrade?tier=3${token ? `&token=${token}` : ""}`} style={{...styles.upgradeBtn, background: '#e94560', color: '#fff'}}>
                   Deluxe Upgrade
                 </a>
               )}
               {maxTier < 4 && (
-                <a href={`/apps/snarky/upgrade?tier=4${token ? `&token=${token}` : ""}`} style={styles.upgradeBtn}>
+                <a href={`${pathPrefix}/upgrade?tier=4${token ? `&token=${token}` : ""}`} style={styles.upgradeBtn}>
                   Ultimate Upgrade →
                 </a>
               )}
@@ -444,7 +451,7 @@ export default function LibraryPage() {
                 {pack.packAssets.length > 0 && (
                   <div style={styles.assetList}>
                     {pack.packAssets.map((pa: any) => (
-                      <a href={`/apps/snarky/api/download?id=${pa.digitalAsset.id}${token ? `&token=${token}` : ""}`} key={pa.digitalAsset.id} style={styles.assetItemLink}>
+                      <a href={`${pathPrefix}/api/download?id=${pa.digitalAsset.id}${token ? `&token=${token}` : ""}`} key={pa.digitalAsset.id} style={styles.assetItemLink}>
                         <div style={styles.assetItem} onMouseEnter={(e) => { e.currentTarget.style.background = '#fbe8cc'; }} onMouseLeave={(e) => { e.currentTarget.style.background = '#fdf8f4'; }}>
                           {pa.digitalAsset.thumbnailUrl ? (
                             <img src={pa.digitalAsset.thumbnailUrl} style={{ width: '48px', height: '48px', borderRadius: '8px', objectFit: 'cover' }} alt={pa.digitalAsset.title} />
@@ -477,7 +484,7 @@ export default function LibraryPage() {
                 {drop.dropAssets.length > 0 && (
                   <div style={styles.assetList}>
                     {drop.dropAssets.map((da: any) => (
-                      <a href={`/apps/snarky/api/download?id=${da.digitalAsset.id}${token ? `&token=${token}` : ""}`} key={da.digitalAsset.id} style={styles.assetItemLink}>
+                      <a href={`${pathPrefix}/api/download?id=${da.digitalAsset.id}${token ? `&token=${token}` : ""}`} key={da.digitalAsset.id} style={styles.assetItemLink}>
                         <div style={styles.assetItem} onMouseEnter={(e) => { e.currentTarget.style.background = '#ffd8df'; }} onMouseLeave={(e) => { e.currentTarget.style.background = '#fdf8f4'; }}>
                           {da.digitalAsset.thumbnailUrl ? (
                             <img src={da.digitalAsset.thumbnailUrl} style={{ width: '48px', height: '48px', borderRadius: '8px', objectFit: 'cover' }} alt={da.digitalAsset.title} />
