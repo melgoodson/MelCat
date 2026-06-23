@@ -538,7 +538,7 @@ export default function LibraryPage() {
                 LVL {Math.max(1, maxTier)}
               </div>
               <span style={{ fontSize: '0.85rem', color: '#6b5c4f', fontWeight: 700, marginTop: '5px' }}>
-                {localStorage && localStorage.getItem("melcat_reward_claimed") === "true" ? "100 / 100 XP" : "40 / 100 XP"}
+                {typeof localStorage !== 'undefined' && localStorage.getItem("melcat_reward_claimed") === "true" ? "100 / 100 XP" : "40 / 100 XP"}
               </span>
             </div>
 
