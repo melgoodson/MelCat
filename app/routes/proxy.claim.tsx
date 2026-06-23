@@ -71,8 +71,8 @@ export default function ClaimPortal() {
     <div style={styles.wrapper}>
       <div style={styles.container}>
         <div style={styles.header}>
-            <div style={{ margin: '0 auto 1.5rem', width: '100px', height: '100px', borderRadius: '50%', overflow: 'hidden', border: '3px solid #f28c28', boxShadow: '0 8px 24px rgba(242, 140, 40, 0.25)' }}>
-              <img src={`${appUrl}/mascot.jpeg`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="MelCat Mascot" />
+            <div style={{ margin: '0 auto 1.5rem', width: '100px', height: '100px', borderRadius: '50%', overflow: 'hidden', border: '3px solid #f28c28', boxShadow: '0 8px 24px rgba(242, 140, 40, 0.25)', background: '#fff9f0' }}>
+              <img src={`${appUrl}/mascot.jpeg`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} alt="MelCat Mascot" />
             </div>
           <h1 style={styles.title}>MelCat</h1>
           <p style={styles.subtitle}>Unlock Your Digital Treasures</p>
@@ -101,7 +101,7 @@ export default function ClaimPortal() {
             )}
 
             <form method="post">
-              <input type="hidden" name="campaign" value={campaign} />
+              <input type="hidden" name="campaign" value={campaign || ""} />
               <div style={styles.inputGroup}>
                 <input
                   type="email"

@@ -8,12 +8,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const assetId = url.searchParams.get("id");
   const token = url.searchParams.get("token");
+  const session = await getCustomerSession(request);
 
   let customerId: string | undefined = undefined;
 
   // 1. Try to authenticate via Shopify App Proxy signature first
   try {
-    const { session } = await authenticate.public.appProxy(request);
+    const { session: shopifySession } = await authenticate.public.appProxy(request);
     const loggedInCustomerId = url.searchParams.get("logged_in_customer_id");
     if (loggedInCustomerId) {
       const customer = await prisma.customer.findFirst({
@@ -40,7 +41,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   // 3. Fallback to cookie session (for dev/direct local testing)
   if (!customerId) {
-    const session = await getCustomerSession(request);
     customerId = session.get("customerId") as string | undefined;
   }
 
@@ -104,7 +104,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         eventType: "drop_downloaded",
         metadata: { assetId: asset.id, type: asset.type, dropId: isEntitledDrop.id },
         source: "library",
-        sessionId: session.get("sessionToken") as string
+        sessionId: token || (session.get("sessionToken") as string | undefined) || undefined
       });
     } else {
       await safelyTrackCustomerEvent({
@@ -112,7 +112,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         eventType: "asset_downloaded",
         metadata: { assetId: asset.id, type: asset.type, packId: isEntitledPack?.packId },
         source: "library",
-        sessionId: session.get("sessionToken") as string
+        sessionId: token || (session.get("sessionToken") as string | undefined) || undefined
       });
     }
 

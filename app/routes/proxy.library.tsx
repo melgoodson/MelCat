@@ -346,8 +346,8 @@ export default function LibraryPage() {
       <div style={styles.wrapper}>
         <div style={styles.container}>
           <div style={styles.card}>
-            <div style={{ margin: '0 auto 1.5rem', width: '110px', height: '110px', borderRadius: '50%', overflow: 'hidden', border: '4px solid #f28c28', boxShadow: '0 8px 24px rgba(242, 140, 40, 0.25)' }}>
-              <img src={`${appUrl}/mascot.jpeg`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="MelCat Mascot" />
+            <div style={{ margin: '0 auto 1.5rem', width: '110px', height: '110px', borderRadius: '50%', overflow: 'hidden', border: '4px solid #f28c28', boxShadow: '0 8px 24px rgba(242, 140, 40, 0.25)', background: '#fff9f0' }}>
+              <img src={`${appUrl}/mascot.jpeg`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} alt="MelCat Mascot" />
             </div>
             <h1 style={styles.title}>🔒 MelCat Vault Locked</h1>
             <p style={styles.text}>
@@ -382,8 +382,8 @@ export default function LibraryPage() {
             <a href={`/apps/snarky/logout${token ? `?token=${token}` : ""}`} style={{ color: '#e37322', textDecoration: 'none', fontWeight: 700, fontSize: '0.9rem', background: 'rgba(242,140,40,0.1)', padding: '0.4rem 1rem', borderRadius: '30px', transition: 'all 0.2s' }}>Sign out ➔</a>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', marginBottom: '1rem' }}>
-             <div style={{ width: '70px', height: '70px', borderRadius: '50%', overflow: 'hidden', border: '3px solid #f28c28', boxShadow: '0 4px 15px rgba(242,140,40,0.2)' }}>
-                <img src={`${appUrl}/mascot.jpeg`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="MelCat Mascot" />
+             <div style={{ width: '70px', height: '70px', borderRadius: '50%', overflow: 'hidden', border: '3px solid #f28c28', boxShadow: '0 4px 15px rgba(242,140,40,0.2)', background: '#fff9f0' }}>
+                <img src={`${appUrl}/mascot.jpeg`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} alt="MelCat Mascot" />
              </div>
              <h1 style={styles.title}>The MelCat Vault</h1>
           </div>

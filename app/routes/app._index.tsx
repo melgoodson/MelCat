@@ -27,7 +27,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       core: {
         totalCustomers: 0, activeEntitlements: 0, totalQRRedemptions: 0,
         libraryViews: 0, assetDownloads: 0, upgradeClicks: 0,
-        upgradePurchases: 0, dropNotifications: 0, dropDownloads: 0, eventCounts: {}
+        upgradePurchases: 0, dropNotifications: 0, dropDownloads: 0,
+        totalChats: 0, uniqueChatSessions: 0, tunnelsClaimed: 0, cubesClaimed: 0,
+        freeToPaidConversionRate: "0.0%", eventCounts: {}
       },
       funnel: { claimToLibrary: "N/A", libraryToUpgradeClick: "N/A", clickToPurchase: "N/A", dropToDownload: "N/A" },
       qr: [],
