@@ -10,7 +10,19 @@ import prisma from "../db.server";
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const token = url.searchParams.get("token");
-  const appUrl = process.env.SHOPIFY_APP_URL || "https://snarky-mel-cat-34130528345.northamerica-northeast2.run.app";
+  
+  let appUrl = process.env.SHOPIFY_APP_URL || "https://snarky-mel-cat-34130528345.northamerica-northeast2.run.app";
+  const isLocalHost = url.hostname === "localhost" || url.hostname === "127.0.0.1";
+  const forwardedHost = request.headers.get("x-forwarded-host");
+  const forwardedProto = request.headers.get("x-forwarded-proto") || "https";
+
+  if (isLocalHost) {
+    appUrl = `${url.protocol}//${url.host}`;
+  } else if (forwardedHost && (forwardedHost.includes("localhost") || forwardedHost.includes("127.0.0.1") || forwardedHost.includes("trycloudflare.com") || forwardedHost.includes("ngrok"))) {
+    appUrl = `${forwardedProto}://${forwardedHost}`;
+  } else if (url.hostname.includes("trycloudflare.com") || url.hostname.includes("ngrok")) {
+    appUrl = `${url.protocol}//${url.host}`;
+  }
 
   let customerId: string | undefined = undefined;
 
@@ -87,6 +99,65 @@ export async function loader({ request }: LoaderFunctionArgs) {
     }
   });
 
+  // Dynamically resolve thumbnail preview URLs for image files from storage
+  const { getAssetSignedUrl } = await import("../services/storage.server");
+
+  const packsWithPreviews = await Promise.all(
+    packs.map(async (pack) => {
+      const packAssetsWithPreviews = await Promise.all(
+        pack.packAssets.map(async (pa: any) => {
+          let previewUrl = pa.digitalAsset.thumbnailUrl;
+          if (!previewUrl && ["GIF", "PNG", "JPG", "JPEG"].includes(pa.digitalAsset.type)) {
+            try {
+              previewUrl = await getAssetSignedUrl(pa.digitalAsset.fileKey, 60); // 1 hour expiry
+            } catch (err) {
+              console.error("[Storage] Failed to generate preview URL for asset:", pa.digitalAsset.id, err);
+            }
+          }
+          return {
+            ...pa,
+            digitalAsset: {
+              ...pa.digitalAsset,
+              thumbnailUrl: previewUrl
+            }
+          };
+        })
+      );
+      return {
+        ...pack,
+        packAssets: packAssetsWithPreviews
+      };
+    })
+  );
+
+  const dropsWithPreviews = await Promise.all(
+    drops.map(async (drop) => {
+      const dropAssetsWithPreviews = await Promise.all(
+        drop.dropAssets.map(async (da: any) => {
+          let previewUrl = da.digitalAsset.thumbnailUrl;
+          if (!previewUrl && ["GIF", "PNG", "JPG", "JPEG"].includes(da.digitalAsset.type)) {
+            try {
+              previewUrl = await getAssetSignedUrl(da.digitalAsset.fileKey, 60); // 1 hour expiry
+            } catch (err) {
+              console.error("[Storage] Failed to generate preview URL for drop asset:", da.digitalAsset.id, err);
+            }
+          }
+          return {
+            ...da,
+            digitalAsset: {
+              ...da.digitalAsset,
+              thumbnailUrl: previewUrl
+            }
+          };
+        })
+      );
+      return {
+        ...drop,
+        dropAssets: dropAssetsWithPreviews
+      };
+    })
+  );
+
   const { FEATURES } = await import("../config/features.server");
   const { safelyTrackCustomerEvent } = await import("../services/customerEvent.server");
 
@@ -111,8 +182,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return { 
     authenticated: true, 
     customer, 
-    packs, 
-    drops, 
+    packs: packsWithPreviews, 
+    drops: dropsWithPreviews, 
     maxTier, 
     features: FEATURES, 
     token: token || "", 
@@ -122,17 +193,21 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export default function LibraryPage() {
   const { authenticated, customer, packs, drops, maxTier, features, token, appUrl } = useLoaderData<typeof loader>();
+  const baseUrl = appUrl;
 
   // State hooks for Tamagotchi & Chat
   const [hunger, setHunger] = useState(10);
   const [boredom, setBoredom] = useState(10);
-  const [mascotState, setMascotState] = useState<'idle' | 'eating' | 'playing' | 'purring' | 'angry' | 'thinking'>('idle');
+  const [mascotState, setMascotState] = useState<'idle' | 'eating' | 'playing' | 'purring' | 'angry' | 'thinking' | 'celebrating'>('idle');
   const [speechText, setSpeechText] = useState("I'm not saying I'm hungry, but if you don't feed me a treat soon, your internet cables are looking awfully chewable.");
   const [chatOpen, setChatOpen] = useState(false);
   const [chatMessages, setChatMessages] = useState<Array<{ role: 'user' | 'model' | 'system'; text: string }>>([]);
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [pathPrefix, setPathPrefix] = useState("/apps/snarky");
+  const [isClient, setIsClient] = useState(false);
+  const [upgradeRequired, setUpgradeRequired] = useState(false);
+  const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -141,6 +216,28 @@ export default function LibraryPage() {
       }
     }
   }, []);
+
+  useEffect(() => {
+    if (chatOpen || mascotState !== 'idle') return;
+    
+    const interval = setInterval(() => {
+      const snarkyPool = [
+        "Still here. Still judging.",
+        "You've been on this page a while. Commitment or confusion?",
+        "I'm not saying I'm hungry, but if you don't feed me a treat soon, your internet cables are looking awfully chewable.",
+        "I notice things. It's a gift.",
+        "This silence is comfortable. For me. Less so for your cart.",
+        "Fine. Keep scrolling. I'll just sit here being iconic.",
+        "Are we downloading assets or just browsing my digital empire?",
+        "I've seen your download history. Very interesting choices.",
+        "Unlocking tiers doesn't make you immune to my judgment."
+      ];
+      const randomMsg = snarkyPool[Math.floor(Math.random() * snarkyPool.length)];
+      setSpeechText(randomMsg);
+    }, 45000);
+
+    return () => clearInterval(interval);
+  }, [chatOpen, mascotState]);
 
   useEffect(() => {
     setIsClient(true);
@@ -185,11 +282,14 @@ export default function LibraryPage() {
   }, [chatMessages, chatOpen]);
 
   const getMascotImage = () => {
-    if (mascotState === 'eating') return `${appUrl}/melcat-eating.webp`;
-    if (mascotState === 'playing') return `${appUrl}/melcat-playing.webp`;
-    if (mascotState === 'purring') return `${appUrl}/melcat-purring.webp`;
-    if (mascotState === 'angry' || hunger >= 80 || boredom >= 80) return `${appUrl}/melcat-angry.webp`;
-    return `${appUrl}/melcat-ai-preview.png`;
+    if (mascotState === 'eating') return `${baseUrl}/melcat-eating.webp`;
+    if (mascotState === 'playing') return `${baseUrl}/melcat-playing.webp`;
+    if (mascotState === 'purring') return `${baseUrl}/melcat-purring.webp`;
+    if (mascotState === 'thinking') return `${baseUrl}/melcat-thinking.webp`;
+    if (mascotState === 'celebrating') return `${baseUrl}/melcat-celebrating.webp`;
+    if (mascotState === 'angry' || hunger >= 80 || boredom >= 80) return `${baseUrl}/melcat-angry.webp`;
+    if (hunger >= 60 || boredom >= 60) return `${baseUrl}/melcat-judging.webp`;
+    return `${baseUrl}/melcat-idle.webp`;
   };
 
   const getStatusText = () => {
@@ -197,6 +297,7 @@ export default function LibraryPage() {
     if (mascotState === 'playing') return "STATUS: PLAYING";
     if (mascotState === 'purring') return "STATUS: PURRING";
     if (mascotState === 'thinking') return "STATUS: THINKING";
+    if (mascotState === 'celebrating') return "STATUS: CELEBRATING";
     if (hunger >= 80) return "NEEDS: FOOD!";
     if (boredom >= 80) return "NEEDS: PLAY!";
     if (hunger >= 60) return "STATUS: HUNGRY";
@@ -214,6 +315,10 @@ export default function LibraryPage() {
     if (actions >= 5) {
       localStorage.setItem("melcat_reward_claimed", "true");
       setSpeechText("Fine. You aren't terrible. You kept me fed. Use code MELCARES for 10% off.");
+      setMascotState('celebrating');
+      setTimeout(() => {
+        setMascotState('idle');
+      }, 5000);
     }
   };
 
@@ -318,21 +423,32 @@ export default function LibraryPage() {
         body: JSON.stringify(body)
       });
 
+      const data = await response.json().catch(() => null);
+
       if (!response.ok) {
-        throw new Error("Failed to send message");
+        if (response.status === 403 && data && data.upgradeRequired) {
+          setUpgradeRequired(true);
+          const updatedMessages = [...newMessages, { role: 'system' as const, text: "That's all the free judgment you get. Unlock full Big Mel to keep chatting." }];
+          setChatMessages(updatedMessages);
+          sessionStorage.setItem("melcat_chat_history", JSON.stringify(updatedMessages));
+          return;
+        }
+        throw new Error((data && data.error) || "Failed to send message");
       }
 
-      const data = await response.json();
-      if (data.reply) {
+      if (data && data.reply) {
         const updatedMessages = [...newMessages, { role: 'model' as const, text: data.reply }];
         setChatMessages(updatedMessages);
         setSpeechText(data.reply);
-        
         sessionStorage.setItem("melcat_chat_history", JSON.stringify(updatedMessages));
+        
+        if (data.upgradeRequired) {
+          setUpgradeRequired(true);
+        }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Chat error:", error);
-      setChatMessages(prev => [...prev, { role: 'system' as const, text: "Big Mel is currently sleeping. Try again later." }]);
+      setChatMessages(prev => [...prev, { role: 'system' as const, text: error.message || "Big Mel is currently sleeping. Try again later." }]);
     } finally {
       setIsLoading(false);
       setMascotState('idle');
@@ -354,7 +470,7 @@ export default function LibraryPage() {
         <div style={styles.container}>
           <div style={styles.card}>
             <div style={{ margin: '0 auto 1.5rem', width: '110px', height: '110px', borderRadius: '50%', overflow: 'hidden', border: '4px solid #f28c28', boxShadow: '0 8px 24px rgba(242, 140, 40, 0.25)', background: '#fff9f0' }}>
-              <img src={`${appUrl}/mascot.jpeg`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} alt="MelCat Mascot" />
+              <img src={`${baseUrl}/mascot.jpeg`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} alt="MelCat Mascot" />
             </div>
             <h1 style={styles.title}>🔒 MelCat Vault Locked</h1>
             <p style={styles.text}>
@@ -390,7 +506,7 @@ export default function LibraryPage() {
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', marginBottom: '1rem' }}>
              <div style={{ width: '70px', height: '70px', borderRadius: '50%', overflow: 'hidden', border: '3px solid #f28c28', boxShadow: '0 4px 15px rgba(242,140,40,0.2)', background: '#fff9f0' }}>
-                <img src={`${appUrl}/mascot.jpeg`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} alt="MelCat Mascot" />
+                 <img src={`${baseUrl}/mascot.jpeg`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} alt="MelCat Mascot" />
              </div>
              <h1 style={styles.title}>The MelCat Vault</h1>
           </div>
@@ -451,7 +567,7 @@ export default function LibraryPage() {
                 {pack.packAssets.length > 0 && (
                   <div style={styles.assetList}>
                     {pack.packAssets.map((pa: any) => (
-                      <a href={`${pathPrefix}/api/download?id=${pa.digitalAsset.id}${token ? `&token=${token}` : ""}`} key={pa.digitalAsset.id} style={styles.assetItemLink}>
+                      <a href={`${appUrl}/proxy/api/download?id=${pa.digitalAsset.id}${token ? `&token=${token}` : ""}`} key={pa.digitalAsset.id} style={styles.assetItemLink} target="_blank" rel="noopener noreferrer">
                         <div style={styles.assetItem} onMouseEnter={(e) => { e.currentTarget.style.background = '#fbe8cc'; }} onMouseLeave={(e) => { e.currentTarget.style.background = '#fdf8f4'; }}>
                           {pa.digitalAsset.thumbnailUrl ? (
                             <img src={pa.digitalAsset.thumbnailUrl} style={{ width: '48px', height: '48px', borderRadius: '8px', objectFit: 'cover' }} alt={pa.digitalAsset.title} />
@@ -484,7 +600,7 @@ export default function LibraryPage() {
                 {drop.dropAssets.length > 0 && (
                   <div style={styles.assetList}>
                     {drop.dropAssets.map((da: any) => (
-                      <a href={`${pathPrefix}/api/download?id=${da.digitalAsset.id}${token ? `&token=${token}` : ""}`} key={da.digitalAsset.id} style={styles.assetItemLink}>
+                      <a href={`${appUrl}/proxy/api/download?id=${da.digitalAsset.id}${token ? `&token=${token}` : ""}`} key={da.digitalAsset.id} style={styles.assetItemLink} target="_blank" rel="noopener noreferrer">
                         <div style={styles.assetItem} onMouseEnter={(e) => { e.currentTarget.style.background = '#ffd8df'; }} onMouseLeave={(e) => { e.currentTarget.style.background = '#fdf8f4'; }}>
                           {da.digitalAsset.thumbnailUrl ? (
                             <img src={da.digitalAsset.thumbnailUrl} style={{ width: '48px', height: '48px', borderRadius: '8px', objectFit: 'cover' }} alt={da.digitalAsset.title} />
@@ -538,7 +654,7 @@ export default function LibraryPage() {
                 onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
               >
                 <div style={{ width: '130px', height: '130px', borderRadius: '50%', overflow: 'hidden', border: '4px solid #f28c28', boxShadow: '0 8px 24px rgba(242, 140, 40, 0.25)', position: 'relative', background: '#fff9f0' }}>
-                  <img src={getMascotImage()} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="MelCat Companion" />
+                  <img src={getMascotImage()} style={{ width: '100%', height: '100%', objectFit: 'contain' }} alt="MelCat Companion" />
                 </div>
               </button>
               <div style={{ background: '#2d1b0d', color: '#fff', padding: '0.25rem 1.25rem', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 900, marginTop: '-15px', zIndex: 10, boxShadow: '0 4px 10px rgba(0,0,0,0.15)' }}>
@@ -628,27 +744,66 @@ export default function LibraryPage() {
                 <div ref={chatEndRef} />
               </div>
 
-              <form onSubmit={handleChatSubmit} style={styles.chatForm}>
-                <input 
-                  type="text" 
-                  value={inputText}
-                  onChange={(e) => setInputText(e.target.value)}
-                  placeholder={isLoading ? "Please wait..." : "Ask Big Mel anything..."}
-                  disabled={isLoading}
-                  style={styles.chatInput}
-                />
-                <button 
-                  type="submit" 
-                  disabled={isLoading || !inputText.trim()}
-                  style={{
-                    ...styles.chatSubmitBtn,
-                    opacity: (isLoading || !inputText.trim()) ? 0.6 : 1,
-                    cursor: (isLoading || !inputText.trim()) ? 'not-allowed' : 'pointer'
-                  }}
-                >
-                  Send
-                </button>
-              </form>
+              {upgradeRequired ? (
+                <div style={{
+                  background: 'rgba(242, 140, 40, 0.1)',
+                  border: '1.5px dashed #f28c28',
+                  borderRadius: '16px',
+                  padding: '1.25rem',
+                  textAlign: 'center',
+                  marginTop: '0.75rem',
+                  boxShadow: '0 4px 15px rgba(242, 140, 40, 0.08)'
+                }}>
+                  <div style={{ color: '#2d1b0d', fontWeight: 800, fontSize: '0.95rem', marginBottom: '0.5rem' }}>
+                    🔒 Free Chat Limit Reached
+                  </div>
+                  <p style={{ color: '#6b5c4f', fontSize: '0.85rem', margin: '0 0 1rem 0', lineHeight: 1.4 }}>
+                    That's all the free judgment you get. Unlock full Big Mel to keep chatting.
+                  </p>
+                  <a 
+                    href={`${pathPrefix}/upgrade?tier=${Math.min(4, Math.max(2, maxTier + 1))}&source=library_chat${token ? `&token=${token}` : ""}`}
+                    style={{
+                      display: 'inline-block',
+                      background: 'linear-gradient(135deg, #f28c28, #e37322)',
+                      color: '#fff',
+                      textDecoration: 'none',
+                      fontWeight: 800,
+                      fontSize: '0.85rem',
+                      padding: '0.65rem 1.5rem',
+                      borderRadius: '12px',
+                      boxShadow: '0 4px 12px rgba(242, 140, 40, 0.25)',
+                      transition: 'transform 0.2s',
+                      cursor: 'pointer'
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.02)'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+                  >
+                    Unlock Unlimited Big Mel →
+                  </a>
+                </div>
+              ) : (
+                <form onSubmit={handleChatSubmit} style={styles.chatForm}>
+                  <input 
+                    type="text" 
+                    value={inputText}
+                    onChange={(e) => setInputText(e.target.value)}
+                    placeholder={isLoading ? "Please wait..." : "Ask Big Mel anything..."}
+                    disabled={isLoading}
+                    style={styles.chatInput}
+                  />
+                  <button 
+                    type="submit" 
+                    disabled={isLoading || !inputText.trim()}
+                    style={{
+                      ...styles.chatSubmitBtn,
+                      opacity: (isLoading || !inputText.trim()) ? 0.6 : 1,
+                      cursor: (isLoading || !inputText.trim()) ? 'not-allowed' : 'pointer'
+                    }}
+                  >
+                    Send
+                  </button>
+                </form>
+              )}
             </div>
           ) : (
             <>
@@ -915,16 +1070,19 @@ const styles: Record<string, React.CSSProperties> = {
     boxShadow: '0 12px 40px rgba(45, 27, 13, 0.05)',
   },
   quoteBubble: {
-    background: '#f8fafc',
-    border: '1px solid #e2e8f0',
-    borderRadius: '16px',
+    background: '#fffdf8',
+    border: '3px solid #f28c28',
+    outline: '1.5px solid #2d1b0d',
+    outlineOffset: '3px',
+    borderRadius: '16px 16px 16px 4px',
     padding: '1.25rem 1.5rem',
     marginTop: '2rem',
     fontStyle: 'italic',
-    color: '#475569',
+    color: '#2d1b0d',
     fontSize: '0.95rem',
     textAlign: 'center',
     lineHeight: 1.6,
+    boxShadow: '0 8px 24px rgba(242, 140, 40, 0.1)',
   },
   disabledBtn: {
     flex: 1,

@@ -11,7 +11,19 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const campaign = url.searchParams.get("c"); // QR campaign hash
   const session = await getCustomerSession(request);
   const customerId = session.get("customerId");
-  const appUrl = process.env.SHOPIFY_APP_URL || "https://snarky-mel-cat-34130528345.northamerica-northeast2.run.app";
+  
+  let appUrl = process.env.SHOPIFY_APP_URL || "https://snarky-mel-cat-34130528345.northamerica-northeast2.run.app";
+  const isLocalHost = url.hostname === "localhost" || url.hostname === "127.0.0.1";
+  const forwardedHost = request.headers.get("x-forwarded-host");
+  const forwardedProto = request.headers.get("x-forwarded-proto") || "https";
+
+  if (isLocalHost) {
+    appUrl = `${url.protocol}//${url.host}`;
+  } else if (forwardedHost && (forwardedHost.includes("localhost") || forwardedHost.includes("127.0.0.1") || forwardedHost.includes("trycloudflare.com") || forwardedHost.includes("ngrok"))) {
+    appUrl = `${forwardedProto}://${forwardedHost}`;
+  } else if (url.hostname.includes("trycloudflare.com") || url.hostname.includes("ngrok")) {
+    appUrl = `${url.protocol}//${url.host}`;
+  }
 
   return { campaign, isLoggedIn: !!customerId, appUrl };
 }
@@ -65,6 +77,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
 export default function ClaimPortal() {
   const { campaign, appUrl } = useLoaderData<typeof loader>();
+  const baseUrl = appUrl;
   const actionData = useActionData<typeof action>();
 
   return (
@@ -72,7 +85,7 @@ export default function ClaimPortal() {
       <div style={styles.container}>
         <div style={styles.header}>
             <div style={{ margin: '0 auto 1.5rem', width: '100px', height: '100px', borderRadius: '50%', overflow: 'hidden', border: '3px solid #f28c28', boxShadow: '0 8px 24px rgba(242, 140, 40, 0.25)', background: '#fff9f0' }}>
-              <img src={`${appUrl}/mascot.jpeg`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} alt="MelCat Mascot" />
+              <img src={`${baseUrl}/mascot.jpeg`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} alt="MelCat Mascot" />
             </div>
           <h1 style={styles.title}>MelCat</h1>
           <p style={styles.subtitle}>Unlock Your Digital Treasures</p>

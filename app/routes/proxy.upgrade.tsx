@@ -88,6 +88,54 @@ export async function loader({ request }: LoaderFunctionArgs) {
     sessionId: session.get("sessionToken"),
   });
 
+  // Dev Sandbox Bypass:
+  // If targetVariantId is missing OR we are in a sandbox environment (e.g. localhost, local tunnel, or no variant mapped)
+  // we can grant the tier directly for easy testing!
+  const isDev = url.hostname === "localhost" || url.hostname === "127.0.0.1" || url.hostname.includes("trycloudflare.com") || url.hostname.includes("ngrok");
+  
+  if (!targetVariantId || isDev) {
+    // 1. Find the target tier
+    const tier = await prisma.tier.findUnique({
+      where: { level: targetTier }
+    });
+    
+    if (tier) {
+      // 2. Find or create a sandbox pack for this tier
+      let pack = await prisma.pack.findFirst({
+        where: { tierId: tier.id, name: `${tier.name} Sandbox Pack` }
+      });
+      
+      if (!pack) {
+        pack = await prisma.pack.create({
+          data: {
+            name: `${tier.name} Sandbox Pack`,
+            tierId: tier.id,
+            isActive: true
+          }
+        });
+      }
+      
+      // 3. Create entitlement for the customer to this pack
+      const existingEntitlement = await prisma.entitlement.findFirst({
+        where: { customerId, packId: pack.id }
+      });
+      
+      if (!existingEntitlement) {
+        await prisma.entitlement.create({
+          data: {
+            customerId,
+            packId: pack.id,
+            source: "SANDBOX_UPGRADE"
+          }
+        });
+      }
+      
+      // 4. Redirect back to library page with token
+      const redirectUrl = `/proxy/library${token ? `?token=${token}` : ""}`;
+      return redirect(redirectUrl);
+    }
+  }
+
   if (!targetVariantId) {
     // Fallback if variant isn't mapped
     return redirect("/collections/all");
