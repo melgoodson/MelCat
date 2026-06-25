@@ -2,16 +2,54 @@ import prisma from "../db.server";
 import { supabase } from "./supabase.server";
 
 export async function getDashboardMetrics(dateRange: { from?: Date; to?: Date }) {
-  const [core, funnel, qr, upgrade, drop] = await Promise.all([
+  const [core, funnel, qr, upgrade, drop, amazon] = await Promise.all([
     getCoreCounters(dateRange),
     getFunnelMetrics(dateRange),
     getQRCampaignMetrics(dateRange),
     getUpgradeMetrics(dateRange),
     getDropMetrics(dateRange),
+    getAmazonMetrics(),
   ]);
 
-  return { core, funnel, qr, upgrade, drop };
+  return { core, funnel, qr, upgrade, drop, amazon };
 }
+
+export async function getAmazonMetrics() {
+  const [
+    totalOrders,
+    claimedOrders,
+    totalClaims,
+    pendingClaimsCount,
+    approvedClaimsCount,
+    claims,
+    orders
+  ] = await Promise.all([
+    prisma.amazonOrder.count(),
+    prisma.amazonOrder.count({ where: { isClaimed: true } }),
+    prisma.amazonClaim.count(),
+    prisma.amazonClaim.count({ where: { status: "PENDING" } }),
+    prisma.amazonClaim.count({ where: { status: "APPROVED" } }),
+    prisma.amazonClaim.findMany({
+      orderBy: { claimedAt: "desc" },
+      take: 100
+    }),
+    prisma.amazonOrder.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 100
+    })
+  ]);
+
+  return {
+    totalOrders,
+    claimedOrders,
+    totalClaims,
+    pendingClaimsCount,
+    approvedClaimsCount,
+    claims,
+    orders
+  };
+}
+
 
 export async function getCoreCounters(dateRange: { from?: Date; to?: Date }) {
   const eventWhere = dateRange.from ? { createdAt: { gte: dateRange.from, lte: dateRange.to } } : {};

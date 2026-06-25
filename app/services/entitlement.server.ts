@@ -81,6 +81,43 @@ export async function grantPurchaseEntitlements(
       });
       grantedNew = true;
 
+      // Sync to Supabase big_mel_entitlements
+      try {
+        const { supabase } = await import("./supabase.server");
+        let variantId = "manual_grant";
+        
+        if (litePack && pack.id === litePack.id) {
+          variantId = "free_tier_tunnel_cube";
+        } else {
+          const mapping = await prisma.productVariantPackMap.findFirst({
+            where: { packId: pack.id }
+          });
+          if (mapping) {
+            variantId = mapping.variantId;
+          }
+        }
+
+        const shopDomain = process.env.SHOP_DOMAIN || "fhfwar-jc.myshopify.com";
+
+        const { error: entitlementError } = await supabase
+          .from("big_mel_entitlements")
+          .insert({
+            customer_id: customer.shopifyCustomerId || null,
+            customer_email: customer.email,
+            shop_domain: shopDomain,
+            variant_id: variantId,
+            is_active: true
+          });
+
+        if (entitlementError) {
+          console.error(`[Supabase Sync] Error inserting active entitlement for variant ${variantId}:`, entitlementError);
+        } else {
+          console.log(`[Supabase Sync] Successfully synced entitlement for customer ${customer.email}, variant ${variantId}`);
+        }
+      } catch (err) {
+        console.error("[Supabase Sync] Failed to sync entitlement to Supabase:", err);
+      }
+
       // Track if it was a free tier grant
       if (litePack && pack.id === litePack.id) {
         const { safelyTrackCustomerEvent } = await import("./customerEvent.server");

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { useActionData, useLoaderData, useSearchParams } from "react-router";
 import { createMagicLinkToken } from "../services/auth.server";
@@ -32,9 +33,50 @@ export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const email = formData.get("email") as string;
   const campaignHash = formData.get("campaign") as string;
+  const amazonOrderId = (formData.get("amazonOrderId") as string || "").trim();
 
   if (!email || !email.includes("@")) {
     return { error: "Please enter a valid email address." };
+  }
+
+  let claimStatus = "PENDING";
+  let isAmazonClaim = false;
+
+  if (amazonOrderId) {
+    isAmazonClaim = true;
+    const orderIdRegex = /^\d{3}-\d{7}-\d{7}$/;
+    if (!orderIdRegex.test(amazonOrderId)) {
+      return { error: "Please enter a valid Amazon Order ID (e.g. 123-4567890-1234567)." };
+    }
+
+    const existingClaim = await prisma.amazonClaim.findFirst({
+      where: { orderId: amazonOrderId, status: "APPROVED" }
+    });
+    if (existingClaim) {
+      return { error: "This Amazon Order ID has already been claimed." };
+    }
+
+    const preApproved = await prisma.amazonOrder.findUnique({
+      where: { orderId: amazonOrderId }
+    });
+
+    if (preApproved) {
+      if (preApproved.isClaimed) {
+        return { error: "This Amazon Order ID has already been claimed." };
+      }
+      claimStatus = "APPROVED";
+    }
+
+    try {
+      await prisma.amazonClaim.upsert({
+        where: { orderId_email: { orderId: amazonOrderId, email } },
+        update: { status: claimStatus, campaignHash },
+        create: { orderId: amazonOrderId, email, status: claimStatus, campaignHash }
+      });
+    } catch (err) {
+      console.error("[Amazon Claim Create Error]", err);
+      return { error: "Could not register your claim. Try again." };
+    }
   }
 
   try {
@@ -57,14 +99,20 @@ export async function action({ request }: ActionFunctionArgs) {
         await safelyTrackCustomerEvent({
           customerId: customer.id,
           eventType: "magic_link_requested",
-          metadata: { campaignHash },
-          source: "claim"
+          metadata: { campaignHash, amazonOrderId: amazonOrderId || undefined },
+          source: amazonOrderId ? "amazon_claim" : "claim"
         });
       }
 
       return {
         success: true,
-        message: "Check your email! We sent you a magic link to access your digital content.",
+        isAmazon: isAmazonClaim,
+        isApproved: claimStatus === "APPROVED",
+        message: isAmazonClaim
+          ? (claimStatus === "APPROVED"
+            ? "Your Amazon order is verified! Check your email for a magic link to access your content."
+            : "Your Amazon claim is submitted for verification! Check your email to verify your email address. Once our team approves it, your packs will appear in your library.")
+          : "Check your email! We sent you a magic link to access your digital content.",
       };
     } catch (err) {
       throw err;
@@ -79,6 +127,7 @@ export default function ClaimPortal() {
   const { campaign, appUrl } = useLoaderData<typeof loader>();
   const baseUrl = appUrl;
   const actionData = useActionData<typeof action>();
+  const [claimType, setClaimType] = useState<"shopify" | "amazon">("shopify");
 
   return (
     <div style={styles.wrapper}>
@@ -99,14 +148,55 @@ export default function ClaimPortal() {
           </div>
         ) : (
           <div style={styles.formCard}>
+            
+            {/* Claim Type Tabs */}
+            <div style={{ display: "flex", borderBottom: "2px solid #f3f4f6", marginBottom: "1.5rem" }}>
+              <button 
+                type="button"
+                onClick={() => setClaimType("shopify")}
+                style={{ 
+                  flex: 1, 
+                  padding: "0.75rem", 
+                  background: "none", 
+                  border: "none", 
+                  borderBottom: claimType === "shopify" ? "3px solid #f28c28" : "none", 
+                  color: claimType === "shopify" ? "#f28c28" : "#9ca3af", 
+                  fontWeight: 700, 
+                  cursor: "pointer",
+                  fontSize: "0.95rem"
+                }}
+              >
+                Shopify Purchase 🛍️
+              </button>
+              <button 
+                type="button"
+                onClick={() => setClaimType("amazon")}
+                style={{ 
+                  flex: 1, 
+                  padding: "0.75rem", 
+                  background: "none", 
+                  border: "none", 
+                  borderBottom: claimType === "amazon" ? "3px solid #f28c28" : "none", 
+                  color: claimType === "amazon" ? "#f28c28" : "#9ca3af", 
+                  fontWeight: 700, 
+                  cursor: "pointer",
+                  fontSize: "0.95rem"
+                }}
+              >
+                Amazon Purchase 📦
+              </button>
+            </div>
+
             {campaign && (
               <div style={styles.campaignBadge}>
                 🎉 QR Campaign: <strong>{campaign}</strong>
               </div>
             )}
+            
             <p style={styles.formText}>
-              Enter your email to receive a secure magic link. No password
-              needed!
+              {claimType === "amazon" 
+                ? "Bought on Amazon? Enter your email and Amazon Order ID to verify your purchase and claim your digital vault library."
+                : "Enter your email to receive a secure magic link. No password needed!"}
             </p>
 
             {actionData?.error && (
@@ -116,15 +206,35 @@ export default function ClaimPortal() {
             <form method="post">
               <input type="hidden" name="campaign" value={campaign || ""} />
               <div style={styles.inputGroup}>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="you@example.com"
-                  required
-                  style={styles.input}
-                />
+                <div style={{ textAlign: "left" }}>
+                  <label style={{ fontSize: "0.85rem", fontWeight: 700, color: "#2d1b0d", display: "block", marginBottom: "0.4rem" }}>Email Address</label>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="you@example.com"
+                    required
+                    style={styles.input}
+                  />
+                </div>
+
+                {claimType === "amazon" && (
+                  <div style={{ textAlign: "left" }}>
+                    <label style={{ fontSize: "0.85rem", fontWeight: 700, color: "#2d1b0d", display: "block", marginBottom: "0.4rem" }}>Amazon Order ID</label>
+                    <input
+                      type="text"
+                      name="amazonOrderId"
+                      placeholder="e.g. 123-4567890-1234567"
+                      required
+                      style={styles.input}
+                    />
+                    <span style={{ fontSize: "0.75rem", color: "#6b5c4f", marginTop: "0.25rem", display: "block" }}>
+                      Find this in your Amazon Order confirmation email.
+                    </span>
+                  </div>
+                )}
+
                 <button type="submit" style={styles.button}>
-                  Send Magic Link
+                  {claimType === "amazon" ? "Verify & Submit Claim" : "Send Magic Link"}
                 </button>
               </div>
             </form>

@@ -37,6 +37,38 @@ export async function claimQrCampaign(campaignHash: string, customerId: string) 
     })
   ]);
 
+  // Sync to Supabase big_mel_entitlements
+  try {
+    const customer = await prisma.customer.findUnique({ where: { id: customerId } });
+    if (customer) {
+      const { supabase } = await import("./supabase.server");
+      const shopDomain = process.env.SHOP_DOMAIN || "fhfwar-jc.myshopify.com";
+      
+      const mapping = await prisma.productVariantPackMap.findFirst({
+        where: { packId: campaign.packId }
+      });
+      const variantId = mapping?.variantId || "qr_claim_" + campaign.campaignHash;
+
+      const { error: entitlementError } = await supabase
+        .from("big_mel_entitlements")
+        .insert({
+          customer_id: customer.shopifyCustomerId || null,
+          customer_email: customer.email,
+          shop_domain: shopDomain,
+          variant_id: variantId,
+          is_active: true
+        });
+
+      if (entitlementError) {
+        console.error(`[QR Claim Sync] Error syncing to Supabase:`, entitlementError);
+      } else {
+        console.log(`[QR Claim Sync] Successfully synced to Supabase for ${customer.email}`);
+      }
+    }
+  } catch (err) {
+    console.error("[QR Claim Sync] Failed to sync to Supabase:", err);
+  }
+
   const { safelyTrackCustomerEvent } = await import("./customerEvent.server");
   await safelyTrackCustomerEvent({
     customerId,

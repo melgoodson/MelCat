@@ -240,3 +240,66 @@ model QRRedemption {
   // Fraud prevention: One claim per customer per campaign
   @@unique([campaignId, customerId]) 
 }
+
+// ---------------------------------------------------------
+// AMAZON SYSTEM
+// ---------------------------------------------------------
+
+model AmazonOrder {
+  orderId      String    @id // Amazon Order ID (e.g. "123-4567890-1234567")
+  sku          String?   // Product SKU purchased
+  email        String?   // Customer email if imported
+  isClaimed    Boolean   @default(false)
+  claimedAt    DateTime?
+  claimedBy    String?   // Customer email who claimed it
+  createdAt    DateTime  @default(now())
+}
+
+model AmazonClaim {
+  id           String    @id @default(cuid())
+  orderId      String    // Amazon Order ID (e.g. "123-4567890-1234567")
+  email        String    // Customer email claiming
+  campaignHash String?   // Linked QR campaign if scanned
+  status       String    @default("PENDING") // PENDING, APPROVED, REJECTED
+  claimedAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@unique([orderId, email])
+}
+
+// ---------------------------------------------------------
+// LEGACY SUPABASE TABLES (to prevent dropping)
+// ---------------------------------------------------------
+
+model big_mel_entitlements {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  customer_id    String?
+  customer_email String?
+  shop_domain    String
+  variant_id     String?
+  is_active      Boolean  @default(true)
+  created_at     DateTime @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime @default(now()) @db.Timestamptz(6)
+}
+
+model big_mel_chat_usage {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  session_id  String
+  shop_domain String
+  chat_count  Int      @default(0)
+  created_at  DateTime @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime @default(now()) @db.Timestamptz(6)
+
+  @@unique([session_id, shop_domain], map: "unique_session_shop")
+}
+
+model big_mel_webhook_events {
+  id          String   @id
+  topic       String
+  shop_domain String
+  payload     Json
+  processed   Boolean  @default(false)
+  created_at  DateTime @default(now()) @db.Timestamptz(6)
+}
+
+

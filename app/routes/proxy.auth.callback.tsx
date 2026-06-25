@@ -58,6 +58,35 @@ export async function loader({ request }: LoaderFunctionArgs) {
       }
     }
 
+    // 3.5 Check for APPROVED Amazon claims and finalize them
+    try {
+      const approvedAmazonClaims = await prisma.amazonClaim.findMany({
+        where: { email: customer.email, status: "APPROVED" }
+      });
+
+      if (approvedAmazonClaims.length > 0) {
+        const { grantPurchaseEntitlements } = await import("../services/entitlement.server");
+        for (const claim of approvedAmazonClaims) {
+          const order = await prisma.amazonOrder.findFirst({ where: { orderId: claim.orderId } });
+          const productType = order?.sku || "Amazon Cat Tunnel";
+          const lineItems = [{ title: productType }];
+          await grantPurchaseEntitlements("", customer.email, [], lineItems);
+          
+          try {
+            await prisma.amazonOrder.update({
+              where: { orderId: claim.orderId },
+              data: { isClaimed: true, claimedAt: new Date(), claimedBy: customer.email }
+            });
+          } catch (e) {
+            // AmazonOrder might not exist if seeded manually or not pre-uploaded
+          }
+        }
+        claimMessage = claimMessage ? `${claimMessage} Also verified Amazon Order claim.` : "Amazon Order claimed successfully!";
+      }
+    } catch (amazonErr) {
+      console.error("[Auth Callback] Failed to process Amazon claims:", amazonErr);
+    }
+
     // 4. Redirect to library with session cookie
     const cookieHeader = await sessionStorage.commitSession(session);
 

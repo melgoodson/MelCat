@@ -1,9 +1,111 @@
-import type { LoaderFunctionArgs, HeadersFunction } from "react-router";
-import { useLoaderData } from "react-router";
+import type { LoaderFunctionArgs, ActionFunctionArgs, HeadersFunction } from "react-router";
+import { useLoaderData, useActionData, useSubmit } from "react-router";
 import { Link, IndexTable, Card, Text, Badge, BlockStack, Box } from "@shopify/polaris";
 import { authenticate } from "../shopify.server";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import prisma from "../db.server";
+
+export const action = async ({ request }: ActionFunctionArgs) => {
+  await authenticate.admin(request);
+  const formData = await request.formData();
+  const intent = formData.get("intent");
+
+  if (intent === "seed_amazon_orders") {
+    const rawOrders = formData.get("ordersList") as string;
+    const sku = formData.get("sku") as string || "cat-tunnel";
+    if (!rawOrders) {
+      return Response.json({ error: "Please enter at least one Order ID" });
+    }
+
+    const orderIds = rawOrders
+      .split("\n")
+      .map(o => o.trim())
+      .filter(o => o.length > 0);
+
+    let seededCount = 0;
+    for (const orderId of orderIds) {
+      try {
+        await prisma.amazonOrder.upsert({
+          where: { orderId },
+          update: { sku },
+          create: { orderId, sku, isClaimed: false }
+        });
+        seededCount++;
+      } catch (err) {
+        console.error(`Failed to seed Amazon Order ID ${orderId}:`, err);
+      }
+    }
+
+    return Response.json({ success: true, message: `Successfully seeded ${seededCount} Amazon Order IDs.` });
+  }
+
+  if (intent === "approve_claim") {
+    const claimId = formData.get("claimId") as string;
+    if (!claimId) return Response.json({ error: "Missing claim ID" });
+
+    try {
+      const claim = await prisma.amazonClaim.findUnique({ where: { id: claimId } });
+      if (!claim) return Response.json({ error: "Claim not found" });
+
+      // 1. Mark claim as APPROVED
+      await prisma.amazonClaim.update({
+        where: { id: claimId },
+        data: { status: "APPROVED" }
+      });
+
+      // 2. Mark corresponding AmazonOrder as claimed (if it exists)
+      try {
+        await prisma.amazonOrder.update({
+          where: { orderId: claim.orderId },
+          data: { isClaimed: true, claimedAt: new Date(), claimedBy: claim.email }
+        });
+      } catch (err) {
+        // AmazonOrder might not exist if it was a manual claim that was approved
+        console.log(`Pre-approved Amazon Order not found during claim approval for ID: ${claim.orderId}`);
+      }
+
+      // 3. Find Lite pack (level 1)
+      const litePack = await prisma.pack.findFirst({
+        where: { isActive: true, tier: { level: 1 } },
+        include: { tier: true }
+      });
+
+      if (!litePack) {
+        return Response.json({ error: "Lite pack not found in database. Seed packs first." });
+      }
+
+      // 4. Grant entitlement via grantPurchaseEntitlements
+      const order = await prisma.amazonOrder.findFirst({ where: { orderId: claim.orderId } });
+      const productType = order?.sku || "Amazon Cat Tunnel";
+      const { grantPurchaseEntitlements } = await import("../services/entitlement.server");
+      const lineItems = [{ title: productType }];
+      await grantPurchaseEntitlements("", claim.email, [], lineItems);
+
+      return Response.json({ success: true, message: `Claim approved successfully for ${claim.email}!` });
+    } catch (err: any) {
+      console.error("Failed to approve claim:", err);
+      return Response.json({ error: err.message || "Failed to approve claim" });
+    }
+  }
+
+  if (intent === "reject_claim") {
+    const claimId = formData.get("claimId") as string;
+    if (!claimId) return Response.json({ error: "Missing claim ID" });
+
+    try {
+      await prisma.amazonClaim.update({
+        where: { id: claimId },
+        data: { status: "REJECTED" }
+      });
+      return Response.json({ success: true, message: "Claim rejected." });
+    } catch (err: any) {
+      console.error("Failed to reject claim:", err);
+      return Response.json({ error: err.message || "Failed to reject claim" });
+    }
+  }
+
+  return Response.json({ error: "Unknown action intent" });
+};
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   await authenticate.admin(request);
@@ -34,7 +136,16 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       funnel: { claimToLibrary: "N/A", libraryToUpgradeClick: "N/A", clickToPurchase: "N/A", dropToDownload: "N/A" },
       qr: [],
       upgrade: [],
-      drop: []
+      drop: [],
+      amazon: {
+        totalOrders: 0,
+        claimedOrders: 0,
+        totalClaims: 0,
+        pendingClaimsCount: 0,
+        approvedClaimsCount: 0,
+        claims: [],
+        orders: []
+      }
     };
   }
 
@@ -59,7 +170,17 @@ const blueprint = [
 
 export default function Index() {
   const { metrics, windowStr } = useLoaderData<typeof loader>();
-  const { core, funnel, qr, upgrade, drop } = metrics;
+  const actionData = useActionData() as { error?: string; success?: boolean; message?: string } | undefined;
+  const submit = useSubmit();
+  const { core, funnel, qr, upgrade, drop, amazon } = metrics;
+
+  const handleApprove = (claimId: string) => {
+    submit({ intent: "approve_claim", claimId }, { method: "POST" });
+  };
+
+  const handleReject = (claimId: string) => {
+    submit({ intent: "reject_claim", claimId }, { method: "POST" });
+  };
 
   const stats = [
     { label: "Total Customers",      value: core.totalCustomers,     color: "#10b981", bg: "rgba(16,185,129,0.12)",  emoji: "👥" },
@@ -74,6 +195,24 @@ export default function Index() {
 
   return (
     <div style={{ padding: "0", fontFamily: "'Outfit','Inter',sans-serif", background: "#fafafa", minHeight: "100vh" }}>
+
+      {actionData && (actionData.error || actionData.success) && (
+        <div style={{ 
+          padding: "1.25rem 2.5rem", 
+          background: actionData.success ? "#ecfdf5" : "#fff1f0", 
+          borderBottom: actionData.success ? "2px solid #34d399" : "2px solid #fca5a5",
+          color: actionData.success ? "#065f46" : "#991b1b",
+          fontSize: "1rem",
+          fontWeight: 700,
+          display: "flex",
+          alignItems: "center",
+          gap: "0.75rem",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.05)"
+        }}>
+          <span style={{ fontSize: "1.25rem" }}>{actionData.success ? "✨" : "⚠️"}</span>
+          <span>{actionData.success ? actionData.message : actionData.error}</span>
+        </div>
+      )}
 
       {/* ── HERO ──────────────────────────────────────────────── */}
       <div style={{
@@ -292,6 +431,145 @@ export default function Index() {
           </div>
         </div>
 
+      </div>
+
+      {/* ── AMAZON REDEMPTIONS & CLAIMS ────────────────────────── */}
+      <div style={{ padding:"0 2.5rem 2.5rem" }}>
+        <div style={{ background:"#fff", borderRadius:"24px", padding:"2rem", boxShadow:"0 2px 16px rgba(0,0,0,0.06)", border:"1px solid #e5e7eb" }}>
+          
+          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:"2rem", borderBottom:"1px solid #f3f4f6", paddingBottom:"1.25rem", gap: "1rem", flexWrap: "wrap" }}>
+            <div>
+              <h2 style={{ margin:0, fontSize:"1.4rem", fontWeight:800, color:"#1f2937", display:"flex", alignItems:"center", gap:"0.6rem" }}>
+                <span>📦</span> Amazon Channels & Claims
+              </h2>
+              <p style={{ margin:"0.35rem 0 0", fontSize:"0.88rem", color:"#6b7280" }}>
+                Manage physical package inserts, pre-authorized Amazon Order IDs, and manual customer claim submissions.
+              </p>
+            </div>
+            
+            {/* Amazon Stats pills */}
+            <div style={{ display:"flex", gap:"0.75rem", flexWrap: "wrap" }}>
+              <div style={{ background:"#f3f4f6", padding:"0.4rem 0.85rem", borderRadius:"30px", fontSize:"0.8rem", fontWeight:700, color:"#4b5563" }}>
+                Pre-authorized: <span style={{ color:"#f28c28" }}>{amazon.totalOrders}</span> ({amazon.claimedOrders} claimed)
+              </div>
+              <div style={{ background:"#fffbeb", padding:"0.4rem 0.85rem", borderRadius:"30px", fontSize:"0.8rem", fontWeight:700, color:"#b45309" }}>
+                Pending Claims: <span style={{ color:"#d97706" }}>{amazon.pendingClaimsCount}</span>
+              </div>
+              <div style={{ background:"#ecfdf5", padding:"0.4rem 0.85rem", borderRadius:"30px", fontSize:"0.8rem", fontWeight:700, color:"#047857" }}>
+                Approved Claims: <span style={{ color:"#10b981" }}>{amazon.approvedClaimsCount}</span>
+              </div>
+            </div>
+          </div>
+
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 340px", gap:"2rem" }}>
+            
+            {/* Claims Table */}
+            <div>
+              <Text variant="headingMd" as="h3">Submitted Amazon Claims</Text>
+              <div style={{ height: "10px" }}></div>
+              {amazon.claims.length === 0 ? (
+                <div style={{ textAlign:"center", padding:"3rem 1rem", background:"#f9fafb", borderRadius:"16px", border:"1px dashed #e5e7eb" }}>
+                  <span style={{ fontSize:"2rem" }}>🔍</span>
+                  <p style={{ margin:"0.5rem 0 0", fontSize:"0.9rem", color:"#9ca3af", fontWeight:600 }}>No claims submitted yet.</p>
+                </div>
+              ) : (
+                <div style={{ border:"1px solid #f3f4f6", borderRadius:"16px", overflow:"hidden" }}>
+                  <table style={{ width:"100%", borderCollapse:"collapse", textAlign:"left", fontSize:"0.875rem" }}>
+                    <thead>
+                      <tr style={{ background:"#f9fafb", borderBottom:"1px solid #f3f4f6" }}>
+                        <th style={{ padding:"0.75rem 1rem", fontWeight:700, color:"#4b5563" }}>Order ID</th>
+                        <th style={{ padding:"0.75rem 1rem", fontWeight:700, color:"#4b5563" }}>Email</th>
+                        <th style={{ padding:"0.75rem 1rem", fontWeight:700, color:"#4b5563" }}>Campaign</th>
+                        <th style={{ padding:"0.75rem 1rem", fontWeight:700, color:"#4b5563" }}>Status</th>
+                        <th style={{ padding:"0.75rem 1rem", fontWeight:700, color:"#4b5563" }}>Date</th>
+                        <th style={{ padding:"0.75rem 1rem", fontWeight:700, color:"#4b5563", textAlign:"right" }}>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {amazon.claims.map((claim: any) => (
+                        <tr key={claim.id} style={{ borderBottom:"1px solid #f3f4f6" }}>
+                          <td style={{ padding:"0.75rem 1rem", fontWeight:600 }}>{claim.orderId}</td>
+                          <td style={{ padding:"0.75rem 1rem" }}>{claim.email}</td>
+                          <td style={{ padding:"0.75rem 1rem" }}>
+                            {claim.campaignHash ? <Badge tone="info">{claim.campaignHash}</Badge> : <span style={{ color:"#9ca3af" }}>None</span>}
+                          </td>
+                          <td style={{ padding:"0.75rem 1rem" }}>
+                            <Badge tone={claim.status === "APPROVED" ? "success" : claim.status === "PENDING" ? "warning" : "critical"}>
+                              {claim.status}
+                            </Badge>
+                          </td>
+                          <td style={{ padding:"0.75rem 1rem", color:"#6b7280" }}>
+                            {new Date(claim.claimedAt).toLocaleDateString()}
+                          </td>
+                          <td style={{ padding:"0.75rem 1rem", textAlign:"right" }}>
+                            {claim.status === "PENDING" && (
+                              <div style={{ display:"inline-flex", gap:"0.5rem", justifyContent:"flex-end" }}>
+                                <button 
+                                  onClick={() => handleApprove(claim.id)}
+                                  style={{ background:"#10b981", color:"#fff", border:"none", padding:"0.3rem 0.75rem", borderRadius:"6px", fontSize:"0.75rem", fontWeight:700, cursor:"pointer" }}
+                                >
+                                  Approve
+                                </button>
+                                <button 
+                                  onClick={() => handleReject(claim.id)}
+                                  style={{ background:"#ef4444", color:"#fff", border:"none", padding:"0.3rem 0.75rem", borderRadius:"6px", fontSize:"0.75rem", fontWeight:700, cursor:"pointer" }}
+                                >
+                                  Reject
+                                </button>
+                              </div>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+
+            {/* Bulk Seeder Form */}
+            <div style={{ background:"#f9fafb", borderRadius:"20px", padding:"1.5rem", border:"1px solid #f3f4f6" }}>
+              <h3 style={{ margin:"0 0 1rem", fontSize:"1rem", fontWeight:700, color:"#1f2937" }}>
+                Pre-Authorize Amazon Orders
+              </h3>
+              <p style={{ margin:"0 0 1.25rem", fontSize:"0.8rem", color:"#6b7280", lineHeight:1.4 }}>
+                Authorise specific Amazon Order IDs so that when users submit them on the claim page, they are approved automatically.
+              </p>
+              
+              <form method="post">
+                <input type="hidden" name="intent" value="seed_amazon_orders" />
+                <div style={{ display:"flex", flexDirection:"column", gap:"1rem" }}>
+                  <div>
+                    <textarea 
+                      name="ordersList" 
+                      placeholder="e.g.&#10;123-4567890-1234567&#10;987-6543210-9876543" 
+                      rows={5}
+                      style={{ width:"100%", padding:"0.6rem 0.8rem", borderRadius:"10px", border:"1px solid #d1d5db", outline:"none", fontSize:"0.85rem", fontFamily:"monospace", boxSizing:"border-box" }}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <select 
+                      name="sku" 
+                      style={{ width:"100%", padding:"0.5rem", borderRadius:"8px", border:"1px solid #d1d5db", background:"#fff", outline:"none", fontSize:"0.85rem", fontWeight:600 }}
+                    >
+                      <option value="cat-tunnel">Cat Tunnel (Lite Pack)</option>
+                      <option value="cat-cube">Cat Cube (Lite Pack)</option>
+                    </select>
+                  </div>
+                  <button 
+                    type="submit" 
+                    style={{ background:"#f28c28", color:"#fff", border:"none", padding:"0.6rem", borderRadius:"10px", fontSize:"0.85rem", fontWeight:700, cursor:"pointer", display:"flex", justifyContent:"center", alignItems:"center", gap:"0.5rem" }}
+                  >
+                    <span>⚡</span> Authorise Orders
+                  </button>
+                </div>
+              </form>
+            </div>
+
+          </div>
+
+        </div>
       </div>
 
       {/* ── METRICS TABLES ─────────────────────────────────────── */}
