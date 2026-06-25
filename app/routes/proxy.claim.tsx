@@ -65,6 +65,90 @@ export async function action({ request }: ActionFunctionArgs) {
         return { error: "This Amazon Order ID has already been claimed." };
       }
       claimStatus = "APPROVED";
+    } else {
+      // If not pre-approved, check Shopify Admin API for synced orders matching this Order ID
+      const shopDomain = new URL(request.url).searchParams.get("shop") || "fhfwar-jc.myshopify.com";
+      const session = await prisma.session.findFirst({
+        where: { shop: shopDomain, isOnline: false }
+      });
+
+      if (session && session.accessToken) {
+        try {
+          const { unauthenticated } = await import("../shopify.server");
+          const { admin } = await unauthenticated.admin(shopDomain);
+          
+          const response = await admin.graphql(`
+            query searchOrders($q: String!) {
+              orders(first: 5, query: $q) {
+                nodes {
+                  id
+                  name
+                  note
+                  tags
+                  customAttributes {
+                    key
+                    value
+                  }
+                  lineItems(first: 25) {
+                    nodes {
+                      title
+                    }
+                  }
+                }
+              }
+            }
+          `, {
+            variables: { q: amazonOrderId }
+          });
+
+          if (response.ok) {
+            const resJson = await response.json();
+            const orders = resJson?.data?.orders?.nodes || [];
+            
+            let foundInShopify = false;
+            let matchedSku = "cat-tunnel";
+
+            for (const order of orders) {
+              const idLower = amazonOrderId.toLowerCase();
+              const nameMatch = (order.name || "").toLowerCase().includes(idLower);
+              const noteMatch = (order.note || "").toLowerCase().includes(idLower);
+              const tagMatch = (order.tags || []).some((t: string) => t.toLowerCase().includes(idLower));
+              const attrMatch = (order.customAttributes || []).some((attr: any) => 
+                (attr.value || "").toLowerCase().includes(idLower)
+              );
+
+              if (nameMatch || noteMatch || tagMatch || attrMatch) {
+                const items = order.lineItems?.nodes || [];
+                const hasTunnel = items.some((item: any) => (item.title || "").toLowerCase().includes("tunnel"));
+                const hasCube = items.some((item: any) => (item.title || "").toLowerCase().includes("cube"));
+
+                if (hasTunnel || hasCube) {
+                  foundInShopify = true;
+                  matchedSku = hasCube ? "cat-cube" : "cat-tunnel";
+                  break;
+                }
+              }
+            }
+
+            if (foundInShopify) {
+              claimStatus = "APPROVED";
+              
+              // Seed the AmazonOrder in the database so that it is marked as claimed
+              try {
+                await prisma.amazonOrder.upsert({
+                  where: { orderId: amazonOrderId },
+                  update: { isClaimed: true, claimedAt: new Date(), claimedBy: email, sku: matchedSku },
+                  create: { orderId: amazonOrderId, sku: matchedSku, isClaimed: true, claimedAt: new Date(), claimedBy: email }
+                });
+              } catch (err) {
+                console.error("[Amazon Claim Auto-Seeding Error]", err);
+              }
+            }
+          }
+        } catch (err) {
+          console.error("[Amazon Claim Shopify Order Lookup Error]", err);
+        }
+      }
     }
 
     try {
