@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { useActionData, useLoaderData, useSearchParams } from "react-router";
 import { createMagicLinkToken } from "../services/auth.server";
@@ -10,6 +10,7 @@ import prisma from "../db.server";
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const campaign = url.searchParams.get("c"); // QR campaign hash
+  const type = url.searchParams.get("type") || "shopify";
   const session = await getCustomerSession(request);
   const customerId = session.get("customerId");
   
@@ -26,7 +27,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     appUrl = `${url.protocol}//${url.host}`;
   }
 
-  return { campaign, isLoggedIn: !!customerId, appUrl };
+  return { campaign, isLoggedIn: !!customerId, appUrl, defaultClaimType: type };
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -208,10 +209,25 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function ClaimPortal() {
-  const { campaign, appUrl } = useLoaderData<typeof loader>();
+  const { campaign, appUrl, defaultClaimType } = useLoaderData<typeof loader>();
   const baseUrl = appUrl;
   const actionData = useActionData<typeof action>();
-  const [claimType, setClaimType] = useState<"shopify" | "amazon">("shopify");
+  const [claimType, setClaimType] = useState<"shopify" | "amazon">(defaultClaimType as "shopify" | "amazon" || "shopify");
+
+  useEffect(() => {
+    if (defaultClaimType) {
+      setClaimType(defaultClaimType as "shopify" | "amazon");
+    }
+  }, [defaultClaimType]);
+
+  const getToggleUrl = (type: "shopify" | "amazon") => {
+    if (typeof window === "undefined") {
+      return `?type=${type}${campaign ? `&c=${campaign}` : ""}`;
+    }
+    const params = new URLSearchParams(window.location.search);
+    params.set("type", type);
+    return `?${params.toString()}`;
+  };
 
   return (
     <div style={styles.wrapper}>
@@ -235,9 +251,13 @@ export default function ClaimPortal() {
             
             {/* Claim Type Tabs */}
             <div style={{ display: "flex", borderBottom: "2px solid #f3f4f6", marginBottom: "1.5rem" }}>
-              <button 
-                type="button"
-                onClick={() => setClaimType("shopify")}
+              <a 
+                href={getToggleUrl("shopify")}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setClaimType("shopify");
+                  window.history.pushState(null, "", getToggleUrl("shopify"));
+                }}
                 style={{ 
                   flex: 1, 
                   padding: "0.75rem", 
@@ -247,14 +267,20 @@ export default function ClaimPortal() {
                   color: claimType === "shopify" ? "#f28c28" : "#9ca3af", 
                   fontWeight: 700, 
                   cursor: "pointer",
-                  fontSize: "0.95rem"
+                  fontSize: "0.95rem",
+                  textAlign: "center",
+                  textDecoration: "none"
                 }}
               >
                 Shopify Purchase 🛍️
-              </button>
-              <button 
-                type="button"
-                onClick={() => setClaimType("amazon")}
+              </a>
+              <a 
+                href={getToggleUrl("amazon")}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setClaimType("amazon");
+                  window.history.pushState(null, "", getToggleUrl("amazon"));
+                }}
                 style={{ 
                   flex: 1, 
                   padding: "0.75rem", 
@@ -264,11 +290,13 @@ export default function ClaimPortal() {
                   color: claimType === "amazon" ? "#f28c28" : "#9ca3af", 
                   fontWeight: 700, 
                   cursor: "pointer",
-                  fontSize: "0.95rem"
+                  fontSize: "0.95rem",
+                  textAlign: "center",
+                  textDecoration: "none"
                 }}
               >
                 Amazon Purchase 📦
-              </button>
+              </a>
             </div>
 
             {campaign && (
