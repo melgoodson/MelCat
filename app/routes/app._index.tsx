@@ -621,6 +621,52 @@ export default function Index() {
                   </table>
                 </div>
               )}
+
+              <div style={{ height: "2.5rem" }}></div>
+              
+              <Text variant="headingMd" as="h3">Pre-Authorized Orders Database</Text>
+              <div style={{ height: "10px" }}></div>
+              {amazon.orders.length === 0 ? (
+                <div style={{ textAlign:"center", padding:"3rem 1rem", background:"#f9fafb", borderRadius:"16px", border:"1px dashed #e5e7eb" }}>
+                  <span style={{ fontSize:"2rem" }}>📦</span>
+                  <p style={{ margin:"0.5rem 0 0", fontSize:"0.9rem", color:"#9ca3af", fontWeight:600 }}>No pre-authorized orders uploaded yet.</p>
+                </div>
+              ) : (
+                <div style={{ border:"1px solid #f3f4f6", borderRadius:"16px", overflow:"hidden" }}>
+                  <table style={{ width:"100%", borderCollapse:"collapse", textAlign:"left", fontSize:"0.875rem" }}>
+                    <thead>
+                      <tr style={{ background:"#f9fafb", borderBottom:"1px solid #f3f4f6" }}>
+                        <th style={{ padding:"0.75rem 1rem", fontWeight:700, color:"#4b5563" }}>Order ID</th>
+                        <th style={{ padding:"0.75rem 1rem", fontWeight:700, color:"#4b5563" }}>SKU</th>
+                        <th style={{ padding:"0.75rem 1rem", fontWeight:700, color:"#4b5563" }}>Status</th>
+                        <th style={{ padding:"0.75rem 1rem", fontWeight:700, color:"#4b5563" }}>Claimed By</th>
+                        <th style={{ padding:"0.75rem 1rem", fontWeight:700, color:"#4b5563" }}>Date Seeded</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {amazon.orders.map((order: any) => (
+                        <tr key={order.orderId} style={{ borderBottom:"1px solid #f3f4f6" }}>
+                          <td style={{ padding:"0.75rem 1rem", fontWeight:600 }}>{order.orderId}</td>
+                          <td style={{ padding:"0.75rem 1rem" }}>
+                            <Badge tone="info">{order.sku || "cat-tunnel"}</Badge>
+                          </td>
+                          <td style={{ padding:"0.75rem 1rem" }}>
+                            <Badge tone={order.isClaimed ? "success" : "attention"}>
+                              {order.isClaimed ? "CLAIMED" : "AVAILABLE"}
+                            </Badge>
+                          </td>
+                          <td style={{ padding:"0.75rem 1rem", color: order.claimedBy ? "#1f2937" : "#9ca3af" }}>
+                            {order.claimedBy || "—"}
+                          </td>
+                          <td style={{ padding:"0.75rem 1rem", color:"#6b7280" }}>
+                            {new Date(order.createdAt).toLocaleDateString()}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
 
             {/* Bulk Seeder Form */}

@@ -418,6 +418,21 @@
         <p>Click the orange <strong class="text-highlight">⚡ Authorise Orders</strong> button. The app will process each line and display a confirmation message indicating how many Order IDs were successfully saved/updated.</p>
       </div>
 
+      <h2>Tracking the Status of Pre-Authorized Orders</h2>
+      <p>Once you authorize order IDs, they are saved in the system. You can track their status directly in the dashboard under the <strong>Pre-Authorized Orders Database</strong> table:</p>
+      <ul>
+        <li><strong>AVAILABLE</strong>: The order ID is pre-authorized, but the customer has not claimed their reward yet.</li>
+        <li><strong>CLAIMED</strong>: The customer has successfully entered the order ID on the claim page. The table will display the customer's email under <strong>Claimed By</strong>.</li>
+      </ul>
+
+      <h2>Verifying Real Amazon Orders</h2>
+      <p>If you need to verify whether a submitted or pre-authorized order ID is a real purchase from Amazon, use these methods:</p>
+      <ol>
+        <li><strong>Amazon Seller Central</strong>: Log in to your Amazon Seller Central portal, navigate to <strong>Orders ➔ Manage Orders</strong>, and search for the 19-digit Order ID. This is the absolute source of truth to confirm the purchase and product SKU.</li>
+        <li><strong>Shopify Orders Search</strong>: If you use a synchronization tool that syncs Amazon marketplace orders to Shopify, search for the Amazon Order ID directly in your <strong>Shopify Admin ➔ Orders</strong> search bar.</li>
+        <li><strong>Format Check</strong>: Real Amazon Order IDs always follow the 3-7-7 digit format: <code>XXX-XXXXXXX-XXXXXXX</code>. Any input that deviates from this format is invalid.</li>
+      </ol>
+
       <h2>Reviewing & Approving Submitted Claims</h2>
       <p>If a customer submits an Amazon Order ID that was not pre-authorized, it will appear in the <strong>Submitted Amazon Claims</strong> table with a <span class="badge" style="background-color: var(--primary-light); color: var(--primary-dark);">PENDING</span> status.</p>
       
