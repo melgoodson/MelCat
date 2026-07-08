@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs, ActionFunctionArgs, HeadersFunction } from "react-router";
-import { useLoaderData, useActionData, useSubmit } from "react-router";
+import { useLoaderData, useActionData, useSubmit, Form } from "react-router";
 import { Link, IndexTable, Card, Text, Badge, BlockStack, Box } from "@shopify/polaris";
 import { authenticate } from "../shopify.server";
 import { boundary } from "@shopify/shopify-app-react-router/server";
@@ -101,6 +101,80 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     } catch (err: any) {
       console.error("Failed to reject claim:", err);
       return Response.json({ error: err.message || "Failed to reject claim" });
+    }
+  }
+
+  if (intent === "sync_shopify_orders") {
+    try {
+      const { admin } = await authenticate.admin(request);
+      
+      const response = await admin.graphql(`
+        query getRecentOrders {
+          orders(first: 100, sortKey: CREATED_AT, reverse: true) {
+            nodes {
+              id
+              name
+              createdAt
+              email
+              customer {
+                id
+              }
+              lineItems(first: 50) {
+                nodes {
+                  variant {
+                    id
+                  }
+                  title
+                }
+              }
+            }
+          }
+        }
+      `);
+
+      if (!response.ok) {
+        return Response.json({ error: "Failed to fetch orders from Shopify API" });
+      }
+
+      const resJson = await response.json();
+      const orders = resJson?.data?.orders?.nodes || [];
+
+      const { grantPurchaseEntitlements } = await import("../services/entitlement.server");
+      let syncedCount = 0;
+
+      for (const order of orders) {
+        const email = (order.email || "").toLowerCase().trim();
+        const shopifyCustomerId = order.customer?.id ? String(order.customer.id).replace(/\D/g, "") : "";
+        const lineItems = order.lineItems?.nodes || [];
+
+        if (!email) continue;
+
+        const hasMatchedItem = lineItems.some((item: any) => {
+          const title = (item.title || "").toLowerCase();
+          return title.includes("tunnel") || title.includes("cube");
+        });
+
+        if (hasMatchedItem) {
+          const variantIds = lineItems
+            .map((item: any) => item.variant?.id ? String(item.variant.id) : "")
+            .filter(Boolean);
+
+          const lineItemsMapped = lineItems.map((item: any) => ({
+            variantId: item.variant?.id ? String(item.variant.id) : "",
+            title: item.title?.toString(),
+          }));
+
+          const result = await grantPurchaseEntitlements(shopifyCustomerId, email, variantIds, lineItemsMapped);
+          if (result.grantedNew) {
+            syncedCount++;
+          }
+        }
+      }
+
+      return Response.json({ success: true, message: `Sync complete! Successfully imported/updated ${syncedCount} customers from Shopify.` });
+    } catch (err: any) {
+      console.error("Failed to sync Shopify orders:", err);
+      return Response.json({ error: err.message || "Failed to sync Shopify orders" });
     }
   }
 
@@ -448,7 +522,16 @@ export default function Index() {
             </div>
             
             {/* Amazon Stats pills */}
-            <div style={{ display:"flex", gap:"0.75rem", flexWrap: "wrap" }}>
+            <div style={{ display:"flex", gap:"0.75rem", flexWrap: "wrap", alignItems: "center" }}>
+              <Form method="post" style={{ display: "inline" }}>
+                <input type="hidden" name="intent" value="sync_shopify_orders" />
+                <button 
+                  type="submit" 
+                  style={{ background: "#4f46e5", color: "#fff", border: "none", padding: "0.4rem 0.85rem", borderRadius: "30px", fontSize: "0.8rem", fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: "0.35rem" }}
+                >
+                  <span>🔄</span> Sync Shopify Orders
+                </button>
+              </Form>
               <div style={{ background:"#f3f4f6", padding:"0.4rem 0.85rem", borderRadius:"30px", fontSize:"0.8rem", fontWeight:700, color:"#4b5563" }}>
                 Pre-authorized: <span style={{ color:"#f28c28" }}>{amazon.totalOrders}</span> ({amazon.claimedOrders} claimed)
               </div>
@@ -536,7 +619,7 @@ export default function Index() {
                 Authorise specific Amazon Order IDs so that when users submit them on the claim page, they are approved automatically.
               </p>
               
-              <form method="post">
+              <Form method="post">
                 <input type="hidden" name="intent" value="seed_amazon_orders" />
                 <div style={{ display:"flex", flexDirection:"column", gap:"1rem" }}>
                   <div>
@@ -564,7 +647,7 @@ export default function Index() {
                     <span>⚡</span> Authorise Orders
                   </button>
                 </div>
-              </form>
+              </Form>
             </div>
 
           </div>

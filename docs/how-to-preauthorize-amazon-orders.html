@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MelCat Admin Guide: Pre-Authorizing Amazon Orders</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #f28c28;
+      --primary-dark: #d9771c;
+      --primary-light: #fef3e7;
+      --text-dark: #1f2937;
+      --text-muted: #4b5563;
+      --text-light: #9ca3af;
+      --bg-light: #f9fafb;
+      --border-color: #e5e7eb;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: var(--text-dark);
+      background-color: #f3f4f6;
+      line-height: 1.6;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      padding: 3rem;
+      border-radius: 24px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    }
+
+    header {
+      border-bottom: 2px solid var(--primary-light);
+      padding-bottom: 2rem;
+      margin-bottom: 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-logo {
+      background-color: var(--primary-light);
+      color: var(--primary);
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+
+    .brand-text h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .brand-text p {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .doc-meta {
+      text-align: right;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .doc-meta span {
+      display: block;
+      font-weight: 600;
+    }
+
+    h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.25rem;
+      font-weight: 800;
+      line-height: 1.2;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+
+    .badge-bar {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .badge-primary {
+      background-color: var(--primary-light);
+      color: var(--primary-dark);
+    }
+
+    .badge-secondary {
+      background-color: #f3f4f6;
+      color: var(--text-muted);
+    }
+
+    h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin: 2.5rem 0 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    h2::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 1.25rem;
+      background-color: var(--primary);
+      border-radius: 2px;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      color: var(--text-muted);
+    }
+
+    ol, ul {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+      color: var(--text-muted);
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    /* Steps Layout */
+    .step-card {
+      background-color: var(--bg-light);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .step-number {
+      position: absolute;
+      top: -12px;
+      left: 1.5rem;
+      background-color: var(--primary);
+      color: #ffffff;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      box-shadow: 0 2px 4px rgba(242, 140, 40, 0.3);
+    }
+
+    .step-card h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--text-dark);
+    }
+
+    /* Warning/Info Box */
+    .callout {
+      border-left: 4px solid var(--primary);
+      background-color: var(--primary-light);
+      padding: 1.25rem 1.5rem;
+      border-radius: 0 16px 16px 0;
+      margin: 1.5rem 0;
+    }
+
+    .callout-title {
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 0.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .callout-info {
+      border-left-color: #3b82f6;
+      background-color: #eff6ff;
+    }
+
+    .callout-info .callout-title {
+      color: #1d4ed8;
+    }
+
+    /* Visual simulator */
+    .dashboard-visual {
+      background-color: #111827;
+      border-radius: 14px;
+      padding: 1.25rem;
+      font-family: monospace;
+      color: #f3f4f6;
+      font-size: 0.85rem;
+      margin: 1.5rem 0;
+      border: 1px solid #374151;
+      overflow-x: auto;
+    }
+
+    .text-highlight {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    code {
+      background-color: var(--bg-light);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.9em;
+      border: 1px solid var(--border-color);
+    }
+
+    .action-btn-simulate {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: not-allowed;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    /* Footer styling */
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding-top: 1.5rem;
+      margin-top: 3rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-light);
+    }
+
+    .no-print-btn {
+      display: block;
+      width: 100%;
+      max-width: 250px;
+      margin: 2rem auto 0;
+      background-color: var(--text-dark);
+      color: #ffffff;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-align: center;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .no-print-btn:hover {
+      background-color: var(--primary-dark);
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        background-color: #ffffff;
+        padding: 0;
+      }
+
+      .container {
+        box-shadow: none;
+        padding: 0;
+        max-width: 100%;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .step-card {
+        page-break-inside: avoid;
+        border: 1px solid #d1d5db;
+      }
+
+      .callout {
+        page-break-inside: avoid;
+        border: 1px solid #d1d5db;
+        border-left: 5px solid var(--primary);
+      }
+
+      h2, h3 {
+        page-break-after: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="brand-logo">🐱</div>
+        <div class="brand-text">
+          <h2>Snarky Pets</h2>
+          <p>MelCat Operations</p>
+        </div>
+      </div>
+      <div class="doc-meta">
+        <span>Standard Operating Procedure</span>
+        Last Updated: July 2026
+      </div>
+    </header>
+
+    <main>
+      <h1>Pre-Authorizing Amazon Order IDs</h1>
+      <p class="subtitle">A step-by-step guide for Shopify administrators to upload authorized Amazon Order IDs, enabling seamless, instant customer reward activations.</p>
+
+      <div class="badge-bar">
+        <span class="badge badge-primary">✨ Admin Tool</span>
+        <span class="badge badge-secondary">Fulfillment Funnel</span>
+        <span class="badge badge-secondary">Version 1.2</span>
+      </div>
+
+      <h2>Overview</h2>
+      <p>When customers buy physical Snarky Pets packs (such as the <strong>Cat Tunnel Lite Pack</strong> or the <strong>Cat Cube Lite Pack</strong>) on Amazon, they receive a package insert prompting them to claim their digital bonus companion app entitlements.</p>
+      <p>To enable instant validation for these customers without manual claim review, you can pre-authorize (or "seed") their Amazon Order IDs directly into the MelCat Database. When the customer submits their matching Order ID on the storefront claim page, the system automatically validates and grants access.</p>
+
+      <h2>Manually Pre-Authorizing Orders</h2>
+      <p>Follow these steps to pre-authorize one or more Amazon Order IDs:</p>
+
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <h3>Navigate to the MelCat Dashboard</h3>
+        <p>Log in to your <strong>Shopify Admin Portal</strong>. In the left-hand sidebar under <strong>Apps</strong>, click on <strong>MelCat Dash</strong> (or search for the MelCat Dashboard app).</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <h3>Locate the Pre-Authorize Panel</h3>
+        <p>Scroll down to the right side of the screen where you see the card labeled <strong>Pre-Authorize Amazon Orders</strong>.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <h3>Format & Paste the Order IDs</h3>
+        <p>In the text field area, enter the Amazon Order IDs. You can enter multiple Order IDs at once by placing each ID on a new line.</p>
+        <div class="callout callout-info">
+          <div class="callout-title">ℹ️ Accepted Format</div>
+          <p>Amazon Order IDs must follow the standard 19-digit pattern (separated by hyphens):<br>
+          <code>XXX-XXXXXXX-XXXXXXX</code> (e.g. <code>123-4567890-1234567</code>)</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">4</div>
+        <h3>Select the Product SKU</h3>
+        <p>Use the dropdown menu directly below the text box to choose the product associated with these Order IDs:</p>
+        <ul>
+          <li><strong>Cat Tunnel (Lite Pack)</strong> (SKU: <code>cat-tunnel</code>)</li>
+          <li><strong>Cat Cube (Lite Pack)</strong> (SKU: <code>cat-cube</code>)</li>
+        </ul>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">5</div>
+        <h3>Submit to Save</h3>
+        <p>Click the orange <strong class="text-highlight">⚡ Authorise Orders</strong> button. The app will process each line and display a confirmation message indicating how many Order IDs were successfully saved/updated.</p>
+      </div>
+
+      <h2>Reviewing & Approving Submitted Claims</h2>
+      <p>If a customer submits an Amazon Order ID that was not pre-authorized, it will appear in the <strong>Submitted Amazon Claims</strong> table with a <span class="badge" style="background-color: var(--primary-light); color: var(--primary-dark);">PENDING</span> status.</p>
+      
+      <div class="step-card">
+        <div class="step-number">6</div>
+        <h3>Manual Review and Action</h3>
+        <p>To manually review and handle these claims:</p>
+        <ol>
+          <li>Locate the <strong>Submitted Amazon Claims</strong> table in the middle of the dashboard.</li>
+          <li>Review the Order ID, customer email, and submission date.</li>
+          <li>Click <strong style="color: var(--success);">Approve</strong> to instantly approve the claim, mark the order as claimed, and grant the digital entitlement.</li>
+          <li>Click <strong style="color: var(--danger);">Reject</strong> if the order ID is invalid or cannot be verified.</li>
+        </ol>
+      </div>
+
+      <div class="callout">
+        <div class="callout-title">⚠️ Important Security Note</div>
+        <p>An Order ID can only be claimed once. The system will prevent duplicate claims across different email addresses to protect digital products and assets.</p>
+      </div>
+
+      <button class="no-print-btn" onclick="window.print()">Print / Save as PDF</button>
+    </main>
+
+    <footer>
+      <p>&copy; 2026 Snarky Pets. All rights reserved. Confidential Internal Document.</p>
+    </footer>
+  </div>
+
+</body>
+</html>
