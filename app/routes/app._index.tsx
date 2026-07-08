@@ -1,5 +1,5 @@
-import type { LoaderFunctionArgs, ActionFunctionArgs, HeadersFunction } from "react-router";
-import { useLoaderData, useActionData, useSubmit, Form } from "react-router";
+import { useLoaderData, useActionData, useSubmit, Form, useNavigation } from "react-router";
+import { useEffect, useState } from "react";
 import { Link, IndexTable, Card, Text, Badge, BlockStack, Box } from "@shopify/polaris";
 import { authenticate } from "../shopify.server";
 import { boundary } from "@shopify/shopify-app-react-router/server";
@@ -14,7 +14,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const rawOrders = formData.get("ordersList") as string;
     const sku = formData.get("sku") as string || "cat-tunnel";
     if (!rawOrders) {
-      return Response.json({ error: "Please enter at least one Order ID" });
+      return Response.json({ error: "Please enter at least one Order ID", intent: "seed_amazon_orders" });
     }
 
     const orderIds = rawOrders
@@ -36,7 +36,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       }
     }
 
-    return Response.json({ success: true, message: `Successfully seeded ${seededCount} Amazon Order IDs.` });
+    return Response.json({ success: true, message: `Successfully seeded ${seededCount} Amazon Order IDs.`, intent: "seed_amazon_orders" });
   }
 
   if (intent === "approve_claim") {
@@ -133,7 +133,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       `);
 
       if (!response.ok) {
-        return Response.json({ error: "Failed to fetch orders from Shopify API" });
+        return Response.json({ error: "Failed to fetch orders from Shopify API", intent: "sync_shopify_orders" });
       }
 
       const resJson = await response.json();
@@ -171,10 +171,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         }
       }
 
-      return Response.json({ success: true, message: `Sync complete! Successfully imported/updated ${syncedCount} customers from Shopify.` });
+      return Response.json({ success: true, message: `Sync complete! Successfully imported/updated ${syncedCount} customers from Shopify.`, intent: "sync_shopify_orders" });
     } catch (err: any) {
       console.error("Failed to sync Shopify orders:", err);
-      return Response.json({ error: err.message || "Failed to sync Shopify orders" });
+      return Response.json({ error: err.message || "Failed to sync Shopify orders", intent: "sync_shopify_orders" });
     }
   }
 
@@ -244,9 +244,21 @@ const blueprint = [
 
 export default function Index() {
   const { metrics, windowStr } = useLoaderData<typeof loader>();
-  const actionData = useActionData() as { error?: string; success?: boolean; message?: string } | undefined;
+  const actionData = useActionData() as { error?: string; success?: boolean; message?: string; intent?: string } | undefined;
   const submit = useSubmit();
+  const navigation = useNavigation();
   const { core, funnel, qr, upgrade, drop, amazon } = metrics;
+
+  const isSeeding = navigation.state === "submitting" && navigation.formData?.get("intent") === "seed_amazon_orders";
+  const isSyncing = navigation.state === "submitting" && navigation.formData?.get("intent") === "sync_shopify_orders";
+
+  const [seederKey, setSeederKey] = useState(0);
+
+  useEffect(() => {
+    if (actionData?.success && actionData?.intent === "seed_amazon_orders") {
+      setSeederKey(prev => prev + 1);
+    }
+  }, [actionData]);
 
   const handleApprove = (claimId: string) => {
     submit({ intent: "approve_claim", claimId }, { method: "POST" });
@@ -270,7 +282,7 @@ export default function Index() {
   return (
     <div style={{ padding: "0", fontFamily: "'Outfit','Inter',sans-serif", background: "#fafafa", minHeight: "100vh" }}>
 
-      {actionData && (actionData.error || actionData.success) && (
+      {actionData && (actionData.error || actionData.success) && actionData.intent !== "seed_amazon_orders" && (
         <div style={{ 
           padding: "1.25rem 2.5rem", 
           background: actionData.success ? "#ecfdf5" : "#fff1f0", 
@@ -527,9 +539,10 @@ export default function Index() {
                 <input type="hidden" name="intent" value="sync_shopify_orders" />
                 <button 
                   type="submit" 
-                  style={{ background: "#4f46e5", color: "#fff", border: "none", padding: "0.4rem 0.85rem", borderRadius: "30px", fontSize: "0.8rem", fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: "0.35rem" }}
+                  disabled={isSyncing}
+                  style={{ background: isSyncing ? "#a5b4fc" : "#4f46e5", color: "#fff", border: "none", padding: "0.4rem 0.85rem", borderRadius: "30px", fontSize: "0.8rem", fontWeight: 700, cursor: isSyncing ? "not-allowed" : "pointer", display: "flex", alignItems: "center", gap: "0.35rem" }}
                 >
-                  <span>🔄</span> Sync Shopify Orders
+                  <span>🔄</span> {isSyncing ? "Syncing..." : "Sync Shopify Orders"}
                 </button>
               </Form>
               <div style={{ background:"#f3f4f6", padding:"0.4rem 0.85rem", borderRadius:"30px", fontSize:"0.8rem", fontWeight:700, color:"#4b5563" }}>
@@ -619,9 +632,24 @@ export default function Index() {
                 Authorise specific Amazon Order IDs so that when users submit them on the claim page, they are approved automatically.
               </p>
               
-              <Form method="post">
+              <Form key={seederKey} method="post">
                 <input type="hidden" name="intent" value="seed_amazon_orders" />
                 <div style={{ display:"flex", flexDirection:"column", gap:"1rem" }}>
+                  
+                  {actionData && actionData.intent === "seed_amazon_orders" && (
+                    <div style={{
+                      padding: "0.75rem 1rem",
+                      background: actionData.success ? "#ecfdf5" : "#fff1f0",
+                      border: actionData.success ? "1px solid #a7f3d0" : "1px solid #fca5a5",
+                      borderRadius: "10px",
+                      color: actionData.success ? "#065f46" : "#991b1b",
+                      fontSize: "0.85rem",
+                      fontWeight: 700
+                    }}>
+                      {actionData.success ? "✨ " : "⚠️ "}{actionData.message || actionData.error}
+                    </div>
+                  )}
+
                   <div>
                     <textarea 
                       name="ordersList" 
@@ -642,9 +670,10 @@ export default function Index() {
                   </div>
                   <button 
                     type="submit" 
-                    style={{ background:"#f28c28", color:"#fff", border:"none", padding:"0.6rem", borderRadius:"10px", fontSize:"0.85rem", fontWeight:700, cursor:"pointer", display:"flex", justifyContent:"center", alignItems:"center", gap:"0.5rem" }}
+                    disabled={isSeeding}
+                    style={{ background: isSeeding ? "#fcd34d" : "#f28c28", color:"#fff", border:"none", padding:"0.6rem", borderRadius:"10px", fontSize:"0.85rem", fontWeight:700, cursor: isSeeding ? "not-allowed" : "pointer", display:"flex", justifyContent:"center", alignItems:"center", gap:"0.5rem" }}
                   >
-                    <span>⚡</span> Authorise Orders
+                    <span>⚡</span> {isSeeding ? "Authorising..." : "Authorise Orders"}
                   </button>
                 </div>
               </Form>
