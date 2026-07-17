@@ -20,10 +20,10 @@ export async function grantPurchaseEntitlements(
     include: { pack: { include: { tier: true } } }
   });
 
-  // Check for cat tunnel or cat cube free access
+  // Check for cat tunnel or cat cube/tube free access
   let hasFreeItem = false;
   let freeItemTitle = "";
-  let freeProductType: "tunnel" | "cube" | null = null;
+  let freeProductType: "tunnel" | "cube" | "tube" | null = null;
 
   if (lineItems) {
     for (const item of lineItems) {
@@ -38,14 +38,19 @@ export async function grantPurchaseEntitlements(
         freeItemTitle = item.title || "Cat Cube";
         freeProductType = "cube";
         break;
+      } else if (title.includes("tube")) {
+        hasFreeItem = true;
+        freeItemTitle = item.title || "Cat Cube";
+        freeProductType = "cube";
+        break;
       }
     }
   }
 
-  // Find Lite pack (tier level 1) if free item purchased
-  let litePack = null;
+  // Find Lite packs (tier level 1) if free item purchased
+  let litePacks: any[] = [];
   if (hasFreeItem) {
-    litePack = await prisma.pack.findFirst({
+    litePacks = await prisma.pack.findMany({
       where: { isActive: true, tier: { level: 1 } },
       include: { tier: true }
     });
@@ -55,8 +60,8 @@ export async function grantPurchaseEntitlements(
   mappings.forEach(m => {
     packsToGrant.push(m.pack);
   });
-  if (litePack) {
-    packsToGrant.push(litePack);
+  if (litePacks.length > 0) {
+    packsToGrant.push(...litePacks);
   }
 
   if (packsToGrant.length === 0) {
@@ -86,7 +91,7 @@ export async function grantPurchaseEntitlements(
         const { supabase } = await import("./supabase.server");
         let variantId = "manual_grant";
         
-        if (litePack && pack.id === litePack.id) {
+        if (pack.tier.level === 1) {
           variantId = "free_tier_tunnel_cube";
         } else {
           const mapping = await prisma.productVariantPackMap.findFirst({
@@ -119,7 +124,7 @@ export async function grantPurchaseEntitlements(
       }
 
       // Track if it was a free tier grant
-      if (litePack && pack.id === litePack.id) {
+      if (pack.tier.level === 1) {
         const { safelyTrackCustomerEvent } = await import("./customerEvent.server");
         await safelyTrackCustomerEvent({
           customerId: customer.id,

@@ -122,10 +122,11 @@ export async function action({ request }: ActionFunctionArgs) {
                 const items = order.lineItems?.nodes || [];
                 const hasTunnel = items.some((item: any) => (item.title || "").toLowerCase().includes("tunnel"));
                 const hasCube = items.some((item: any) => (item.title || "").toLowerCase().includes("cube"));
-
-                if (hasTunnel || hasCube) {
+                const hasTube = items.some((item: any) => (item.title || "").toLowerCase().includes("tube"));
+ 
+                if (hasTunnel || hasCube || hasTube) {
                   foundInShopify = true;
-                  matchedSku = hasCube ? "cat-cube" : "cat-tunnel";
+                  matchedSku = (hasCube || hasTube) ? "cat-cube" : "cat-tunnel";
                   break;
                 }
               }

@@ -1,4 +1,5 @@
 import { useLoaderData, useActionData, useSubmit, Form, useNavigation } from "react-router";
+import type { ActionFunctionArgs, LoaderFunctionArgs, HeadersFunction } from "react-router";
 import { useEffect, useState } from "react";
 import { Link, IndexTable, Card, Text, Badge, BlockStack, Box } from "@shopify/polaris";
 import { authenticate } from "../shopify.server";
@@ -116,6 +117,12 @@ export const action = async ({ request }: ActionFunctionArgs) => {
               name
               createdAt
               email
+              sourceName
+              tags
+              customAttributes {
+                key
+                value
+              }
               customer {
                 id
               }
@@ -151,7 +158,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
         const hasMatchedItem = lineItems.some((item: any) => {
           const title = (item.title || "").toLowerCase();
-          return title.includes("tunnel") || title.includes("cube");
+          return title.includes("tunnel") || title.includes("cube") || title.includes("tube");
         });
 
         if (hasMatchedItem) {
@@ -167,6 +174,41 @@ export const action = async ({ request }: ActionFunctionArgs) => {
           const result = await grantPurchaseEntitlements(shopifyCustomerId, email, variantIds, lineItemsMapped);
           if (result.grantedNew) {
             syncedCount++;
+          }
+
+          // Backfill AmazonOrder if it is an Amazon/Marketplace Connect order
+          const amazonOrderIdAttr = order.customAttributes?.find((attr: any) => attr.key === "Amazon Order Id");
+          const amazonOrderId = amazonOrderIdAttr?.value;
+          const isAmazon = order.sourceName === "amazon-us" || order.tags?.some((t: string) => t.toLowerCase().includes("amazon"));
+
+          if (amazonOrderId || isAmazon) {
+            const finalOrderId = amazonOrderId || order.name || "";
+            const hasCube = lineItemsMapped.some((item: any) => 
+              (item.title || "").toLowerCase().includes("cube") || (item.title || "").toLowerCase().includes("tube")
+            );
+            const sku = hasCube ? "cat-cube" : "cat-tunnel";
+
+            try {
+              await prisma.amazonOrder.upsert({
+                where: { orderId: finalOrderId },
+                update: {
+                  sku,
+                  isClaimed: true,
+                  claimedAt: new Date(order.createdAt),
+                  claimedBy: email
+                },
+                create: {
+                  orderId: finalOrderId,
+                  sku,
+                  isClaimed: true,
+                  claimedAt: new Date(order.createdAt),
+                  claimedBy: email,
+                  createdAt: new Date(order.createdAt)
+                }
+              });
+            } catch (err) {
+              console.error(`[Sync] Failed to upsert Amazon Order ${finalOrderId}:`, err);
+            }
           }
         }
       }

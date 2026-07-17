@@ -2,6 +2,7 @@ import type { ActionFunctionArgs } from "react-router";
 import { ENV } from "../services/env.server";
 import { supabase } from "../services/supabase.server";
 import { grantPurchaseEntitlements } from "../services/entitlement.server";
+import prisma from "../db.server";
 import crypto from "crypto";
 
 function verifyShopifyWebhook(rawBody: string, hmacHeader: string | null): boolean {
@@ -107,10 +108,10 @@ export async function action({ request }: ActionFunctionArgs) {
       mappedVariantIds.includes(vid)
     );
 
-    // Check for cat tunnel or cat cube free access
+    // Check for cat tunnel or cat cube/tube free access
     const hasFreeItem = lineItems.some((item: any) => {
       const title = (item.title || "").toLowerCase();
-      return title.includes("tunnel") || title.includes("cube");
+      return title.includes("tunnel") || title.includes("cube") || title.includes("tube");
     });
 
     if (hasFreeItem) {
@@ -125,6 +126,48 @@ export async function action({ request }: ActionFunctionArgs) {
 
       // Sync customer library in PostgreSQL using Prisma
       if (customerEmail) {
+        // Record Amazon Order if this is a Marketplace Connect / Amazon order
+        const noteAttrs = payload.note_attributes || payload.custom_attributes || payload.customAttributes || [];
+        const amazonOrderIdAttr = noteAttrs.find(
+          (attr: any) => (attr.name === "Amazon Order Id" || attr.key === "Amazon Order Id")
+        );
+        const amazonOrderId = amazonOrderIdAttr?.value;
+        const isAmazon = payload.source_name === "amazon-us" || 
+                         (payload.tags && String(payload.tags).toLowerCase().includes("amazon")) ||
+                         (customerEmail && customerEmail.toLowerCase().endsWith("@mail.codisto.com"));
+
+        if (amazonOrderId || isAmazon) {
+          const finalOrderId = amazonOrderId || payload.name || "";
+          const hasCube = (payload.line_items || []).some((item: any) => {
+            const title = (item.title || "").toLowerCase();
+            return title.includes("cube") || title.includes("tube");
+          });
+          const sku = hasCube ? "cat-cube" : "cat-tunnel";
+
+          try {
+            await prisma.amazonOrder.upsert({
+              where: { orderId: finalOrderId },
+              update: {
+                sku,
+                isClaimed: true,
+                claimedAt: new Date(payload.created_at || payload.createdAt || Date.now()),
+                claimedBy: customerEmail
+              },
+              create: {
+                orderId: finalOrderId,
+                sku,
+                isClaimed: true,
+                claimedAt: new Date(payload.created_at || payload.createdAt || Date.now()),
+                claimedBy: customerEmail,
+                createdAt: new Date(payload.created_at || payload.createdAt || Date.now())
+              }
+            });
+            console.log(`[Webhook/API] Successfully recorded Amazon Order ${finalOrderId} in database.`);
+          } catch (err) {
+            console.error(`[Webhook/API] Failed to upsert Amazon Order ${finalOrderId}:`, err);
+          }
+        }
+
         try {
           const lineItemsMapped = lineItems.map((item: any) => ({
             variantId: item.variant_id?.toString(),

@@ -34,13 +34,19 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       return new Response("No email", { status: 200 });
     }
 
+    // Check for cat tunnel or cat cube/tube free access
+    const hasFreeItem = (order.line_items || []).some((item: any) => {
+      const title = (item.title || "").toLowerCase();
+      return title.includes("tunnel") || title.includes("cube") || title.includes("tube");
+    });
+
     // Extract all variant IDs from line items
     const variantIds: string[] = (order.line_items || [])
       .map((item: any) => item.variant_id?.toString())
       .filter(Boolean);
 
-    if (variantIds.length === 0) {
-      console.log("[Webhook] orders/paid — no variants in order, skipping.");
+    if (variantIds.length === 0 && !hasFreeItem) {
+      console.log("[Webhook] orders/paid — no variants and no free items in order, skipping.");
       return new Response("No variants", { status: 200 });
     }
 
@@ -58,6 +64,48 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     );
 
     if (granted) {
+      // Record Amazon Order if this is a Marketplace Connect / Amazon order
+      const noteAttrs = order.note_attributes || order.custom_attributes || order.customAttributes || [];
+      const amazonOrderIdAttr = noteAttrs.find(
+        (attr: any) => (attr.name === "Amazon Order Id" || attr.key === "Amazon Order Id")
+      );
+      const amazonOrderId = amazonOrderIdAttr?.value;
+      const isAmazon = order.source_name === "amazon-us" || 
+                       (order.tags && String(order.tags).toLowerCase().includes("amazon")) ||
+                       (email && email.toLowerCase().endsWith("@mail.codisto.com"));
+
+      if (amazonOrderId || isAmazon) {
+        const finalOrderId = amazonOrderId || order.name || "";
+        const hasCube = (order.line_items || []).some((item: any) => {
+          const title = (item.title || "").toLowerCase();
+          return title.includes("cube") || title.includes("tube");
+        });
+        const sku = hasCube ? "cat-cube" : "cat-tunnel";
+
+        try {
+          await prisma.amazonOrder.upsert({
+            where: { orderId: finalOrderId },
+            update: {
+              sku,
+              isClaimed: true,
+              claimedAt: new Date(order.created_at || order.createdAt || Date.now()),
+              claimedBy: email
+            },
+            create: {
+              orderId: finalOrderId,
+              sku,
+              isClaimed: true,
+              claimedAt: new Date(order.created_at || order.createdAt || Date.now()),
+              claimedBy: email,
+              createdAt: new Date(order.created_at || order.createdAt || Date.now())
+            }
+          });
+          console.log(`[Webhook] Successfully recorded Amazon Order ${finalOrderId} in database.`);
+        } catch (err) {
+          console.error(`[Webhook] Failed to upsert Amazon Order ${finalOrderId}:`, err);
+        }
+      }
+
       const token = crypto.randomBytes(32).toString('hex');
       await prisma.emailLoginToken.create({
         data: {

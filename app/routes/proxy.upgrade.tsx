@@ -88,12 +88,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
     sessionId: session.get("sessionToken"),
   });
 
-  // Dev Sandbox Bypass:
-  // If targetVariantId is missing OR we are in a sandbox environment (e.g. localhost, local tunnel, or no variant mapped)
-  // we can grant the tier directly for easy testing!
+  const stripeSecret = process.env.STRIPE_SECRET_KEY;
   const isDev = url.hostname === "localhost" || url.hostname === "127.0.0.1" || url.hostname.includes("trycloudflare.com") || url.hostname.includes("ngrok");
-  
-  if (!targetVariantId || isDev) {
+
+  // Dev Sandbox Bypass:
+  // If Stripe is NOT enabled, AND (targetVariantId is missing OR we are in dev/sandbox), we grant the tier directly for testing.
+  if (!stripeSecret && (!targetVariantId || isDev)) {
     // 1. Find the target tier
     const tier = await prisma.tier.findUnique({
       where: { level: targetTier }
@@ -136,6 +136,68 @@ export async function loader({ request }: LoaderFunctionArgs) {
     }
   }
 
+  if (stripeSecret) {
+    try {
+      const Stripe = (await import("stripe")).default;
+      const stripe = new Stripe(stripeSecret);
+
+      let productName = "Digital Pack Upgrade";
+      let priceCents = 999; // $9.99 default
+
+      if (targetTier === 2) {
+        productName = "Standard Pack Upgrade";
+        priceCents = parseInt(process.env.PRICE_STANDARD_CENTS || "999", 10);
+      } else if (targetTier === 3) {
+        productName = "Deluxe Pack Upgrade";
+        priceCents = parseInt(process.env.PRICE_DELUXE_CENTS || "1999", 10);
+      } else if (targetTier === 4) {
+        productName = "Ultimate Pack Upgrade";
+        priceCents = parseInt(process.env.PRICE_ULTIMATE_CENTS || "2999", 10);
+      }
+
+      // Find customer email to pre-fill Stripe checkout
+      const customer = await prisma.customer.findUnique({
+        where: { id: customerId }
+      });
+      const customerEmail = customer?.email;
+
+      const appUrl = process.env.SHOPIFY_APP_URL || `https://${url.hostname}`;
+
+      const stripeSession = await stripe.checkout.sessions.create({
+        payment_method_types: ["card"],
+        customer_email: customerEmail || undefined,
+        line_items: [
+          {
+            price_data: {
+              currency: "usd",
+              product_data: {
+                name: productName,
+                description: `Unlock ${productName} access level in your Snarky Cat library`,
+              },
+              unit_amount: priceCents,
+            },
+            quantity: 1,
+          },
+        ],
+        mode: "payment",
+        success_url: `${appUrl}/proxy/library?token=${token || ""}&success=true`,
+        cancel_url: `${appUrl}/proxy/library?token=${token || ""}`,
+        metadata: {
+          customerId: customerId,
+          targetTier: targetTier.toString(),
+          token: token || "",
+        },
+      });
+
+      if (stripeSession.url) {
+        return redirect(stripeSession.url);
+      }
+    } catch (err) {
+      console.error("[Upgrade] Failed to create Stripe Checkout session:", err);
+      // Fallback
+    }
+  }
+
   if (!targetVariantId) {
     // Fallback if variant isn't mapped
     return redirect("/collections/all");
@@ -146,6 +208,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   const shopDomain = process.env.SHOP_DOMAIN || "fhfwar-jc.myshopify.com";
   
-  // Fast checkout link
+  // Fast checkout link fallback
   return redirect(`https://${shopDomain}/cart/${numericId}:1`);
 }
